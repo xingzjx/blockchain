@@ -8,6 +8,10 @@
 
 业务场景：批量转账可以用于空头或者交易所提币场景。
 
+已实现工具参考：[https://cointool.app](https://cointool.app/)
+
+[智能合约实现批量转账(空投)可转代币或者以太币](https://www.kanzhun.com/jiaocheng/592521.html)
+
 # 合约实现
 
 ```javascript
@@ -98,7 +102,7 @@ value数组填写例子：   [1000000000000000000,1000000000000000000]
 
 2.transferETH该方法的时候，注意填写需要发送的以太坊的value值。
 
-![47B7D7E3-F859-45DA-8CC8-799CC72C6BE7](/Users/xingzjx/Library/Containers/com.tencent.qq/Data/Library/Application Support/QQ/Users/1066512740/QQ/Temp.db/47B7D7E3-F859-45DA-8CC8-799CC72C6BE7.png)
+![47B7D7E3-F859-45DA-8CC8-799CC72C6BE7](./images/47B7D7E3-F859-45DA-8CC8-799CC72C6BE7.png)
 
 3.在填写value的时候，注意单位是wei。
 
