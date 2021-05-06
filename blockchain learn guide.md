@@ -1,15 +1,16 @@
 - [区块链的知<!-- TOC -->
 
-- [区块链的知识面](#区块链的知识面)
+- [区块链的知识面分类](#区块链的知识面分类)
   - [基础设施](#基础设施)
   - [服务](#服务)
   - [前端交互](#前端交互)
 - [区块链的全面学习计划列表](#区块链的全面学习计划列表)
   - [以太坊生态：包括以太坊和智能合约等](#以太坊生态包括以太坊和智能合约等)
-  - [存储相关：cephfs，filecoin，ipfs](#存储相关cephfsfilecoinipfs)
-  - [钱包相关技术：闪兑原理，web3j等](#钱包相关技术闪兑原理web3j等)
-  - [跨链生态：波卡生态以及comos，rust语言](#跨链生态波卡生态以及comosrust语言)
+  - [存储相关](#存储相关)
+  - [钱包和交易所相关](#钱包和交易所相关)
+  - [跨链生态](#跨链生态)
   - [比特币研究](#比特币研究)
+  - [联盟链](#联盟链)
 - [核心技术点分析](#核心技术点分析)
   - [存储](#存储)
   - [网络](#网络)
@@ -24,7 +25,7 @@
 
     前言：该文档的目的总结区块链要学习的全面知识点，并且和中心化的开发模式做对比，然后总结学习思路以及方向，避免学习过程中的弯路。
 
-# 区块链的知识面
+# 区块链的知识面分类
 
  概述：这个模块从区块链全面的角度来分析区块链需要学习的知识点，如果，把现有的系统开发模式划分为三个部分，也即基础设施、微服务、前端。那么现在的区块链开发也可以划分为三个模块。
 
@@ -98,13 +99,20 @@
 
 （7）密码学知识
 
-## 存储相关：cephfs，filecoin，ipfs
+## 存储相关
+
+   技术要点：cephfs，filecoin，ipfs
 
   [filecoin白皮书中文版](https://gitee.com/xingzjx/blockchain/blob/master/filecoin%20whitepaper%20cn.md)
 
-## 钱包相关技术：闪兑原理，web3j等
+## 钱包和交易所相关
+   钱包和交易所的业务有一定的重叠，钱包常见技术：闪兑原理，web3j等
 
-## 跨链生态：波卡生态以及comos，rust语言
+   [交易系统架构演进之路](https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&mid=2652494063&idx=1&sn=a5aab0ef8be03de2a87377ad275d9159&chksm=8b6852ffbc1fdbe90d4b727c4510ef1ed9d3b2498f1dadb0c458c6464e8c4fc32b1957f919da&scene=21#wechat_redirect)
+
+## 跨链生态
+
+   技术要点：comos，rust， polkadot
 
   [波卡白皮书中文版](https://learnblockchain.cn/2019/05/17/polkadot-whitepaper/)
 
@@ -118,9 +126,11 @@
 
   [比特币白皮书中文(Bitcoin.org版)](https://bitcoin.org/files/bitcoin-paper/bitcoin_zh_cn.pdf)
 
-- 联盟链：hyperledger fabric , quorum（摩根大通开源），云商（如阿里baas）
+## 联盟链
+  
+ 技术要点：hyperledger fabric , quorum（摩根大通开源），云商（如阿里baas）
 
-学习视频链接: https://pan.baidu.com/s/1PwmNI99fwWVUyLTwrRazSw  密码: b3mf，该视频链接包括中心化的后台开发，以及涵盖了上面列表的大部分知识。
+ 学习视频链接: https://pan.baidu.com/s/1PwmNI99fwWVUyLTwrRazSw  密码: b3mf，该视频链接包括中心化的后台开发，以及涵盖了上面列表的大部分知识。
 
 # 核心技术点分析
 
@@ -128,15 +138,15 @@
 
 ## 存储
 
-​    移动端的存储包括网络以及本地存储sqlite或者基于key-value的存储。后台开发中常见存储技术有云盘，分布式存储系统ceph，群晖等等。
+​  移动端的存储包括网络以及本地存储sqlite或者基于key-value的存储。后台开发 中常见存储技术有云盘，分布式存储系统ceph，群晖等等。
 
-​    区块链开发需要掌握的分布式存储系统ceph，以及去中心化存储filecoin,ipfs，以太坊链上存储等等。filecoin需要学习其共识算法（存储证明和时空证明）
+​  区块链开发需要掌握的分布式存储系统ceph，以及去中心化存储filecoin,ipfs，以太坊链上存储等等。filecoin需要学习其共识算法（存储证明和时空证明）
 
 ​    关键字：filecoin， ipfs ，ceph，PoRep， PoSt
 
 ## 网络
 
-   中心化的模型，是基于客户端服务器的模式，而区块链中的网络模型则是p2p，每个节点作为客户端，也是服务端，也是去中心化的。常见的p2p开发库有，devp2p以及libp2p，目前以太坊使用的是devp2p，大部分底层公链使用的都是libp2p。目前libp2p已经成为主流的p2p网络实现，形成了开源社区，以太坊2.0也计划使用libp2p来实现其p2p网络。其中libp2p和devp2p都使用了kad算法（DHT）来实现分布式路由寻址。
+  中心化的模型，是基于客户端服务器的模式，而区块链中的网络模型则是p2p，每个节点作为客户端，也是服务端，也是去中心化的。常见的p2p开发库有，devp2p以及libp2p，目前以太坊使用的是devp2p，大部分底层公链使用的都是libp2p。目前libp2p已经成为主流的p2p网络实现，形成了开源社区，以太坊2.0也计划使用libp2p来实现其p2p网络。其中libp2p和devp2p都使用了kad算法（DHT）来实现分布式路由寻址。
 
 ​    关键字：devp2p，libp2p，dht，kad，gossip
 
