@@ -1,13 +1,13 @@
-- [区块链的知<!-- TOC -->
+- 区块链开发学习指南<!-- TOC -->
 
 - [区块链的知识面分类](#区块链的知识面分类)
   - [基础设施](#基础设施)
   - [服务](#服务)
   - [前端交互](#前端交互)
-- [区块链的全面学习计划列表](#区块链的全面学习计划列表)
-  - [以太坊生态：包括以太坊和智能合约等](#以太坊生态包括以太坊和智能合约等)
-  - [存储相关](#存储相关)
-  - [钱包和交易所相关](#钱包和交易所相关)
+- [区块链的全面学习计划](#区块链的全面学习计划)
+  - [以太坊生态](#以太坊生态)
+  - [存储生态](#存储生态)
+  - [钱包和交易所](#钱包和交易所)
   - [跨链生态](#跨链生态)
   - [比特币研究](#比特币研究)
   - [联盟链](#联盟链)
@@ -61,10 +61,9 @@
 
    区块链开发方向，对于前端方面，不需要特别去研究Android，IOS或者前端技术栈，而是熟悉智能合约的调用以及以太坊的json-rpc接口就可以。
 
-# 区块链的全面学习计划列表
+# 区块链的全面学习计划
 
-## 以太坊生态：包括以太坊和智能合约等
-
+## 以太坊生态
 （1）master ethereum，[精通以太坊中文版](https://github.com/inoutcode/ethereum_book)，作者Gavin Wood
 
   这本书可以全面了解以太坊相关的知识，对以太坊有一个整体的把握，下面是以太坊官方资料：
@@ -99,13 +98,13 @@
 
 （7）密码学知识
 
-## 存储相关
+## 存储生态
 
    技术要点：cephfs，filecoin，ipfs
 
   [filecoin白皮书中文版](https://gitee.com/xingzjx/blockchain/blob/master/filecoin%20whitepaper%20cn.md)
 
-## 钱包和交易所相关
+## 钱包和交易所
    钱包和交易所的业务有一定的重叠，钱包常见技术：闪兑原理，web3j等
 
    [交易系统架构演进之路](https://mp.weixin.qq.com/s?__biz=MzA5OTI1NDE0Mw==&mid=2652494063&idx=1&sn=a5aab0ef8be03de2a87377ad275d9159&chksm=8b6852ffbc1fdbe90d4b727c4510ef1ed9d3b2498f1dadb0c458c6464e8c4fc32b1957f919da&scene=21#wechat_redirect)
@@ -116,7 +115,8 @@
 
   [波卡白皮书中文版](https://learnblockchain.cn/2019/05/17/polkadot-whitepaper/)
 
-  [comos白皮书中文版](https://blog.csdn.net/shangsongwww/article/details/92572870)
+  [cosmos白皮书中文版](https://blog.csdn.net/shangsongwww/article/details/92572870)
+  [cosmos白皮书英文版](https://github.com/cosmos/cosmos/blob/master/WHITEPAPER.md)
 
 ## 比特币研究
 
@@ -173,6 +173,14 @@
 [以太坊之 Casper 协议](https://zhuanlan.zhihu.com/p/40100624)
 
 [以太坊之Casper协议英文](https://arxiv.org/pdf/1710.09437.pdf)
+
+[实用拜占庭容错论文中文版](https://blog.csdn.net/DeveloperRen/article/details/82771710)
+
+[共识算法系列之一：raft和pbft算法](https://zhuanlan.zhihu.com/p/35847127)
+
+[Raft一致性算法论文](https://github.com/maemual/raft-zh_cn)
+
+[The Byzantine Generals Problem](https://blog.csdn.net/weixin_37887116/article/details/107655597)
 
 ## 扩容
 
