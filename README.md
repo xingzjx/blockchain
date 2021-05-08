@@ -1,4 +1,6 @@
-- 区块链开发学习指南<!-- TOC -->
+<!-- TOC -->
+
+<h1>区块链开发学习指南</h1>
 
 - [区块链的知识面分类](#区块链的知识面分类)
   - [基础设施](#基础设施)
@@ -82,6 +84,8 @@
 
   [solidity官方文档](https://solidity-cn.readthedocs.io/zh/develop/)
 
+  [truffle官方文档](https://www.trufflesuite.com/docs/truffle/overview)
+
 （3）现有dapp设计：比如uniswap
 
   [uniswap开发视频教程](https://www.bilibili.com/video/av754463969/)
@@ -154,13 +158,21 @@
 
 ## 语言
 
-   底层链以及公链开发的语言大部分是Golang，也有Rust，Java，C++等。一般，大部分公链有多种语言实现版本，比如以太坊，就有Go，Rust，Java等实现版本。
+  底层链以及公链开发的语言大部分是Golang，也有Rust，Java，C++等。一般，大部分公链有多种语言实现版本，比如以太坊，就有Go，Rust，Java等实现版本。
 
   以太坊智能合约方面的主要开发语言是Solidity，hyperledger fabric的合约（链码）开发语言支持Go，Java等。
 
   前端交互方面还是中心化开发模式，用到的技术栈还是一样，只不过会对接比如以太坊的sdk，比如web3j，we b3js，web3dart等等。
 
   关键字：Rust，Golang， Solidity，EVM，WASM，Web3j，Web3js
+
+  参考链接：
+  
+  [solidity官方文档](https://solidity-cn.readthedocs.io/zh/)
+
+  [go语言设计与实现](https://draveness.me/golang/)
+
+  [Go进阶训练营](https://u.geekbang.org/subject/go?utm_source=time_web&utm_medium=menu&utm_term=timewebmenu&utm_identify=geektime&utm_content=menu&utm_campaign=timewebmenu&gk_cus_user_wechat=university)
 
 ## 共识
 
