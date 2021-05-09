@@ -108,6 +108,8 @@
 
   [filecoin白皮书中文版](https://gitee.com/xingzjx/blockchain/blob/master/filecoin%20whitepaper%20cn.md)
 
+  [chia白皮书](https://www.kuangjiwan.com/upload/doc/Chia-Business-Whitepaper-2021-02-09-v1.0.pdf)
+
 ## 钱包和交易所
    钱包和交易所的业务有一定的重叠，钱包常见技术：闪兑原理，web3j等
 
@@ -131,7 +133,7 @@
   [比特币白皮书中文(Bitcoin.org版)](https://bitcoin.org/files/bitcoin-paper/bitcoin_zh_cn.pdf)
 
 ## 联盟链
-  
+
  技术要点：hyperledger fabric , quorum（摩根大通开源），云商（如阿里baas）
 
  学习视频链接: https://pan.baidu.com/s/1PwmNI99fwWVUyLTwrRazSw  密码: b3mf，该视频链接包括中心化的后台开发，以及涵盖了上面列表的大部分知识。
@@ -142,9 +144,9 @@
 
 ## 存储
 
-​  移动端的存储包括网络以及本地存储sqlite或者基于key-value的存储。后台开发 中常见存储技术有云盘，分布式存储系统ceph，群晖等等。
+  移动端的存储包括网络以及本地存储sqlite或者基于key-value的存储。后台开发 中常见存储技术有云盘，分布式存储系统ceph，群晖等等。
 
-​  区块链开发需要掌握的分布式存储系统ceph，以及去中心化存储filecoin,ipfs，以太坊链上存储等等。filecoin需要学习其共识算法（存储证明和时空证明）
+  区块链开发需要掌握的分布式存储系统ceph，以及去中心化存储filecoin,ipfs，以太坊链上存储等等。filecoin需要学习其共识算法（存储证明和时空证明）
 
 ​    关键字：filecoin， ipfs ，ceph，PoRep， PoSt
 
@@ -167,7 +169,7 @@
   关键字：Rust，Golang， Solidity，EVM，WASM，Web3j，Web3js
 
   参考链接：
-  
+
   [solidity官方文档](https://solidity-cn.readthedocs.io/zh/)
 
   [go语言设计与实现](https://draveness.me/golang/)
@@ -178,7 +180,7 @@
 
 ​     区块链中的共识机制相当与分布式系统的一致性算法，常见的分布式系统的一致性算法有Paxos，Raft，PBFT（拜占庭共识），ZAB算法等等。区块链中的场景共识机制有Pow，Pos，Tendermint（拜占庭共识），混合共识（波卡，GRANDPA 和 BABE机制），Dpos等等。
 
-​    关键字：Paxos，Raft，Pow，Pos， Dpos， Tendermint， GRANDPA 和 BABE，PBFT
+​    关键字：Paxos，Raft，Pow，Pos， Dpos， Tendermint，PBFT
 
 [Tendermint共识](https://tendermint.com/core/#ecosystem)
 
@@ -193,6 +195,8 @@
 [Raft一致性算法论文](https://github.com/maemual/raft-zh_cn)
 
 [The Byzantine Generals Problem](https://blog.csdn.net/weixin_37887116/article/details/107655597)
+
+[Raft共识实现](https://raft.github.io/)
 
 ## 扩容
 
@@ -244,5 +248,5 @@
    学习方法方面属于个人总结及看法，先全面学习区块链的相关技术，对应第二节及其学习计划列表中列举的技术要点以及视频相关的程。这样学习一遍之后，对于区块链的开发就有了整体的认识，然后在从核心技术点出发去归纳总结之前学习的知识，每隔一段时间学习和研究一个话题，并且有相关的技术文档输出。
 
   这个学习思路是先面后点，从点扩展到面，相互融合。其中，面只的是知识的全面性以及整个知识体系，而点，是从知识面总结出来的关键点，并且是有限的分类。
-  
+
   最后，补充一点，学习资料的收集，尽可能的来自官方以及比较权威的资料。
