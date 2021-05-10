@@ -76,7 +76,9 @@
 
    [以太坊白皮书中文](https://gitee.com/xingzjx/blockchain/blob/master/ethereum%20whitepaper.md)
 
-  [以太坊黄皮书中文](https://github.com/wanshan1024/ethereum_yellowpaper)
+   [以太坊黄皮书中文](https://github.com/wanshan1024/ethereum_yellowpaper)
+
+   [币安智能链白皮书](https://github.com/binance-chain/whitepaper)
 
 （2）智能合约
 
@@ -182,9 +184,11 @@
 
 ​    关键字：Paxos，Raft，Pow，Pos， Dpos， Tendermint，PBFT
 
-[Tendermint共识](https://tendermint.com/core/#ecosystem)
+[Tendermint官方文档](https://docs.tendermint.com/master)
 
-[以太坊之 Casper 协议](https://zhuanlan.zhihu.com/p/40100624)
+[Tendermint官方文档中文版本](https://learnblockchain.cn/docs/tendermint/)
+
+[以太坊之Casper协议](https://zhuanlan.zhihu.com/p/40100624)
 
 [以太坊之Casper协议英文](https://arxiv.org/pdf/1710.09437.pdf)
 
@@ -198,12 +202,13 @@
 
 [Raft共识实现](https://raft.github.io/)
 
+[Poa共识机制](https://github.com/ethereum/EIPs/issues/225)
+
 ## 扩容
 
   扩容指的的是提高区块链的TPS。扩容技术可以划分为两种方式，链上扩容和和链下扩容。
 
 ![image-20210427142215356](./images/扩容.png)
-
 
 
 其中，链下扩容layer2方案中，知名的有Optimistic Rollup和ZkRollup 
