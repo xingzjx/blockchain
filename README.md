@@ -134,6 +134,8 @@
 
   [比特币白皮书中文(Bitcoin.org版)](https://bitcoin.org/files/bitcoin-paper/bitcoin_zh_cn.pdf)
 
+  [stratum协议v2版本](https://zh.braiins.com/stratum-v2)
+
 ## 联盟链
 
  技术要点：hyperledger fabric , quorum（摩根大通开源），云商（如阿里baas）
