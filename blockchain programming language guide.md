@@ -24,9 +24,23 @@
 
 ## 前端交互模块
 
-  &emsp;&emsp;前端交互模块，主要了解h5前端，Android，IOS等。主要涉及语言javascript，java，swift。
+  &emsp;&emsp;前端交互模块，主要了解h5前端，Android，IOS等。主要涉及语言javascript，java，swift。这部分可以了解，不需要重点研究。
 
 # go语言
+
+  &emsp;&emsp;Go（又称 Golang）是 Google 开发的一种静态强类型、编译型语言。Go 语言语法与 C 相近，但功能上有：内存安全，GC（垃圾回收），并发计算等。
+
+  &emsp;&emsp;学习总结：重点研究go语言的协程，通道，垃圾回收，内存分配，同步机制，cgo以及语言特性等。
+
+  学习资料参考：
+
+  [Go语言圣经 《The Go Programming Language》 中文版本](https://docs.hacknode.org/gopl-zh/index.html)
+
+  [Go 语言设计与实现](https://draveness.me/golang/)
+
+  [Go进阶训练营](https://u.geekbang.org/subject/go?utm_source=time_web&utm_medium=menu&utm_term=timewebmenu&utm_identify=geektime&utm_content=menu&utm_campaign=timewebmenu&gk_cus_user_wechat=university)
+
+  [Go并发编程 — sync.Once 单实例模式的思考](https://zhuanlan.zhihu.com/p/357952785)
 
 # rust语言
 

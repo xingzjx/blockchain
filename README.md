@@ -163,7 +163,7 @@
 
   移动端的存储包括网络以及本地存储sqlite或者基于key-value的存储。后台开发 中常见存储技术有云盘，分布式存储系统ceph，群晖等等。
 
-  区块链开发需要掌握的分布式存储系统ceph，以及去中心化存储filecoin,ipfs，以太坊链上存储等等。filecoin需要学习其共识算法（存储证明和时空证明）
+  区块链开发需要掌握的分布式存储系统ceph，以及去中心化存储filecoin,ipfs，以太坊链上存储等等。filecoin需要学习其共识算法（存储证明和时空证明）。还包括区块链账本，一般用到的技术有leveldb。
 
 ​    关键字：filecoin， ipfs ，ceph，PoRep， PoSt
 
