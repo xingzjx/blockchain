@@ -13,6 +13,7 @@
   - [跨链生态](#跨链生态)
   - [比特币研究](#比特币研究)
   - [联盟链](#联盟链)
+  - [挖矿](#挖矿)
 - [核心技术点分析](#核心技术点分析)
   - [存储](#存储)
   - [网络](#网络)
@@ -112,6 +113,10 @@
 
   [chia白皮书](https://www.kuangjiwan.com/upload/doc/Chia-Business-Whitepaper-2021-02-09-v1.0.pdf)
 
+  [chia绿皮书](https://www.chia.net/assets/ChiaGreenPaper.pdf)
+
+  注意：奇亚等并不属于存储生态，只是使用了类似的时空证明或者Poc共识机制。
+
 ## 钱包和交易所
    钱包和交易所的业务有一定的重叠，钱包常见技术：闪兑原理，web3j等
 
@@ -134,13 +139,21 @@
 
   [比特币白皮书中文(Bitcoin.org版)](https://bitcoin.org/files/bitcoin-paper/bitcoin_zh_cn.pdf)
 
-  [stratum协议v2版本](https://zh.braiins.com/stratum-v2)
 
 ## 联盟链
 
  技术要点：hyperledger fabric , quorum（摩根大通开源），云商（如阿里baas）
 
  学习视频链接: https://pan.baidu.com/s/1PwmNI99fwWVUyLTwrRazSw  密码: b3mf，该视频链接包括中心化的后台开发，以及涵盖了上面列表的大部分知识。
+
+ ## 挖矿
+
+ 研究比特币，以太坊以及其它山寨币挖矿的过程，以及矿池搭建和原理
+
+ [stratum协议v2版本](https://zh.braiins.com/stratum-v2)
+ [poc矿池hpool](https://www.hpool.com/)
+ [btcpool开源实现](https://github.com/btccom/btcpool-ABANDONED)
+ [open-ethereum-pool以太坊矿池学习笔记](https://github.com/fengchunjian/open-ethereum-pool_notes)
 
 # 核心技术点分析
 
@@ -227,7 +240,7 @@
 
 ​     在区块链中，应用到了大量的密码学知识，比如对称加密，非对称加密，哈希算法，椭圆曲线算法，零知识证明、随机数算法等等。比如私钥是伪随机数算法生成，而私钥推导公钥用到了椭圆曲线算法。
 
-   关键字：椭圆曲线，对称加密，非对称加密，ssl，zksnark，签名，随机数算法
+   关键字：椭圆曲线，对称加密，非对称加密，ssl，zksnark，签名，随机数算法，vdf（可延迟证明）
 
 ## 数据结构算法
 
