@@ -44,7 +44,20 @@
 
 # rust语言
 
+   &emsp;&emsp;Rust是类似于c语言的开发语言，和Go语言也比较接近。区块链项目中大量用到了Rust语言。比如filecoin以及波卡生态
+
+   [rust官方文档](https://www.rust-lang.org/zh-CN/tools/install)
+   [Rust 程序设计语言](https://kaisery.github.io/trpl-zh-cn/title-page.html)
+
 # solidity语言
+
+# java语言
+   
+  java开发语言在区块链开发生态相对少些，但是也有很多其实现。
+
+  参考：
+  [java编程思想](https://blog.didispace.com/books/think-in-java/)
+  [Effective Java 2nd Edition](https://github.com/HugoMatilla/Effective-JAVA-Summary)
 
 
 
