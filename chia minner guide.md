@@ -288,5 +288,8 @@ full_node.py
 
 ## poc证明
 
+参考：
+[奇亚空间证明论文](https://www.chia.net/assets/Chia_Proof_of_Space_Construction_v1.1.pdf)
+
 
 # 矿池开发
