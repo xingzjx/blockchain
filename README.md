@@ -81,6 +81,8 @@
 
    [币安智能链白皮书](https://github.com/binance-chain/whitepaper)
 
+   [以太坊JSON-RPC文档](https://github.com/ethereum/wiki/wiki/JSON-RPC)
+
 （2）智能合约
 
   [智能合约学习教程](https://github.com/Fankouzu/smart-contract)
