@@ -1,3 +1,21 @@
+<h1>k8s部署rook ceph 集群<h/>
+
+<!-- TOC -->
+
+- [环境准备](#环境准备)
+- [开始部署](#开始部署)
+    - [下载rook源码](#下载rook源码)
+    - [执行如下命令](#执行如下命令)
+    - [选择集群环境cluster-on-pvc](#选择集群环境cluster-on-pvc)
+    - [部署集群](#部署集群)
+    - [检查集群状态](#检查集群状态)
+- [部署wordpress](#部署wordpress)
+    - [创建CephBlockPool和StorageClass](#创建cephblockpool和storageclass)
+    - [worldpress使用storegeclass](#worldpress使用storegeclass)
+    - [查看存储使用](#查看存储使用)
+
+<!-- /TOC -->
+
 # 环境准备
 
 阿里云k8s集群，可分配的云盘空间。

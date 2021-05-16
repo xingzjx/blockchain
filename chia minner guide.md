@@ -12,6 +12,8 @@
 
 [普通玩家用群晖NAS挖矿（Chia奇亚币）教程](https://wp.gxnas.com/10559.html)
 
+[uupool矿池挖chia](https://www.uupool.com/)
+
 &emsp;&emsp;注意事项：
 
 - Hpool提供的p盘工具plotting.dat（目前只支持Windows下p盘），和chia官方钱包中的p盘功能是一致的。只不过，使用hpool提供的p盘工具p盘，就可以不用下载官方钱包了。
