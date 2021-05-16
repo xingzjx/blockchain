@@ -295,3 +295,7 @@ full_node.py
 
 
 # 矿池开发
+
+[Burstpool written in GO](https://github.com/PoC-Consortium/Nogrod)
+[Scavenger - PoC miner in Rust](https://github.com/PoC-Consortium/scavenger)
+[ChiaPool in C#](https://github.com/Playwo/ChiaPool)

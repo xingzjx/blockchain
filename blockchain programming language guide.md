@@ -19,8 +19,7 @@
 
 ## 智能合约模块
 
-  &emsp;&emsp;指南合约方面，现在主流的是以太坊智能合约开发，主要的开发语言是solidity，不过也支持其它语言，不过目前流行度没那
-  高。其它底层公链，比如bsc，heco也也兼容solidity开发的智能合约。
+  &emsp;&emsp;指南合约方面，现在主流的是以太坊智能合约开发，主要的开发语言是solidity，不过也支持其它语言，不过目前流行度没那高。其它底层公链，比如bsc，heco也也兼容solidity开发的智能合约。
 
 ## 前端交互模块
 
@@ -47,6 +46,7 @@
    &emsp;&emsp;Rust是类似于c语言的开发语言，和Go语言也比较接近，目前在Android系统层开发也引入了Rust语言的支持。在区块链项目中大量用到了Rust语言。比如filecoin以及波卡生态。
 
    [Rust官方文档](https://www.rust-lang.org/zh-CN/tools/install)
+
    [Rust 程序设计语言](https://kaisery.github.io/trpl-zh-cn/title-page.html)
 
 # solidity语言
@@ -56,13 +56,22 @@
   java开发语言在区块链开发生态相对少些，但是也有很多其实现。
 
   参考：
+
   [java编程思想](https://blog.didispace.com/books/think-in-java/)
+
   [Effective Java 2nd Edition](https://github.com/HugoMatilla/Effective-JAVA-Summary)
 
 # python语言
 
+  [Python3 CookBook中文版](https://www.kancloud.cn/kancloud/python3-cookbook/47412)
 
 # c++
+
+大部分矿池都是C++实现的，也有不少底层链公链用C++编写。
+
+参考：
+
+  [Effective C++](https://www.kancloud.cn/wizardforcel/effective-cpp)
 
 
 

@@ -2,7 +2,7 @@
 
 # 挖矿原理
 
-&emsp;&emsp;所谓的挖矿，其实就是利用计算机的资源比如cpu，gpu等，计算哈希值，然后验证获取奖励的过程。常见的挖矿哈希算法有Sha256(btc)，Ethash，Equihash等等。
+&emsp;&emsp;所谓的挖矿，其实就是利用计算机的资源比如cpu，gpu等，计算哈希值，然后验证获取奖励的过程。常见的挖矿哈希算法有Sha256(BTC)，Ethash，Equihash(ZEC)，Scrypt（LTC）等等。
 
 &emsp;&emsp;注意：计算哈希值是其中一种挖矿方式，还有基于poc的存储证明挖矿，比如filecoin和chia等。本文只讨论哈希算法挖矿相关内容。
 
