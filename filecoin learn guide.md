@@ -19,6 +19,8 @@
 
 # 挖矿和矿池
 
+filpool 矿池
+
 [Filecoin的矿池之路](https://www.jinse.com/news/blockchain/643989.html)
 
 [关于Filecoin矿池的技术分享视频](https://www.bilibili.com/video/av840003306/)
