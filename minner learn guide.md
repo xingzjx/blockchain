@@ -2,7 +2,7 @@
 
 # 挖矿原理
 
-&emsp;&emsp;所谓的挖矿，其实就是利用计算机的资源比如cpu，gpu等，计算哈希值，然后验证获取奖励的过程。常见的挖矿哈希算法有Sha256(BTC)，Ethash，Equihash(ZEC)，Scrypt（LTC）等等。
+&emsp;&emsp;所谓的挖矿，其实就是利用计算机的资源比如CPU、GPU、FPGA、ASIC等，计算哈希值，然后验证获取奖励的过程。常见的挖矿哈希算法有Sha256(BTC)，Ethash，Equihash(ZEC)，Scrypt（LTC）等等。
 
 &emsp;&emsp;注意：计算哈希值是其中一种挖矿方式，还有基于poc的存储证明挖矿，比如filecoin和chia等。本文只讨论哈希算法挖矿相关内容。
 
@@ -11,6 +11,12 @@
 [哈希算法常见参考](https://github.com/Lolliedieb/lolMiner-releases)
 
 [精通比特币：挖矿和共识](https://github.com/xingzjx/MasterBitcoin2CN/blob/master/ch10.md)
+
+[CUDA与OpenCL架构](https://www.cnblogs.com/huliangwen/articles/5003504.html)
+
+[CPU、GPU、FPGA、ASIC，区块链挖矿技术哪家强](https://cloud.tencent.com/developer/article/1559977)
+
+[深入理解CPU和异构计算芯片GPU/FPGA/ASIC](https://zhuanlan.zhihu.com/p/25996962)
 
 # 挖矿工具
 
@@ -29,7 +35,6 @@
 
 [ethminer](https://github.com/ethereum-mining/ethminer)
 
-[CUDA与OpenCL架构](https://www.cnblogs.com/huliangwen/articles/5003504.html)
 
 
 # btcpool矿池源码

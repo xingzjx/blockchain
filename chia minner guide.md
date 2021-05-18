@@ -291,11 +291,14 @@ full_node.py
 ## poc证明
 
 参考：
+
 [奇亚空间证明论文](https://www.chia.net/assets/Chia_Proof_of_Space_Construction_v1.1.pdf)
 
 
 # 矿池开发
 
 [Burstpool written in GO](https://github.com/PoC-Consortium/Nogrod)
+
 [Scavenger - PoC miner in Rust](https://github.com/PoC-Consortium/scavenger)
+
 [ChiaPool in C#](https://github.com/Playwo/ChiaPool)
