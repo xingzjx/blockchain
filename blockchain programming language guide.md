@@ -72,6 +72,7 @@
 参考：
 
   [Effective C++](https://www.kancloud.cn/wizardforcel/effective-cpp)
+  [Hunter: organize freedom](https://hunter.readthedocs.io/en/latest/)
 
 
 
