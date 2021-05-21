@@ -140,6 +140,15 @@ geth -rpc --datadir  "/root/eth/data" --goerli
 
 ```
 
+注意：如果节点查找不成功，请开启30303端口，验证端口监听情况：
+
+```zsh
+
+netstat -tlpn
+
+```
+
+
 
 ## 进入控制台
 
