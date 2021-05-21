@@ -121,3 +121,51 @@ eth.coinbase
 miner.setEtherbase(eth.coinbase)
 
 ```
+
+# 启动主网或者测试网
+
+## 启动主网
+
+```zsh
+
+geth -rpc --datadir  "/root/eth/data"
+
+```
+
+如果启动测试网络，可执行如下命令：
+
+```zsh
+
+geth -rpc --datadir  "/root/eth/data" --goerli
+
+```
+
+
+## 进入控制台
+
+```zsh
+
+geth attach data/geth.ipc
+
+```
+
+## 查看同步状态
+
+```zsh
+
+> eth.syncing
+{
+  currentBlock: 153206,
+  highestBlock: 12475934,
+  knownStates: 347738,
+  pulledStates: 326529,
+  startingBlock: 0
+}
+
+```
+
+参考：
+ 
+[以太坊主网节点搭建](https://www.jianshu.com/p/719a34fe484d)
+
+[ETH搭建节点区块数据同步的三种模式：full、fast、light](https://www.cnblogs.com/bizzan/p/11341713.html)
