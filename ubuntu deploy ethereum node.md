@@ -148,6 +148,17 @@ netstat -tlpn
 
 ```
 
+docker方式启动
+
+```
+
+docker run -it --name eth_node -v "/home/xingzjx/eth/data":/root/.ethereum  -p 8545:8545  -p 30303:30303 ethereum/client-go --networkid 1234 --ws --rpc --rpcaddr 0.0.0.0 --rpccorsdomain '*' --rpcapi "db,eth,net,web3,personal" console
+
+```
+
+参考：
+
+[使用Docker Images ethereum/client-go 搭建以太坊节点](https://blog.csdn.net/weixin_30697239/article/details/96857374)
 
 
 ## 进入控制台
@@ -175,6 +186,8 @@ geth attach data/geth.ipc
 
 参考：
  
+[10分钟完成阿里云环境搭建以太坊私有链](https://zhuanlan.zhihu.com/p/32911405)
+
 [以太坊主网节点搭建](https://www.jianshu.com/p/719a34fe484d)
 
 [ETH搭建节点区块数据同步的三种模式：full、fast、light](https://www.cnblogs.com/bizzan/p/11341713.html)
