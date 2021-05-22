@@ -16,6 +16,18 @@ bee是swarm的Go语言实现，其部署参考：
 
 [keystore导出私钥](https://www.yundongfang.com/Yun41920.html)
 
+[cashout文档](https://docs.ethswarm.org/docs/working-with-bee/cashing-out)
+
+bzz空投领取步骤：
+
+- 部署bee客户端
+
+- 验证是否刷到票
+
+- 私钥提取到钱包
+
+- 执行cashout脚本
+
 # 开发工具
 
 ## swarm-cli
