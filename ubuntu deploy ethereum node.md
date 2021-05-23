@@ -191,3 +191,9 @@ geth attach data/geth.ipc
 [以太坊主网节点搭建](https://www.jianshu.com/p/719a34fe484d)
 
 [ETH搭建节点区块数据同步的三种模式：full、fast、light](https://www.cnblogs.com/bizzan/p/11341713.html)
+
+[以太坊3个测试网络（ropsten、kovan、Rinkeby）的区别](https://blog.csdn.net/weixin_34194551/article/details/91902194)
+
+[谷歌云部署Georli测试网络](https://medium.com/chainsafe-systems/deployment-automation-for-goerli-testnet-in-10-minutes-5212cef5542a)
+
+[以太坊geth安装并同步主网及测试网区块](https://www.wanghaoyi.com/ethereum-geth-sync-blocks.html)
