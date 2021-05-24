@@ -136,7 +136,7 @@ geth -rpc --datadir  "/root/eth/data"
 
 ```zsh
 
-geth -rpc --datadir  "/root/eth/data" --goerli
+nohup geth -rpc --datadir  "/data/eth/data" --goerli & 
 
 ```
 
@@ -181,6 +181,13 @@ geth attach data/geth.ipc
   pulledStates: 326529,
   startingBlock: 0
 }
+
+```
+
+清理数据命令
+
+```
+geth removedb --datadir data
 
 ```
 
