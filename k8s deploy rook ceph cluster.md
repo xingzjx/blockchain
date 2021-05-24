@@ -14,6 +14,9 @@
   - [创建CephBlockPool和StorageClass](#创建cephblockpool和storageclass)
   - [worldpress使用storegeclass](#worldpress使用storegeclass)
   - [查看存储使用](#查看存储使用)
+- [清理](#清理)
+  - [清除集群时，注意清除以下资源](#清除集群时注意清除以下资源)
+  - [删除集群CRD](#删除集群crd)
 
 <!-- /TOC -->
 
@@ -128,3 +131,26 @@ kubectl get svc wordpress
 ```
 
 ![image-20210428143644739](./images/image-20210428143644739.png)
+
+
+# 清理
+
+## 清除集群时，注意清除以下资源
+
+```
+
+kubectl delete -f ../wordpress.yaml
+kubectl delete -f ../mysql.yaml
+kubectl delete -n rook-ceph cephblockpool replicapool
+kubectl delete storageclass rook-ceph-block
+
+```
+
+## 删除集群CRD
+
+```
+
+kubectl delete -f operator.yaml
+kubectl delete namespace rook-ceph
+
+```
