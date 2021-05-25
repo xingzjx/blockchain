@@ -85,6 +85,9 @@
 
    [jsonrpc协议文档](https://www.jsonrpc.org/)
 
+   注意：根据最近反馈，建议精通以太坊和精通比特币一起配合看，效果更佳。
+
+
 （2）智能合约
 
   [智能合约学习教程](https://github.com/Fankouzu/smart-contract)
