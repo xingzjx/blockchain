@@ -3,6 +3,33 @@
 
 # bee的部署
 
+## 安装Bee Clef
+
+Bee Clef 是一个私钥对管理工具，提高安全性用到的工具
+
+```
+wget https://github.com/ethersphere/bee-clef/releases/download/v0.4.12/bee-clef_0.4.12_amd64.deb
+sudo dpkg -i bee-clef_0.4.12_amd64.deb
+
+```
+
+查看 Bee Clef 状态
+
+```
+
+systemctl status bee-clef
+
+```
+
+## 安装Bee客户端
+
+```
+
+wget https://github.com/ethersphere/bee/releases/download/v0.6.1/bee_0.6.0_amd64.deb
+sudo dpkg -i bee_0.6.0_amd64.deb
+
+```
+
 
 bee是swarm的Go语言实现，其部署参考：
 
