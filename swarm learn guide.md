@@ -30,6 +30,18 @@ sudo dpkg -i bee_0.6.0_amd64.deb
 
 ```
 
+## 导出私钥
+
+```
+
+[root@mblockServerA ~]# bee-clef-keys
+Key exported to /root/bee-clef-key-1622016335.json
+Pass exported to /root/bee-clef-password-1622016335.txt
+
+```
+
+把json和txt文件导出，然后使用小狐狸钱包导入。
+
 
 bee是swarm的Go语言实现，其部署参考：
 
@@ -44,6 +56,8 @@ bee是swarm的Go语言实现，其部署参考：
 [keystore导出私钥](https://www.yundongfang.com/Yun41920.html)
 
 [cashout文档](https://docs.ethswarm.org/docs/working-with-bee/cashing-out)
+
+[clef命令文档](https://geth.ethereum.org/docs/clef/tutorial)
 
 bzz空投领取步骤：
 
