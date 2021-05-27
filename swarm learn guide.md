@@ -21,15 +21,6 @@ systemctl status bee-clef
 
 ```
 
-## 安装Bee客户端
-
-```
-
-wget https://github.com/ethersphere/bee/releases/download/v0.6.1/bee_0.6.0_amd64.deb
-sudo dpkg -i bee_0.6.0_amd64.deb
-
-```
-
 ## 导出私钥
 
 ```
@@ -41,6 +32,21 @@ Pass exported to /root/bee-clef-password-1622016335.txt
 ```
 
 把json和txt文件导出，然后使用小狐狸钱包导入。
+
+## 安装Bee客户端
+
+```
+
+wget https://github.com/ethersphere/bee/releases/download/v0.6.1/bee_0.6.0_amd64.deb
+sudo dpkg -i bee_0.6.0_amd64.deb
+
+```
+
+## 配置Bee
+
+## 验证刷票
+
+## 提现到钱包
 
 
 bee是swarm的Go语言实现，其部署参考：
@@ -69,6 +75,55 @@ bzz空投领取步骤：
 
 - 执行cashout脚本
 
+# docker-compose部署
+
+## 下载启动文件
+
+```
+wget -q https://raw.githubusercontent.com/ethersphere/bee/v0.6.0/packaging/docker/docker-compose.yml
+
+wget -q https://raw.githubusercontent.com/ethersphere/bee/v0.6.0/packaging/docker/env -O .env
+
+```
+
+## 修改docker-compose
+
+打开docker-compose.yaml文件，修改bee和bee-clef的版本号
+
+bee: 0.6.0
+
+bee-clef: 0.4.12
+
+注意bee和bee-clef的版本号，否则会出现版本兼容，签名找不到的问题。
+
+## 修改env环境变量
+
+参考上文bee的部署
+
+## 启动
+
+```
+
+docker-compose up -d
+
+```
+
+## 查看日志
+
+```
+
+docker-compose logs -f bee-1
+
+```
+
+## 验证服务
+
+```
+
+curl localhost:1633
+
+```
+
 # 开发工具
 
 ## swarm-cli
@@ -82,7 +137,5 @@ bzz空投领取步骤：
 [swarm技术白皮书](https://chinapeace.github.io/pdf/latest.bookofswarm.eth.ZH_CN.pdf)
 
 [swarm官方技术文档bookofswarm](https://gateway.ethswarm.org/bzz/latest.bookofswarm.eth/)
-
-
 
  # 源码导读
