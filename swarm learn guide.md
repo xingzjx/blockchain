@@ -124,6 +124,16 @@ curl localhost:1633
 
 ```
 
+# k8s集群部署
+
+参考：
+
+[swarm集群helm版](https://github.com/ethersphere/helm)
+
+[filecoin集群helm版](https://github.com/glifio/filecoin-chart)
+
+[多集群方案operator版](https://github.com/kotalco/kotal)
+
 # 开发工具
 
 ## swarm-cli
