@@ -1,3 +1,15 @@
+- [Swarm之交换合约源码解读](#swarm之交换合约源码解读)
+	- [启动过程](#启动过程)
+		- [cmd模块](#cmd模块)
+		- [node模块](#node模块)
+		- [settlement模块](#settlement模块)
+	- [工厂合约](#工厂合约)
+	- [交换合约](#交换合约)
+		- [cashChequeBeneficiary 方法](#cashchequebeneficiary-方法)
+		- [paidOut 方法](#paidout-方法)
+		- [withdraw 方法](#withdraw-方法)
+		- [重要的外部变量](#重要的外部变量)
+
 # Swarm之交换合约源码解读
 
 客户端版本：bee v0.6.0
