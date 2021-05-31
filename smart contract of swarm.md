@@ -645,6 +645,7 @@ func (s *cashoutService) CashCheque(ctx context.Context, chequebook, recipient c
 
 - balance
 
+
 参考：
 
 [以太坊：什么是ERC20标准](https://www.jianshu.com/p/a5158fbfaeb9)
