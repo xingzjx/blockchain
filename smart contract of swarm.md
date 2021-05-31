@@ -419,22 +419,235 @@ SimpleSwapFactory.sol
 
 交换合约实在ERC20SimpleSwap.sol中实现。在ERC20SimpleSwap合约中有许多重要的方法在bee客户端调用，下面分析：
 
+节点启动的时候在node模块的node.go中的NewBee方法，会调用debugapi的注册路由方法，执行过程如下：
 
-### cashChequeBeneficiary方法
+debugapi.go
+
+```go
+// Configure injects required dependencies and configuration parameters and
+// constructs HTTP routes that depend on them. It is intended and safe to call
+// this method only once.
+func (s *Service) Configure(p2p p2p.DebugService, pingpong pingpong.Interface, topologyDriver topology.Driver, lightNodes *lightnode.Container, storer storage.Storer, tags *tags.Tags, accounting accounting.Interface, pseudosettle settlement.Interface, chequebookEnabled bool, swap swap.Interface, chequebook chequebook.Service, batchStore postage.Storer) {
+	s.p2p = p2p
+	s.pingpong = pingpong
+	s.topologyDriver = topologyDriver
+	s.storer = storer
+	s.tags = tags
+	s.accounting = accounting
+	s.chequebookEnabled = chequebookEnabled
+	s.chequebook = chequebook
+	s.swap = swap
+	s.lightNodes = lightNodes
+	s.batchStore = batchStore
+	s.pseudosettle = pseudosettle
+
+	s.setRouter(s.newRouter())
+}
+```
+
+router.go
+
+```go
+func (s *Service) newRouter() *mux.Router {
+
+    // ...
+   
+    // 该接口用于提现
+    router.Handle("/chequebook/cashout/{peer}", jsonhttp.MethodHandler{
+			"GET":  http.HandlerFunc(s.swapCashoutStatusHandler),
+			"POST": http.HandlerFunc(s.swapCashoutHandler),
+		})
+
+	 // ...
+}
+```
+
+checkbook.go
+
+```go
+func (s *Service) swapCashoutHandler(w http.ResponseWriter, r *http.Request) {
+	addr := mux.Vars(r)["peer"]
+	peer, err := swarm.ParseHexAddress(addr)
+	if err != nil {
+		s.logger.Debugf("debug api: cashout peer: invalid peer address %s: %v", addr, err)
+		s.logger.Errorf("debug api: cashout peer: invalid peer address %s", addr)
+		jsonhttp.NotFound(w, errInvalidAddress)
+		return
+	}
+
+	ctx := r.Context()
+	if price, ok := r.Header[gasPriceHeader]; ok {
+		p, ok := big.NewInt(0).SetString(price[0], 10)
+		if !ok {
+			s.logger.Error("debug api: cashout peer: bad gas price")
+			jsonhttp.BadRequest(w, errBadGasPrice)
+			return
+		}
+		ctx = sctx.SetGasPrice(ctx, p)
+	}
+
+	if limit, ok := r.Header[gasLimitHeader]; ok {
+		l, err := strconv.ParseUint(limit[0], 10, 64)
+		if err != nil {
+			s.logger.Debugf("debug api: cashout peer: bad gas limit: %v", err)
+			s.logger.Error("debug api: cashout peer: bad gas limit")
+			jsonhttp.BadRequest(w, errBadGasLimit)
+			return
+		}
+		ctx = sctx.SetGasLimit(ctx, l)
+	}
+
+	txHash, err := s.swap.CashCheque(ctx, peer)
+	if err != nil {
+		s.logger.Debugf("debug api: cashout peer: cannot cash %s: %v", addr, err)
+		s.logger.Errorf("debug api: cashout peer: cannot cash %s", addr)
+		jsonhttp.InternalServerError(w, errCannotCash)
+		return
+	}
+
+	jsonhttp.OK(w, swapCashoutResponse{TransactionHash: txHash.String()})
+}
+```
+
+swap.go
+
+```go
+// CashCheque sends a cashing transaction for the last cheque of the peer
+func (s *Service) CashCheque(ctx context.Context, peer swarm.Address) (common.Hash, error) {
+	chequebookAddress, known, err := s.addressbook.Chequebook(peer)
+	if err != nil {
+		return common.Hash{}, err
+	}
+	if !known {
+		return common.Hash{}, chequebook.ErrNoCheque
+	}
+	return s.cashout.CashCheque(ctx, chequebookAddress, s.chequebook.Address())
+}
+```
+
+cashout.go
+
+```go
+// CashCheque sends a cashout transaction for the last cheque of the chequebook
+func (s *cashoutService) CashCheque(ctx context.Context, chequebook, recipient common.Address) (common.Hash, error) {
+	cheque, err := s.chequeStore.LastCheque(chequebook)
+	if err != nil {
+		return common.Hash{}, err
+	}
+
+	callData, err := chequebookABI.Pack("cashChequeBeneficiary", recipient, cheque.CumulativePayout, cheque.Signature)
+	if err != nil {
+		return common.Hash{}, err
+	}
+	lim := sctx.GetGasLimit(ctx)
+	if lim == 0 {
+		// fix for out of gas errors
+		lim = 300000
+	}
+	request := &transaction.TxRequest{
+		To:       &chequebook,
+		Data:     callData,
+		GasPrice: sctx.GetGasPrice(ctx),
+		GasLimit: lim,
+		Value:    big.NewInt(0),
+	}
+
+	txHash, err := s.transactionService.Send(ctx, request)
+	if err != nil {
+		return common.Hash{}, err
+	}
+
+	err = s.store.Put(cashoutActionKey(chequebook), &cashoutAction{
+		TxHash: txHash,
+		Cheque: *cheque,
+	})
+	if err != nil {
+		return common.Hash{}, err
+	}
+
+	return txHash, nil
+}
+```
+
+最终，会调用checkbook合约的cashChequeBeneficiary方法，接下来分析智能合约的方法。
 
 
-### paidOut方法
+### cashChequeBeneficiary 方法
 
-### withdraw方法
+```javascript
+ /**
+  @dev internal function responsible for checking the issuerSignature, updating hardDeposit balances and doing transfers.
+  Called by cashCheque and cashChequeBeneficary
+  @param beneficiary the beneficiary to which cheques were assigned. Beneficiary must be an Externally Owned Account
+  @param recipient receives the differences between cumulativePayment and what was already paid-out to the beneficiary minus callerPayout
+  @param cumulativePayout cumulative amount of cheques assigned to beneficiary
+  @param issuerSig if issuer is not the sender, issuer must have given explicit approval on the cumulativePayout to the beneficiary
+  */
+  function _cashChequeInternal(
+    address beneficiary,
+    address recipient,
+    uint cumulativePayout,
+    uint callerPayout,
+    bytes memory issuerSig
+  ) internal {
+    /* The issuer must have given explicit approval to the cumulativePayout, either by being the caller or by signature*/
+    if (msg.sender != issuer) {
+      require(issuer == recoverEIP712(chequeHash(address(this), beneficiary, cumulativePayout), issuerSig),
+      "invalid issuer signature");
+    }
+    /* the requestPayout is the amount requested for payment processing */
+    uint requestPayout = cumulativePayout.sub(paidOut[beneficiary]);
+    /* calculates acutal payout */
+    uint totalPayout = Math.min(requestPayout, liquidBalanceFor(beneficiary));
+    /* calculates hard-deposit usage */
+    uint hardDepositUsage = Math.min(totalPayout, hardDeposits[beneficiary].amount);
+    require(totalPayout >= callerPayout, "SimpleSwap: cannot pay caller");
+    /* if there are some of the hard deposit used, update hardDeposits*/
+    if (hardDepositUsage != 0) {
+      hardDeposits[beneficiary].amount = hardDeposits[beneficiary].amount.sub(hardDepositUsage);
+
+      totalHardDeposit = totalHardDeposit.sub(hardDepositUsage);
+    }
+    /* increase the stored paidOut amount to avoid double payout */
+    paidOut[beneficiary] = paidOut[beneficiary].add(totalPayout);
+    totalPaidOut = totalPaidOut.add(totalPayout);
+
+    /* let the world know that the issuer has over-promised on outstanding cheques */
+    if (requestPayout != totalPayout) {
+      bounced = true;
+      emit ChequeBounced();
+    }
+
+    if (callerPayout != 0) {
+    /* do a transfer to the caller if specified*/
+      require(token.transfer(msg.sender, callerPayout), "transfer failed");
+      /* do the actual payment */
+      require(token.transfer(recipient, totalPayout.sub(callerPayout)), "transfer failed");
+    } else {
+      /* do the actual payment */
+      require(token.transfer(recipient, totalPayout), "transfer failed");
+    }
+
+    emit ChequeCashed(beneficiary, recipient, msg.sender, totalPayout, cumulativePayout, callerPayout);
+  }
+```
+
+
+### paidOut 方法
+
+### withdraw 方法
 
 ### 重要的外部变量
 
 - issuer
 
-
 - totalPaidOut
 
-
 - balance
+
+参考：
+
+[以太坊：什么是ERC20标准](https://www.jianshu.com/p/a5158fbfaeb9)
+
 
 
