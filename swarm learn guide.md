@@ -46,10 +46,27 @@ sudo dpkg -i bee_0.6.0_amd64.deb
 
 ## 验证刷票
 
+使用cashout.sh脚本，可以查询票数
+
+```
+./cashout.sh
+```
+
+[cashout文档](https://docs.ethswarm.org/docs/working-with-bee/cashing-out)
+
 ## 提现到钱包
 
+使用命令
 
-bee是swarm的Go语言实现，其部署参考：
+```
+./cashout.sh cashout-all 5
+```
+
+遇到问题：goerli网络转账慢，建议提高gas到2500左右
+
+
+
+参考：
 
 [最火项目Swarm( bzz）为何受到如此追捧](https://www.163.com/dy/article/GA9PK2O405149MB5.html)
 
@@ -61,19 +78,9 @@ bee是swarm的Go语言实现，其部署参考：
 
 [keystore导出私钥](https://www.yundongfang.com/Yun41920.html)
 
-[cashout文档](https://docs.ethswarm.org/docs/working-with-bee/cashing-out)
 
 [clef命令文档](https://geth.ethereum.org/docs/clef/tutorial)
 
-bzz空投领取步骤：
-
-- 部署bee客户端
-
-- 验证是否刷到票
-
-- 私钥提取到钱包
-
-- 执行cashout脚本
 
 # docker-compose部署
 

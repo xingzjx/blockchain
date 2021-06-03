@@ -136,7 +136,7 @@ geth -rpc --datadir  "/root/eth/data"
 
 ```zsh
 
-nohup geth -rpc --datadir  "/data/eth/data" --goerli & 
+nohup geth --datadir  "/home/king/eth/data" --goerli --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 &
 
 ```
 
