@@ -81,6 +81,8 @@ sudo dpkg -i bee_0.6.0_amd64.deb
 
 [clef命令文档](https://geth.ethereum.org/docs/clef/tutorial)
 
+[ETH官方项目分布式储存swarm搭建bee节点linux教程](https://www.jinse.com/news/blockchain/1097799.html)
+
 
 # docker-compose部署
 
@@ -130,6 +132,14 @@ docker-compose logs -f bee-1
 curl localhost:1633
 
 ```
+
+## 查看节点状态
+
+```
+docker-compose ps -a
+```
+
+[Swarm-BZZ踩坑日记之 如何在Linux下使用docker开30个bzz节点](https://blog.csdn.net/Z1404686551/article/details/117486604)
 
 # k8s集群部署
 
