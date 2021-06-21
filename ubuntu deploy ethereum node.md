@@ -13,18 +13,18 @@
 登录系统后，依次执行如下命令：
 
 ```zsh
-apt-get update
-apt-get install software-properties-common
-add-apt-repository -y ppa:ethereum/ethereum
-add-apt-repository -y ppa:ethereum/ethereum-dev
-apt-get update
-apt-get install ethereum
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository -y ppa:ethereum/ethereum
+sudo add-apt-repository -y ppa:ethereum/ethereum-dev
+sudo apt-get update
+sudo apt-get install ethereum
 ```
 
 安装完成后，查看版本号
 
 ```zsh
-geth version
+sudo geth version
 ```
 
 # 启动以太坊私有链
@@ -59,13 +59,13 @@ geth version
 执行下面命令，忽略WARN，如果打印Fatal,确认是否复制的时候有特殊字符插入
 
 ```zsh
-geth init /root/eth/test_genesis.json
+sudo geth init /root/eth/test_genesis.json
 ```
 
 ## 启动测试链
 
 ```zsh
-geth --identity "test etherum" --rpc --rpccorsdomain "*" --datadir "/root/eth/data" --port "30303" --rpcapi "db,eth,net,web3" --networkid 20181013 console --dev
+sudo geth --identity "test etherum" --rpc --rpccorsdomain "*" --datadir "/root/eth/data" --port "30303" --rpcapi "db,eth,net,web3" --networkid 20181013 console --dev
 ```
 
 ## Geth命令测试
@@ -128,7 +128,7 @@ miner.setEtherbase(eth.coinbase)
 
 ```zsh
 
-geth -rpc --datadir  "/root/eth/data"
+sudo geth -rpc --datadir  "/root/eth/data"
 
 ```
 
@@ -136,7 +136,7 @@ geth -rpc --datadir  "/root/eth/data"
 
 ```zsh
 
-nohup geth --datadir  "/home/king/eth/data" --goerli --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 &
+sudo nohup geth --datadir  "/data/eth/data" --goerli --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 &
 
 ```
 
@@ -144,7 +144,7 @@ nohup geth --datadir  "/home/king/eth/data" --goerli --ws  --ws.addr 0.0.0.0 --r
 
 ```zsh
 
-netstat -tlpn
+sudo netstat -tlpn
 
 ```
 
@@ -165,7 +165,7 @@ docker run -it --name eth_node -v "/home/xingzjx/eth/data":/root/.ethereum  -p 8
 
 ```zsh
 
-geth attach data/geth.ipc
+sudo geth attach data/geth.ipc
 
 ```
 
