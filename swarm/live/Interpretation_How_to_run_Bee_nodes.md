@@ -4,16 +4,16 @@ youtube 视频：https://www.youtube.com/watch?v=k8i4BMdXLAs
 
 reddit 社区： https://www.reddit.com/r/ethswarm/comments/o196om/swarm_tech_ama_how_to_run_bee_nodes
 
-英文字幕：
+英文字幕：https://gitee.com/xingzjx/blockchain/blob/master/swarm/live/Swarm%20tech%20AMA-%20How%20to%20run%20Bee%20node(s).md
 
-中文字幕：
+中文字幕：https://gitee.com/xingzjx/blockchain/blob/master/swarm/live/Swarm%20tech%20AMA%20-%20How%20to%20run%20Bee%20nodes%20cn.md
 
 
 ## 问题整理：
 
 4:05 系统要求是什么?
 
-13:25 关于bonding curve 和token分布的讨论
+13:25 关于 bonding curve 和token分布的讨论
 
 24:30 自由时间结算问题修复了吗?
 
