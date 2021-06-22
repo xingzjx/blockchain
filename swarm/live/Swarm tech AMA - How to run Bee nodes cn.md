@@ -1,5 +1,9 @@
 # Swarm 技术 AMA - 如何运行 Bee 节点 <br> 
- <br> 
+ 
+参考：
+
+[Sublime行首行尾批量添加字符的方法](http://www.mabiji.com/sublime/sublime-batch.html)
+
 00:18 <br> 
 大家好，如果 <br> 
 00:20 <br> 
