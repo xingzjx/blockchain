@@ -1,5 +1,8 @@
 # 解读 : Swarm 技术 AMA - 如何运行 Bee 节点
 
+
+## 资源链接
+
 youtube 视频：https://www.youtube.com/watch?v=k8i4BMdXLAs
 
 reddit 社区： https://www.reddit.com/r/ethswarm/comments/o196om/swarm_tech_ama_how_to_run_bee_nodes
