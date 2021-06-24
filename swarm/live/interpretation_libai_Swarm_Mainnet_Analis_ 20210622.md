@@ -69,6 +69,8 @@ xDai 是以太坊的 Lay2 方案，bzz是发行在一层网络，也就是以太
 
 bond curve 是 bzz 增发和销毁机制，其目的是为了使bzz的价格趋于一定稳定性。
 
+swarm 能否成功早期节点运营商能否获利非常重要，没有节点运营商（相当矿工），就没有 swarm 网络。
+
 参考：
 
 [Swarm Bond Curve分析](https://zhuanlan.zhihu.com/p/381605708?utm_source=wechat_timeline&utm_medium=social&s_r=0&wechatShare=1)
