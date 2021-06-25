@@ -24,7 +24,16 @@ POSDAO合约已实现AuRa机制，并没有实现HBBFT。
 [POSDAO white paper](https://forum.poa.network/t/posdao-white-paper/2208)
 
 
-## 应用场景
+## 桥接
+
+桥接就是实现主链和侧链之间的token转移，一种锁定+转换+释放的过程，被称为“Lock and Mint”。
+
+[桥接合约](https://github.com/poanetwork/tokenbridge-contracts)
+
+[Web3.0下的跨链桥是如何帮助用户提高资产流动性的](https://mp.weixin.qq.com/s/JrjpV7zq-FEGlk2qb5VHow)
+
+
+## 应用
 
 xDai 采用了该共识机制。
 
@@ -32,7 +41,3 @@ xDai 客户端实现：
 
 - OpenEthereum (previously Parity): Rust Client
 - Nethermind: .NET Client 
-
-## 桥接合约
-
-https://github.com/poanetwork/tokenbridge-contracts
