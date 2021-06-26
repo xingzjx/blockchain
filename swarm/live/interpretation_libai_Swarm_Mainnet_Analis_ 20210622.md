@@ -1,4 +1,4 @@
-# 整理：币圈李白 Swarm主网技术分析 20210622
+# 解读：币圈李白 Swarm主网技术分析 20210622
 
 
 视频出处：https://www.youtube.com/watch?v=X1N48abLmdo

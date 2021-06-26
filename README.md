@@ -28,17 +28,17 @@
 
 ## swarm
 
-[Swarm 学习指南]()
+[Swarm 学习指南](https://gitee.com/xingzjx/blockchain/blob/master/swarm/swarm%20learn%20guide.md)
 
-[Swarm之交换合约源码解读](https://gitee.com/xingzjx/blockchain/blob/master/swarm/smart%20contract%20of%20swarm.md)
+[bee 源码解读之 SWAP 合约](https://gitee.com/xingzjx/blockchain/blob/master/swarm/bee_source-smart_contract.md)
 
 [Swarm 白皮书中文](https://gitee.com/xingzjx/blockchain/blob/master/swarm/swarm%20white%20book%20cn.md)
 
-[linux下docker-compose部署100个bee节点](https://gitee.com/xingzjx/blockchain/blob/master/swarm/ubuntu%20docker-compose%20multi%20swarm.md)
+[ubuntu docker-compose 部署100个bee节点](https://gitee.com/xingzjx/blockchain/blob/master/swarm/ubuntu%20docker-compose%20multi%20swarm.md)
 
 [解读 : Swarm 技术 AMA - 如何运行 Bee 节点](https://gitee.com/xingzjx/blockchain/blob/master/swarm/live/Interpretation_How_to_run_Bee_nodes.md)
 
-[整理：币圈李白 Swarm主网技术分析 20210622](https://gitee.com/xingzjx/blockchain/blob/master/swarm/live/interpretation_libai_Swarm_Mainnet_Analis_%2020210622.md)
+[解读：币圈李白 Swarm主网技术分析 20210622](https://gitee.com/xingzjx/blockchain/blob/master/swarm/live/interpretation_libai_Swarm_Mainnet_Analis_%2020210622.md)
 
 
 ## filecoin

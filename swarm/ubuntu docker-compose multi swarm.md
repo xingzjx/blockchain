@@ -1,4 +1,4 @@
-# linux下docker-compose部署100个bee节点
+# ubuntu docker-compose 部署100个bee节点
 
 
 ## 安装ubuntu20.0.4
