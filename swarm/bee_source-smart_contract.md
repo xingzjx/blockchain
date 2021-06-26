@@ -1,16 +1,21 @@
-# Swarm之交换合约源码解读
+# bee 源码解读之 SWAP 合约
   
-- [Swarm之交换合约源码解读](#swarm之交换合约源码解读)
-	- [启动过程](#启动过程)
-		- [cmd模块](#cmd模块)
-		- [node模块](#node模块)
-		- [settlement模块](#settlement模块)
-	- [工厂合约](#工厂合约)
-	- [交换合约](#交换合约)
-		- [cashChequeBeneficiary 方法](#cashchequebeneficiary-方法)
-		- [paidOut 方法](#paidout-方法)
-		- [withdraw 方法](#withdraw-方法)
-		- [重要的外部变量](#重要的外部变量)
+
+<!-- TOC -->
+
+- [bee 源码解读之 SWAP 合约](#bee-源码解读之-swap-合约)
+    - [启动过程](#启动过程)
+        - [cmd模块](#cmd模块)
+        - [node模块](#node模块)
+        - [settlement模块](#settlement模块)
+    - [工厂合约](#工厂合约)
+    - [SWAP 合约](#swap-合约)
+        - [cashChequeBeneficiary 方法](#cashchequebeneficiary-方法)
+        - [paidOut 方法](#paidout-方法)
+        - [withdraw 方法](#withdraw-方法)
+        - [重要的外部变量](#重要的外部变量)
+
+<!-- /TOC -->
 
 分析环境：
 
@@ -429,7 +434,7 @@ SimpleSwapFactory.sol
   }
 ```
 
-## 交换合约
+## SWAP 合约
 
 交换合约实在ERC20SimpleSwap.sol中实现。在ERC20SimpleSwap合约中有许多重要的方法在bee客户端调用，下面分析：
 

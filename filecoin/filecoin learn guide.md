@@ -6,6 +6,7 @@
 参考：
 
 [filecoin白皮书中文版](https://gitee.com/xingzjx/blockchain/blob/master/filecoin%20whitepaper%20cn.md)
+
 [部署和开发官方文档](https://docs.filecoin.io/)
 
 # 部署
