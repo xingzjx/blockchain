@@ -37,9 +37,11 @@ ethkey  ethstore  openethereum  openethereum-evm
 
 ```bash
 
-sudo nohup ./openethereum --chain xdai --no-warp --jsonrpc-interface "all" --ws-interface="all" --base-path /data/xdai/data &
+sudo nohup ./openethereum --chain xdai --no-warp --jsonrpc-interface "all" --ws-interface="all" --jsonrpc-cors="all" --base-path /data/xdai/data &
 
 ```
+
+jsonrpc-cors： 解决跨域问题。
 
 ## 查看区块同步状态
 
