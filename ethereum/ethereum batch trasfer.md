@@ -105,16 +105,22 @@ value数组填写例子：   [1000000000000000000,1000000000000000000]
 
 2.transferETH该方法的时候，注意填写需要发送的以太坊的value值。
 
-![47B7D7E3-F859-45DA-8CC8-799CC72C6BE7](./images/47B7D7E3-F859-45DA-8CC8-799CC72C6BE7.png)
+![47B7D7E3-F859-45DA-8CC8-799CC72C6BE7](../images/47B7D7E3-F859-45DA-8CC8-799CC72C6BE7.png)
 
 3.在填写value的时候，注意单位是wei。
 
 kwei (1000 Wei)
+
 mwei (1000 KWei)
+
 gwei (1000 mwei)
+
 szabo (1000 gwei)
+
 finney (1000 szabo)
+
 ether (1000 finney)
+
 简单地说就是就是1 以太币 = 1000000000000000000 Wei ，10的18次方。
 
 3.转ERC20代币需要给合约授权额度，也就是调用ERC20代币的approve方法，填合约账户地址。
