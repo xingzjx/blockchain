@@ -1,5 +1,7 @@
 # 从云原生到区块链
 
+前言：整理次笔记的目的,其一，为了后期区块链项目在云原生的实践提供架构指导，其二，大家对这套体系有一定的兴趣。就目前而言，云原生在后端开发等领域趋向成熟，但是，在区块链方向的实践基本很少，甚至没有，就个人看法，云云生这套体系不久将会在区块链项目场景中得到广泛的应用。
+
 ## 云原生四要素
 
 ![cloud_native](../images/cloud_native.jpg)
@@ -25,6 +27,8 @@
 参考：
 
 [024.微服务架构之服务注册与发现（kubernetes / SpringCloud）](https://www.cnblogs.com/badboyh2o/p/11027378.html)
+Cloud Native Computing Foundation (CNCF) serves as the vendor-neutral home for many of the fastest-growing open source projects, including Kubernetes, Prometheus, and Envoy.
+
 
 ### devops
 
@@ -51,7 +55,7 @@
 
 [云原生官方图谱](https://github.com/cncf/landscape/blob/master/README.md#trail-map)
 
-[云原生官方分类](https://landscape.cncf.io/?license=open-source)
+[云原生官方分类](https://landscape.cncf.io/)
 
 [值得关注的 9 个开源云原生项目 | Linux 中国](https://zhuanlan.zhihu.com/p/134163633)
 
