@@ -7,11 +7,14 @@
 
 下面，以专题进行分类：
 
-## devops
+## 云原生与devops
 
-[k8s部署rook ceph 集群](https://gitee.com/xingzjx/blockchain/blob/master/devops/k8s%20deploy%20rook%20ceph%20cluster.md)
 
-[k8s从云端迁移到本地](https://gitee.com/xingzjx/blockchain/blob/master/devops/k8s%20cluster%20migration.md)
+[从云原生到区块链](https://gitee.com/xingzjx/blockchain/blob/master/cloudnative/cloud_native_to_blockchain_guide.md)
+
+[k8s部署rook ceph 集群](https://gitee.com/xingzjx/blockchain/blob/master/cloudnative/k8s%20deploy%20rook%20ceph%20cluster.md)
+
+[k8s从云端迁移到本地](https://gitee.com/xingzjx/blockchain/blob/master/cloudnative/k8s%20cluster%20migration.md)
 
 
 ## 以太坊系列
