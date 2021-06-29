@@ -17,3 +17,13 @@ sudo vi  /etc/sudoers
 // 添加代码
 
 ubuntu  ALL=(ALL) NOPASSWD: ALL
+
+# key.pem　登入
+
+```sh
+
+sudo chmod 600 key.pem 
+
+ssh -i key.pem root@ip
+
+```
