@@ -77,6 +77,13 @@ Cloud Native Computing Foundation (CNCF) serves as the vendor-neutral home for m
 
 [值得关注的 9 个开源云原生项目 | Linux 中国](https://zhuanlan.zhihu.com/p/134163633)
 
+区块链底层链中用到的云原生开源项目
+
+- bee 源码（swarm）：　docker , jaeger , opentracing , zap(uber), prometheus, grpc
+- go-ethereum 源码： docker, influxdb, prometheus, grpc
+- go-ipfs 源码：docker , opentracing ,  prometheus, grpc, zap(uber)
+- lotus（filecoin　ｇｏ 实现）：docker , opentracing ,  prometheus, grpc, zap(uber), influxdb
+
 ## TBD 开发模式
 
 常见开发模式
