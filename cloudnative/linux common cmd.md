@@ -20,7 +20,7 @@ ubuntu  ALL=(ALL) NOPASSWD: ALL
 
 # key.pem　登入
 
-```sh
+```shell
 
 sudo chmod 600 key.pem 
 
