@@ -33,6 +33,9 @@ export LD_LIBRARY_PATH=/usr/local/lib
 
 问题：building for macOS-arm64 but attempting to link with file built for macOS-x86_64
 
+在 M1 芯片 Mac 上使用 Homebrew
+https://zhuanlan.zhihu.com/p/335634215
+
 查看文件的cpu类型
 lipo -info libfilcrypto.a
 
