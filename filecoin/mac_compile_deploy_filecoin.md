@@ -36,4 +36,6 @@ export LD_LIBRARY_PATH=/usr/local/lib
 查看文件的cpu类型
 lipo -info libfilcrypto.a
 
+file /bin/bash
+
 make ARCH=arm64
