@@ -1,4 +1,4 @@
-# Mac 下部署 Filecoin源码
+# Mac 下部署 Filecoin 源码
 
 环境：Mac air M1 机器
 
