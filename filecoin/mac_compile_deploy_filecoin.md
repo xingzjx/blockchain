@@ -39,6 +39,5 @@ https://zhuanlan.zhihu.com/p/335634215
 查看文件的cpu类型
 lipo -info libfilcrypto.a
 
-file /bin/bash
+[分不清ARM和X86架构，别跟我说你懂CPU](https://zhuanlan.zhihu.com/p/21266987)
 
-make ARCH=arm64
