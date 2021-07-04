@@ -96,7 +96,7 @@ make lotus
 
 ## 安装
 
- ```
+ ```bash
 
 sudo make install
 
@@ -107,8 +107,13 @@ sudo make install
 
 ###  编译的 rust 版本不一致
 
-Rust-toolchain
+找到filecoin-ffi 下的 rust-toolchain 文件，修改配置：
+
+```
+
 nightly-2021-06-30
+
+```
 
 
 ### ld: library not found for -lhwloc
@@ -136,16 +141,21 @@ export LD_LIBRARY_PATH=/usr/local/lib
 
 ```
 
-
 ### building for macOS-arm64 but attempting to link with file built for macOS-x86_64
 
-在 M1 芯片 Mac 上使用 Homebrew
-https://zhuanlan.zhihu.com/p/335634215
+查看文件的cpu类型命令
 
-查看文件的cpu类型
+```bash
+
 lipo -info libfilcrypto.a
 
+```
+
+原因：编译过程中，使用了不一致的CPU指令集，使用同一套指令集编译即可。
+
 [分不清ARM和X86架构，别跟我说你懂CPU](https://zhuanlan.zhihu.com/p/21266987)
+
+[在 M1 芯片 Mac 上使用 Homebrew](https://zhuanlan.zhihu.com/p/335634215)
 
 
 ## git 下载慢
