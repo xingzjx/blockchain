@@ -60,6 +60,24 @@ sudo nginx -t -c /etc/nginx/nginx.conf
 
 ```
 
+配置前端服务
+
+default.conf
+
+```conf
+
+server {
+  listen 80;
+  server_name localhost;
+
+  location / {
+     root /root/www/build;
+     index index.html;
+  }
+}
+
+```
+
 重新加载配置
 
 ```
