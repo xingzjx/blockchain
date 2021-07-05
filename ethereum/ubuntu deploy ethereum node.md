@@ -150,11 +150,7 @@ sudo netstat -tlpn
 
 docker方式启动
 
-```
-
-docker run -it --name eth_node -v "/home/xingzjx/eth/data":/root/.ethereum  -p 8545:8545  -p 30303:30303 ethereum/client-go --networkid 1234 --ws --rpc --rpcaddr 0.0.0.0 --rpccorsdomain '*' --rpcapi "db,eth,net,web3,personal" console
-
-```
+sudo docker run -it -d --name eth_node -v "/home/xingzjx/eth/data":/root/.ethereum  -p 8545:8545 -p 8546:8546 -p 30303:30303 ethereum/client-go --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 console
 
 参考：
 
