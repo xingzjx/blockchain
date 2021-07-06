@@ -2,7 +2,7 @@
 
 - [Bee　源码解读：智能合约概要](#bee源码解读智能合约概要)
   - [前言](#前言)
-  - [Bzz　和　xBzz](#bzz和xbzz)
+  - [Bzz和xBzz](#bzz和xbzz)
   - [Bandwidth price oracle](#bandwidth-price-oracle)
   - [Postage stamp](#postage-stamp)
   - [Bounding cure](#bounding-cure)
@@ -11,7 +11,7 @@
 
 Swarm 项目和其它的区块链存储项目有很大不同，比如　Filecoin，Swarm 是构建在以太坊二层网络的去中心化存储项目，Layer2　的核心实现用到了智能合约，下面以　Swarm 的官方实现　Bee　源码为例，概述用到的智能合约。
 
-## Bzz　和　xBzz 
+## Bzz和xBzz
 
 Bzz　是部署在以太坊上的合约，xBzz部署在　xDai　网络的合约，其中，Bzz　桥接到了　xDai网络。
 
