@@ -96,7 +96,7 @@ contract PriceOracle is Ownable {
 
 ## Postage stamp
 
-邮票合约代码部分
+邮票：是
 
 ```javascript
 
