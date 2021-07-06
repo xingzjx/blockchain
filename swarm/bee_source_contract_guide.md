@@ -17,7 +17,9 @@ Bzz　是部署在以太坊上的合约，xBzz部署在　xDai　网络的合约
 
 Bzz　桥接到　xDai　：https://omni.xdaichain.com/bridge
 
-[Bzz 合约代码](https://etherscan.io/address/0x19062190b1925b5b6689d7073fdfc8c2976ef8cb#code)
+参考：
+
+[Bzz 完整合约代码](https://etherscan.io/address/0x19062190b1925b5b6689d7073fdfc8c2976ef8cb#code)
 
 ## Bandwidth price oracle
 
@@ -87,6 +89,8 @@ contract PriceOracle is Ownable {
 }
 
 ```
+
+参考：
 
 [完整定价合约代码](https://blockscout.com/xdai/mainnet/address/0x0FDc5429C50e2a39066D8A94F3e2D2476fcc3b85/contracts)
 
@@ -313,12 +317,14 @@ contract PostageStamp is AccessControl, Pausable {
 
 ```
 
+参考：
+
 [邮票合约完整代码](https://blockscout.com/xdai/mainnet/address/0x6a1A21ECA3aB28BE85C7Ba22b2d6eAE5907c900E/contracts)
 
 ## Bounding cure
 
 联合曲线合约：联合曲线模型可以理解为描述“代币买卖价格”与“代币发行总量”之间的函数关系。可以由智能合约以去中心化的方式自动执行，这种函数关系确定了代币价格和代币供应之间的关系。
 
-
+参考：
 
 [Swarm Bond Curve分析](https://zhuanlan.zhihu.com/p/381605708?utm_source=wechat_timeline&utm_medium=social&s_r=0&wechatShare=1)
