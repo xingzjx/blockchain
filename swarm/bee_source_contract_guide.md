@@ -1,6 +1,6 @@
-# Bee　源码解读：智能合约概要
+# Bee源码解读：智能合约概要
 
-- [Bee　源码解读：智能合约概要](#bee源码解读智能合约概要)
+- [Bee源码解读：智能合约概要](#bee源码解读智能合约概要)
   - [前言](#前言)
   - [Bzz和xBzz](#bzz和xbzz)
   - [Bandwidth price oracle](#bandwidth-price-oracle)
