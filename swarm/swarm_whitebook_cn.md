@@ -26,9 +26,7 @@ Swarm 内置的激励措施旨在优化带宽和存储资源的分配，使其�
 
 Swarm 的模块化设计由清晰可分的层（layer）组成。从技术上讲，层 2「不可变存储的覆盖网络」层 3「通过 API 的高等级数据存取」构成了 Swarm 的核心。
 
-Swarm 白皮书出炉：详解 Swarm 存储机制与 API 功能
-
-
+![figure1_swarm_layer_design](../images/figure1_swarm_layer_design.png)
 
 ## DISC: 块的分布式不可变存储
 
@@ -183,3 +181,7 @@ Swarm 作为一个点对点网络，其所有节点共同提供去中心化的�
 参考: 
 
 [swarm 随着升级最新翻译白皮书](https://www.jinse.com/news/blockchain/1112726.html)
+
+[Swarm最新官方白皮书](https://weibo.com/ttarticle/p/show?id=2309404651718192530116)
+
+[Swarm 白皮书出炉：详解 Swarm 存储机制与 API 功能](https://zhuanlan.zhihu.com/p/381235996)
