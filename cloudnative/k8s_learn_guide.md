@@ -13,6 +13,8 @@ https://github.com/feiskyer/kubernetes-handbook
 
 https://github.com/cnych/kubernetes-learning
 
+https://github.com/cnych/qikqiak.com
+
 多集群管理：
 
 https://github.com/kubesphere/kubesphere
