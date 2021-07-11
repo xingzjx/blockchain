@@ -52,9 +52,6 @@ DISC 的最初职责是建立和维护一个节点网络，使得所有节点都
 
 Kademlia 假设每个节点都分配了一个与其网络地址不同的 Swarm 地址。通过计算前缀位（prefix bits）的数值中两个 Swarm 地址的共同值，我们可以定义它们的接近度。彼此最接近的节点们将形成一个完全连通的邻域（neighbourhood）。此外，每个节点连接到来自每个离散邻近类（discrete proximity class）的多个对等节点。
 
-Swarm 白皮书出炉：详解 Swarm 存储机制与 API 功能
-
-
 ![figure2_kad_connectivity](./images/figure2_kad_connectivity.png)
 
 注 1：Libp2p 是一个便于使用者开发去中心化点对点应用的网络框架。
@@ -72,6 +69,8 @@ Swarm 中的标准存储单元称为块（chunk）。块最多由 4 千字节的
 为了方便数据的保密性，块可以在填充到 4 千字节后进行加密，使得没有密钥的人无法将其与其它随机数据进行区分。即使对于未加密的块，节点运营者也无法轻易确定每个块来自于哪些内容。由于 Swarm 节点无法自己选择存储、加密哪些数据块，这种来源的模糊性以及元数据的无法泄露都为它们提供了有效的保护，使它们免于承担与其所存储内容相关的责任。
 
 为了将块插入到 Swarm 中，节点通过同步推送协议（push-sync protocol）将区块进行转送，直到到达它所属的邻域。然后，块的存储确认函将沿着相同的路径被传回。想要检索一个块，只需使用检索协议，将具有块地址的请求路由到相关邻域。如果途中的任何节点在其本地存有相应的块，则会将其以响应的形式发回。
+
+![figure4_push_pull_retrieve_protocols](./images/figure4_push_pull_retrieve_protocols.png)
 
 节点们使用同步回送协议（pull-sync protocol）持续同步其块存储。这保证了每个邻域都冗余地存储属于其邻域的全部块。这种冗余增加了数据传输的弹性，在某邻域中的一些节点无法访问的情况下也能维持块的可用性。同步协议还确保邻域的存储内容在节点离线和新节点加入网络时能够保持一致。
 
@@ -93,6 +92,8 @@ Swarm 记账协议（Swarm Accounting Protocol，SWAP）确保节点运营者在
 
 当节点转发请求和响应时，它们会跟踪它们与每个节点之间的相对带宽消耗。在一定限度内，节点间以服务换服务。然而，一旦达到限度外，负债方既可以选择等待，直到其债务随着时间的推移被摊销，或者也可以通过发送支票来进行支付，这些支票可在区块链上兑现为 BZZ 。
 
+![figure5_swap_protocal](./images/figure5_swap_protocal.png)
+
 这个协议能够确保那些下载或上传少量内容的人免费使用 Swarm，还有那些愿意等待的人，在与各节点进行互惠服务直到获得足够的信用（credit）后，也可以免费使用 Swarm。与此同时，当上传或下载更大的内容量时，为那些希望付费的人提供了一种更迅捷的体验。
 
 在帮助每个节点转发消息时，节点存在经济动机，因为每个成功地将请求路由到更靠近目的地的节点，在该请求成功被送达时都可以获得 BZZ。如果该节点本身没有存储数据，那么它只需支付少量的费用就可以从更近的节点请求数据块。通过这样的交易，节点在处理请求时可以获得一点利润。这意味着节点存在对块进行缓存的动机，因为在从较近的节点购入一次块之后，对同一块的任何后续请求都将获得纯利润。
@@ -107,7 +108,7 @@ Swarm 记账协议（Swarm Accounting Protocol，SWAP）确保节点运营者在
 
 「缓存」的作用是保留由于「批」值不足或距离节点地址太远而不受「储备」保护的块。当容量达到限度，缓存就会被定期修剪，最长时间未被请求的块将被删除。块的受欢迎程度可以通过最后一次收到请求的时间来预测，更多 SWAP 收入的块将优先得到保留。与投机缓存相结合，这种垃圾收集（garbage collecting）策略使运营者从带宽激励中获得的利润最大化，而在网络层面上，实现了受欢迎内容的自动扩展。
 
-Swarm 白皮书出炉：详解 Swarm 存储机制与 API 功能
+![figure6_postage_stamp_priority](./images/figure6_postage_stamp_priority.png)
 
 ### 块类型
 
@@ -115,11 +116,11 @@ Swarm 白皮书出炉：详解 Swarm 存储机制与 API 功能
 
 内容寻址块的地址基于其数据的哈希摘要（hash digest）。使用哈希作为块的地址可以验证块数据的完整性。Swarm 在块数据的小部分上使用基于默克尔树（Merkle tree）的 BMT （Binary Merkle Tree）哈希算法。
 
-Swarm 白皮书出炉：详解 Swarm 存储机制与 API 功能
+![figure7_content_addressed_chunks](./images/figure7_content_addressed_chunks.png)
 
 单一所有者块的地址通过所有者地址和一个 identifier 进行哈希计算而得。单一所有者块数据的完整性由所有者的加密签名来保证，该签名证明任意块的数据与 identifier 之间的关联。换句话说，每个 identity 都拥有 Swarm 地址空间的一部分，他们可以在其中自由地将内容分配给一个地址。
 
-Swarm 白皮书出炉：详解 Swarm 存储机制与 API 功能
+![figure8_single_onwer_chunks](./images/figure8_single_onwer_chunks.png)
 
 ## Swarm API 的功能
 
@@ -135,7 +136,12 @@ Swarm 使用「清单（manifests）」来表示集合。清单编码一个通�
 
 如果我们将 URL 的 host 部分解释为对清单的引用，那么清单提供基于 URL 的寻址，URL 路径用作在由清单表示的映射中进行查找的键（key），只被用于抵达文件引用。
 
+![figure9_swarm_hash](./images/figure9_swarm_hash.png)
+
 清单以紧凑默克尔前缀树（compacted Merkle trie）的形式对它们所表示的映射进行编码，块将前缀树的节点序列化。当查找路径时，我们只需要沿着我们遍历的分支的节点相应的块进行检索。这样便可以确保高效查找文件 / 记录，其延迟和带宽为集合大小的对数。
+
+
+![figure10_manifest_chunks](./images/figure10_manifest_chunks.png)
 
 文件中哈希树中间块中的子节点引用，和集合中清单前缀树节点，在位置上与 BMT 哈希段是对齐的。结果上，Swarm 支持紧凑证明特定数据段是在位于给定 URL 的给定偏移量（offset）处的文件的一部分，这是可公开证明的数据库索引和去信任化聚合的基础。
 
