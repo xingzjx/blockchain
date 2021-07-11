@@ -158,8 +158,11 @@
  研究比特币，以太坊以及其它山寨币挖矿的过程，以及矿池搭建和原理。
 
  [stratum协议v2版本](https://zh.braiins.com/stratum-v2)
+
  [poc矿池hpool](https://www.hpool.com/)
+
  [btcpool开源实现](https://github.com/btccom/btcpool-ABANDONED)
+ 
  [open-ethereum-pool以太坊矿池学习笔记](https://github.com/fengchunjian/open-ethereum-pool_notes)
 
 # 核心技术点分析
@@ -232,7 +235,7 @@
 
   扩容指的的是提高区块链的TPS。扩容技术可以划分为两种方式，链上扩容和和链下扩容。
 
-![image-20210427142215356](./images/扩容.png)
+![image-20210427142215356](./images/image_capacity.png)
 
 
 其中，链下扩容layer2方案中，知名的有Optimistic Rollup和ZkRollup 
