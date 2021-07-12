@@ -136,7 +136,7 @@ sudo geth -rpc --datadir  "/root/eth/data"
 
 ```zsh
 
-sudo nohup geth --datadir  "/data/eth/data" --goerli --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 &
+sudo nohup geth --datadir  "/data/data7/eth/data" --goerli --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 &
 
 ```
 
