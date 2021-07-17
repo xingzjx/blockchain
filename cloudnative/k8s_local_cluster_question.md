@@ -58,7 +58,7 @@ failed: calico/node is not ready: BIRD is not ready: Error querying BIRD: unable
 
 ```bash
 
-sudo kubeadm init --apiserver-advertise-address=172.16.50.146 --pod-network-cidr=192.168.0.0/16  --ignore-preflight-errors=all
+sudo kubeadm init --apiserver-advertise-address=xx.xx.xx.xx --pod-network-cidr=192.168.0.0/16  --ignore-preflight-errors=all  --v=5
 
 
 # ...省略...
