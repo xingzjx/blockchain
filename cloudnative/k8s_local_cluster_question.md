@@ -76,5 +76,13 @@ k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow.(*Runner).Run.func1
 
 请检查 kubectl 以及　apiserver 是否正确。
 
+参考：
+
+[kubeadm reset 环境及网络清理](https://www.ziji.work/kubernetes/kubeadm-reset-network-errors.html)
+
+
+
+
+
 
 
