@@ -19,7 +19,7 @@ failed: calico/node is not ready: BIRD is not ready: Error querying BIRD: unable
 
 ```
 
-设置　IP_AUTODETECTION_METHOD　参数，编辑　calico.yaml　找到　name　: IP，在它上面写入：
+设置　IP_AUTODETECTION_METHOD　参数，编辑　[calico.yaml](https://docs.projectcalico.org/v3.12/manifests/calico.yaml)　找到　name　: IP，在它上面写入：
 
 ```yaml
 
@@ -38,7 +38,11 @@ failed: calico/node is not ready: BIRD is not ready: Error querying BIRD: unable
 
 ```
 
-参考:https://my.oschina.net/u/1431757/blog/3144782
+参考:
+
+[calico 网络问题](https://my.oschina.net/u/1431757/blog/3144782)
+
+[calico node bird 原理分析](https://blog.csdn.net/zhonglinzhang/article/details/97626768)
 
 ## Service 无法访问问题排查
 
@@ -61,14 +65,12 @@ sudo kubeadm init --apiserver-advertise-address=172.16.50.146 --pod-network-cidr
 
  [kubelet-check] Initial timeout of 40s passed.
 
-couldn't initialize a Kubernetes cluster
+couldn not initialize a Kubernetes cluster
 k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/init.runWaitControlPlanePhase
 	/workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/init/waitcontrolplane.go:114
 k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow.(*Runner).Run.func1
 
-
 # ...省略...
-
 
 ```
 
