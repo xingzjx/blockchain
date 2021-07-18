@@ -13,6 +13,8 @@
 
 ## 配置docker地址
 
+部署大量节点的时候，会出现docker网段地址冲突问题，解决如下：
+
 ```bash
 
 vim /et/docker/daemon.json
@@ -25,6 +27,13 @@ vim /et/docker/daemon.json
 
 ```
 
+参考：
+
+[docker-compose up使用自定义的网段的两种方式（从其根源指定）](https://www.shangmayuan.com/a/89ee41ac7529407d87cde95e.html)
+
+[修改docker-compose容器默认ip范围](https://blog.csdn.net/chunnuanhuakai0/article/details/117446034)
+
+[Docker修改内网网段](https://leif.fun/articles/2020/07/10/1594373440843.html)
 
 ## 配置docker-compose模板
 
