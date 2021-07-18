@@ -11,6 +11,20 @@
 
 [ubuntu 分区_Ubuntu系统挂载新硬盘的方法](https://blog.csdn.net/weixin_39582656/article/details/111116619)
 
+## 配置docker地址
+
+```bash
+
+vim /et/docker/daemon.json
+
+{
+      "default-address-pools": [
+        {"base": "172.17.0.0/16", "size": 24}
+      ]
+}
+
+```
+
 
 ## 配置docker-compose模板
 
