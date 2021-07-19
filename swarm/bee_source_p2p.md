@@ -452,8 +452,292 @@ p2ps, err := libp2p.New(p2pCtx, signer, networkID, swarmAddress, addr, addressbo
 
 ## 创建 p2ps
 
+libp2p.go
+
+```go
+
+func New(ctx context.Context, signer beecrypto.Signer, networkID uint64, overlay swarm.Address, addr string, ab addressbook.Putter, storer storage.StateStorer, lightNodes *lightnode.Container, swapBackend handshake.SenderMatcher, logger logging.Logger, tracer *tracing.Tracer, o Options) (*Service, error) {
+	host, port, err := net.SplitHostPort(addr)
+	if err != nil {
+		return nil, fmt.Errorf("address: %w", err)
+	}
+
+	ip4Addr := "0.0.0.0"
+	ip6Addr := "::"
+
+	if host != "" {
+		ip := net.ParseIP(host)
+		if ip4 := ip.To4(); ip4 != nil {
+			ip4Addr = ip4.String()
+			ip6Addr = ""
+		} else if ip6 := ip.To16(); ip6 != nil {
+			ip6Addr = ip6.String()
+			ip4Addr = ""
+		}
+	}
+
+	var listenAddrs []string
+	if ip4Addr != "" {
+		listenAddrs = append(listenAddrs, fmt.Sprintf("/ip4/%s/tcp/%s", ip4Addr, port))
+		if o.EnableWS {
+			listenAddrs = append(listenAddrs, fmt.Sprintf("/ip4/%s/tcp/%s/ws", ip4Addr, port))
+		}
+		if o.EnableQUIC {
+			listenAddrs = append(listenAddrs, fmt.Sprintf("/ip4/%s/udp/%s/quic", ip4Addr, port))
+		}
+	}
+
+	if ip6Addr != "" {
+		listenAddrs = append(listenAddrs, fmt.Sprintf("/ip6/%s/tcp/%s", ip6Addr, port))
+		if o.EnableWS {
+			listenAddrs = append(listenAddrs, fmt.Sprintf("/ip6/%s/tcp/%s/ws", ip6Addr, port))
+		}
+		if o.EnableQUIC {
+			listenAddrs = append(listenAddrs, fmt.Sprintf("/ip6/%s/udp/%s/quic", ip6Addr, port))
+		}
+	}
+
+	security := libp2p.DefaultSecurity
+	libp2pPeerstore := pstoremem.NewPeerstore()
+
+	var natManager basichost.NATManager
+
+	opts := []libp2p.Option{
+		libp2p.ListenAddrStrings(listenAddrs...),
+		security,
+		// Use dedicated peerstore instead the global DefaultPeerstore
+		libp2p.Peerstore(libp2pPeerstore),
+	}
+
+	if o.NATAddr == "" {
+		opts = append(opts,
+			libp2p.NATManager(func(n network.Network) basichost.NATManager {
+				natManager = basichost.NewNATManager(n)
+				return natManager
+			}),
+		)
+	}
+
+	if o.PrivateKey != nil {
+		opts = append(opts,
+			libp2p.Identity((*crypto.Secp256k1PrivateKey)(o.PrivateKey)),
+		)
+	}
+
+	transports := []libp2p.Option{
+		libp2p.Transport(func(u *tptu.Upgrader) *tcp.TcpTransport {
+			t := tcp.NewTCPTransport(u)
+			t.DisableReuseport = true
+			return t
+		}),
+	}
+
+	if o.EnableWS {
+		transports = append(transports, libp2p.Transport(ws.New))
+	}
+
+	if o.EnableQUIC {
+		transports = append(transports, libp2p.Transport(libp2pquic.NewTransport))
+	}
+
+	if o.Standalone {
+		opts = append(opts, libp2p.NoListenAddrs)
+	}
+
+	opts = append(opts, transports...)
+
+	h, err := libp2p.New(ctx, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	// Support same non default security and transport options as
+	// original host.
+	dialer, err := libp2p.New(ctx, append(transports, security)...)
+	if err != nil {
+		return nil, err
+	}
+
+	// If you want to help other peers to figure out if they are behind
+	// NATs, you can launch the server-side of AutoNAT too (AutoRelay
+	// already runs the client)
+	if _, err = autonat.New(ctx, h, autonat.EnableService(dialer.Network())); err != nil {
+		return nil, fmt.Errorf("autonat: %w", err)
+	}
+
+	var advertisableAddresser handshake.AdvertisableAddressResolver
+	var natAddrResolver *staticAddressResolver
+	if o.NATAddr == "" {
+		advertisableAddresser = &UpnpAddressResolver{
+			host: h,
+		}
+	} else {
+		natAddrResolver, err = newStaticAddressResolver(o.NATAddr, net.LookupIP)
+		if err != nil {
+			return nil, fmt.Errorf("static nat: %w", err)
+		}
+		advertisableAddresser = natAddrResolver
+	}
+
+	handshakeService, err := handshake.New(signer, advertisableAddresser, swapBackend, overlay, networkID, o.FullNode, o.Transaction, o.WelcomeMessage, logger)
+	if err != nil {
+		return nil, fmt.Errorf("handshake service: %w", err)
+	}
+
+	peerRegistry := newPeerRegistry()
+	s := &Service{
+		ctx:               ctx,
+		host:              h,
+		natManager:        natManager,
+		natAddrResolver:   natAddrResolver,
+		autonatDialer:     dialer,
+		handshakeService:  handshakeService,
+		libp2pPeerstore:   libp2pPeerstore,
+		metrics:           newMetrics(),
+		networkID:         networkID,
+		peers:             peerRegistry,
+		addressbook:       ab,
+		blocklist:         blocklist.NewBlocklist(storer),
+		logger:            logger,
+		tracer:            tracer,
+		connectionBreaker: breaker.NewBreaker(breaker.Options{}), // use default options
+		ready:             make(chan struct{}),
+		halt:              make(chan struct{}),
+		lightNodes:        lightNodes,
+	}
+
+	peerRegistry.setDisconnecter(s)
+
+	s.lightNodeLimit = defaultLightNodeLimit
+	if o.LightNodeLimit > 0 {
+		s.lightNodeLimit = o.LightNodeLimit
+	}
+
+	// Construct protocols.
+	id := protocol.ID(p2p.NewSwarmStreamName(handshake.ProtocolName, handshake.ProtocolVersion, handshake.StreamName))
+	matcher, err := s.protocolSemverMatcher(id)
+	if err != nil {
+		return nil, fmt.Errorf("protocol version match %s: %w", id, err)
+	}
+
+	s.host.SetStreamHandlerMatch(id, matcher, s.handleIncoming)
+
+	h.Network().SetConnHandler(func(_ network.Conn) {
+		s.metrics.HandledConnectionCount.Inc()
+	})
+
+	h.Network().Notify(peerRegistry)       // update peer registry on network events
+	h.Network().Notify(s.handshakeService) // update handshake service on network events
+	return s, nil
+}
+
+```
+
+在 Bee　节点启动的时候，会创建 p2ps　，该方法主要流程：
+
+- 解析　p2pAddr　，生成地址格式：
+- 调用　libp2p（ProtocalLabs开源）　库的ListenAddrStrings方法，进入监听
+- 创建　natAddrResolver　解析器
+- 通过　libp2p　创建　host，然后通知节点注册
+
+NatAddrr：主要打开外部到当前节点的通信通道，在日志里面收到inbound，代表通道已经打开。
+
+libp2p接口案例：https://github.com/libp2p/go-libp2p/tree/master/examples
 
 
+## AddProtocol　方法
+
+libp2p.go
+
+```go
+
+func (s *Service) AddProtocol(p p2p.ProtocolSpec) (err error) {
+	for _, ss := range p.StreamSpecs {
+		ss := ss
+		id := protocol.ID(p2p.NewSwarmStreamName(p.Name, p.Version, ss.Name))
+		matcher, err := s.protocolSemverMatcher(id)
+		if err != nil {
+			return fmt.Errorf("protocol version match %s: %w", id, err)
+		}
+
+		s.host.SetStreamHandlerMatch(id, matcher, func(streamlibp2p network.Stream) {
+			peerID := streamlibp2p.Conn().RemotePeer()
+			overlay, found := s.peers.overlay(peerID)
+			if !found {
+				_ = streamlibp2p.Reset()
+				s.logger.Debugf("overlay address for peer %q not found", peerID)
+				return
+			}
+			full, found := s.peers.fullnode(peerID)
+			if !found {
+				_ = streamlibp2p.Reset()
+				s.logger.Debugf("fullnode info for peer %q not found", peerID)
+				return
+			}
+
+			stream := newStream(streamlibp2p)
+
+			// exchange headers
+			if err := handleHeaders(ss.Headler, stream, overlay); err != nil {
+				s.logger.Debugf("handle protocol %s/%s: stream %s: peer %s: handle headers: %v", p.Name, p.Version, ss.Name, overlay, err)
+				_ = stream.Reset()
+				return
+			}
+
+			ctx, cancel := context.WithCancel(s.ctx)
+
+			s.peers.addStream(peerID, streamlibp2p, cancel)
+			defer s.peers.removeStream(peerID, streamlibp2p)
+
+			// tracing: get span tracing context and add it to the context
+			// silently ignore if the peer is not providing tracing
+			ctx, err := s.tracer.WithContextFromHeaders(ctx, stream.Headers())
+			if err != nil && !errors.Is(err, tracing.ErrContextNotFound) {
+				s.logger.Debugf("handle protocol %s/%s: stream %s: peer %s: get tracing context: %v", p.Name, p.Version, ss.Name, overlay, err)
+				_ = stream.Reset()
+				return
+			}
+
+			logger := tracing.NewLoggerWithTraceID(ctx, s.logger)
+
+			s.metrics.HandledStreamCount.Inc()
+			if err := ss.Handler(ctx, p2p.Peer{Address: overlay, FullNode: full}, stream); err != nil {
+				var de *p2p.DisconnectError
+				if errors.As(err, &de) {
+					_ = stream.Reset()
+					_ = s.Disconnect(overlay)
+				}
+
+				var bpe *p2p.BlockPeerError
+				if errors.As(err, &bpe) {
+					_ = stream.Reset()
+					if err := s.Blocklist(overlay, bpe.Duration()); err != nil {
+						logger.Debugf("blocklist: could not blocklist peer %s: %v", peerID, err)
+						logger.Errorf("unable to blocklist peer %v", peerID)
+					}
+					logger.Tracef("blocklisted a peer %s", peerID)
+				}
+				// count unexpected requests
+				if errors.Is(err, p2p.ErrUnexpected) {
+					s.metrics.UnexpectedProtocolReqCount.Inc()
+				}
+				logger.Debugf("could not handle protocol %s/%s: stream %s: peer %s: error: %v", p.Name, p.Version, ss.Name, overlay, err)
+				return
+			}
+		})
+	}
+
+	s.protocolsmu.Lock()
+	s.protocols = append(s.protocols, p)
+	s.protocolsmu.Unlock()
+	return nil
+}
+
+```
+
+在前面已经讲过会有７个协议被添加，在　AddProtocal　方法中，会调用 libp2p host　的　SetStreamHandlerMatch　方法：　设置　host mux　（将传入流复用到协议处理程序） 的协议处理器。 
+
+libp2p.go　中的　Connect　和　Disconnect 方法将在下一节分析。
 
 参考：
 
