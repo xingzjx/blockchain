@@ -202,7 +202,7 @@ kubeadm token create --print-join-command
 
 ```bash
 
-kubeadm join xx.xx.xx.xx:6443 --token o4op56.sn6gkif90o54b8aa     --discovery-token-ca-cert-hash sha256:b48ac11cc495f4f0f78069a44e8674497b9d818f20338961f3c0502c6032db92
+kubeadm join xx.xx.xx.xx:6443 --token o4op56.sn6gkif90o54b8bb     --discovery-token-ca-cert-hash sha256:b48ac11cc495f4f0f78069a44e8674497b9d818f20338961f3c0502c6032db92
 
 ```
 
