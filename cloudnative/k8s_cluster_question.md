@@ -1,4 +1,4 @@
-# k8s自建集群问题总结
+# k8s集群问题总结
 
 
 ## caligo　网络问题
@@ -79,6 +79,34 @@ k8s.io/kubernetes/cmd/kubeadm/app/cmd/phases/workflow.(*Runner).Run.func1
 参考：
 
 [kubeadm reset 环境及网络清理](https://www.ziji.work/kubernetes/kubeadm-reset-network-errors.html)
+
+## 删除 namespace Terminating 问题
+
+首先把本机服务暴露在本地端口的8001端口上，执行如下命令
+
+```
+
+kubectl proxy
+
+```
+
+然后执行，delete_namespace.sh
+
+```shell
+
+my_namespace = 'eth-space'
+
+kubectl get namespace eth-space -o json >tmp.json
+
+sed 's/"kubernetes"//' tmp.json
+
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @tmp.json http://127.0.0.1:8001/api/v1/namespaces/$my_namespace/finalize
+
+```
+
+参考：
+
+[k8s的pod或者ns资源一直terminating删除办法](https://www.cnblogs.com/xiaoyaojinzhazhadehangcheng/p/12067283.html)
 
 
 
