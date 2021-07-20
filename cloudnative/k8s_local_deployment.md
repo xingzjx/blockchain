@@ -3,20 +3,20 @@
 <!-- TOC -->
 
 - [使用 kubeadm 搭建 kubernetes 本地集群](#使用-kubeadm-搭建-kubernetes-本地集群)
-    - [安装环境](#安装环境)
-    - [准备工作](#准备工作)
-        - [更改 hostname](#更改-hostname)
-        - [关闭防火墙](#关闭防火墙)
-        - [关闭交互分区](#关闭交互分区)
-        - [让 iptables 查看每个节点的桥接流量](#让-iptables-查看每个节点的桥接流量)
-    - [配置 docker](#配置-docker)
-    - [安装kubeadm, kubelet, kubectl](#安装kubeadm-kubelet-kubectl)
-    - [配置 kubeconfig](#配置-kubeconfig)
-    - [部署 calico](#部署-calico)
-    - [节点加入集群](#节点加入集群)
-    - [metrics-server](#metrics-server)
-    - [dashboard](#dashboard)
-    - [MetalLb](#metallb)
+  - [安装环境](#安装环境)
+  - [准备工作](#准备工作)
+    - [更改 hostname](#更改-hostname)
+    - [关闭防火墙](#关闭防火墙)
+    - [关闭交互分区](#关闭交互分区)
+    - [让 iptables 查看每个节点的桥接流量](#让-iptables-查看每个节点的桥接流量)
+  - [配置 docker](#配置-docker)
+  - [安装kubeadm, kubelet, kubectl](#安装kubeadm-kubelet-kubectl)
+  - [配置 kubeconfig](#配置-kubeconfig)
+  - [部署 calico](#部署-calico)
+  - [节点加入集群](#节点加入集群)
+  - [metrics-server](#metrics-server)
+  - [dashboard](#dashboard)
+  - [MetalLb](#metallb)
 
 <!-- /TOC -->
 
@@ -202,7 +202,7 @@ kubeadm token create --print-join-command
 
 ```bash
 
-kubeadm join 1.182.90.22:6443 --token o4op56.sn6gkif90o54b8aj     --discovery-token-ca-cert-hash sha256:a48ac11cc495f4f0f78069a44e8674497b9d818f20338961f3c0502c6032db91
+kubeadm join xx.xx.xx.xx:6443 --token o4op56.sn6gkif90o54b8aa     --discovery-token-ca-cert-hash sha256:b48ac11cc495f4f0f78069a44e8674497b9d818f20338961f3c0502c6032db92
 
 ```
 
