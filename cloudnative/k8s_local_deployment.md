@@ -17,6 +17,7 @@
   - [metrics-server](#metrics-server)
   - [dashboard](#dashboard)
   - [MetalLb](#metallb)
+  - [开启特性门控](#开启特性门控)
 
 <!-- /TOC -->
 
@@ -433,5 +434,28 @@ data:
       addresses:
       - 162.211.182.45-162.211.182.48 # Update this with your Nodes IP range
 EOF
+
+```
+
+## 开启特性门控
+
+```bash
+
+ kubectl -n kube-system edit pod kube-apiserver**
+
+```
+编辑，添加　--feature-gates=EphemeralContainers=true
+
+```yaml
+
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    - --advertise-address=192.168.0.30
+    # 省略　...
+    - --tls-private-key-file=/etc/kubernetes/pki/apiserver.key
+    - --feature-gates=EphemeralContainers=true
+    image: k8s.gcr.io/kube-apiserver:v1.17.3
 
 ```
