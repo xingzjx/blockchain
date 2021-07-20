@@ -23,4 +23,6 @@ https://github.com/kubesphere/kubesphere
 ## 源码解读
 
 
-https://www.bookstack.cn/read/source-code-reading-notes/README.md
+[kubernetes 源码分析系列](https://www.bookstack.cn/read/source-code-reading-notes/README.md)
+
+[我是怎么阅读kubernetes源代码的？](http://dockone.io/article/895)
