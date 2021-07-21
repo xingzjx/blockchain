@@ -108,9 +108,83 @@ curl -k -H "Content-Type: application/json" -X PUT --data-binary @tmp.json http:
 
 [k8s的pod或者ns资源一直terminating删除办法](https://www.cnblogs.com/xiaoyaojinzhazhadehangcheng/p/12067283.html)
 
+## metrics-server 
 
+错误日志：no such host，编辑 metrics-server 的 yaml 文件，在 Deployment 添加　--kubelet-preferred-address-types=InternalIP
 
-
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        k8s-app: metrics-server
+    spec:
+      containers:
+      - args:
+        - --cert-dir=/tmp
+        - --secure-port=443
+        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+        - --kubelet-use-node-status-port
+        - --metric-resolution=15s
+        image: xingzjx/metrics-server:v0.5.0
+        imagePullPolicy: IfNotPresent
+        args: 
+        - --kubelet-insecure-tls
+        - --kubelet-preferred-address-types=InternalIP
+        - --cert-dir=/tmp
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /livez
+            port: https
+            scheme: HTTPS
+          periodSeconds: 10
+        name: metrics-server
+        ports:
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /readyz
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: system-cluster-critical
+      serviceAccountName: metrics-server
+      volumes:
+      - emptyDir: {}
+        name: tmp-dir
+```
 
 
 
