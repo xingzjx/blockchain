@@ -50,7 +50,7 @@ sudo docker run --stop-timeout 30 \
     -e STORAGEDURATION="100" \
     -e POSENABLE="false" \
     --mount type=bind,source="/data/data6/memo/.mefs/keystore",destination=/app/keystore \
-    --name memo_test4 memoio/mefs-provider:debian
+    --name memo_test memoio/mefs-provider:debian
 
 2021/07/21 12:37:31 network is not running.
 2021/07/21 12:37:32 network is not running.
