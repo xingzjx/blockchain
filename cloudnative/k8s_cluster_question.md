@@ -94,13 +94,27 @@ kubectl proxy
 
 ```shell
 
-my_namespace = 'eth-space'
+my_namespace='eth-space'
 
 kubectl get namespace eth-space -o json >tmp.json
 
 sed 's/"kubernetes"//' tmp.json
 
 curl -k -H "Content-Type: application/json" -X PUT --data-binary @tmp.json http://127.0.0.1:8001/api/v1/namespaces/$my_namespace/finalize
+
+```
+
+delete_pvc.sh
+
+```shell
+
+my_pvc='eth-goerli-pvc'
+
+kubectl get pvc eth-goerli-pvc -o json >tmp.json
+
+sed 's/"kubernetes"//' tmp.json
+
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @tmp.json http://127.0.0.1:8001/api/v1/pvc/$my_namespace/finalize
 
 ```
 
