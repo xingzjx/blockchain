@@ -26,3 +26,7 @@ OpenSea、SuperRare和Axie Infinity，官方也提供　NFT　的相关开发工
 ## NFT　应用
 
 NFT　的应用十分广泛，比如游戏，音乐，艺术品等等。
+
+参考：
+
+[Awesome-NFT - 整理资料](https://github.com/gianni-dalerta/awesome-nft)

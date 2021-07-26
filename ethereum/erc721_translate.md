@@ -9,7 +9,7 @@
   - [基本原理](#基本原理)
   - [向后兼容](#向后兼容)
   - [测试案例](#测试案例)
-  - [Implementations](#implementations)
+  - [实现](#实现)
   - [参考](#参考)
   - [版本](#版本)
 
@@ -389,7 +389,7 @@ transfer 和 accept 函数的文档只指定事务必须抛出的条件。您的
 
 0xcert ERC-721 Token 包含使用 Truffle 编写的测试用例。
 
-## Implementations
+## 实现
 
 0xcert ERC721 -- 参考实现
 
