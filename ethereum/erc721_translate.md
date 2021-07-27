@@ -13,6 +13,8 @@
   - [参考](#参考)
   - [版本](#版本)
 
+原文：https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
+
 ```
 
 以太坊提案: 721
