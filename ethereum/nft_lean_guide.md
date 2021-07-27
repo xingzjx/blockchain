@@ -14,7 +14,7 @@ https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md
 
 ## NFT 市场
 
-OpenSea、SuperRare和Axie Infinity，官方也提供　NFT　的相关开发工具。
+OpenSea、SuperRare和Axie Infinity，另外Opensea、 Rarible 或 Mintible 官方也提供　NFT　的相关开发工具。
 
 参考：
 
@@ -30,3 +30,7 @@ NFT　的应用十分广泛，比如游戏，音乐，艺术品等等。
 参考：
 
 [Awesome-NFT - 整理资料](https://github.com/gianni-dalerta/awesome-nft)
+
+[Build, Deploy, and Sell Your Own Dynamic NFT](https://blog.chain.link/build-deploy-and-sell-your-own-dynamic-nft/)
+
+[OpenSea ERC721](https://docs.opensea.io/docs/getting-started)
