@@ -177,11 +177,11 @@ TokenURI表示一个URL或其他唯一标识符，它是一个带有一些参数
 
 现在，我们将在IPFS中存储这些图像和元数据。你需要:
 
-- ipf
+- ipfs : https://ipfs.io/
 
-- ipf Companion
+- ipfs Companion: https://chrome.google.com/webstore/detail/ipfs-companion/nibjojkomfdiaoajekhjakgkdhaomnch?hl=en
 
-- Pinata
+- Pinata　：https://pinata.cloud/pinataupload
 
 IPFS可以让我们在像Brave或Chrome这样的浏览器中查看IPFS数据。而且Pinata允许我们在节点宕机时保持IPFS文件处于up状态(暂时不要担心这个问题)。如果您在浏览器中单击此链接:https://ipfs.io/ipfs/QmTgqnhFBMkfT9s8PHKcdXBn1f5bG3Q5hmBaR4U6hoTvb1?filename=Chainlink_Elf.png，就会知道 IPFS Companion 正在工作
 
