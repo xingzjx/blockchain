@@ -200,5 +200,35 @@ spec:
         name: tmp-dir
 ```
 
+## node限制１１０的pod数
+
+编辑 /var/lib/kubelet/config.yaml
+
+```yaml
+apiVersion: kubelet.config.k8s.io/v1beta1
+authentication:
+  anonymous:
+    enabled: false
+  webhook:
+    cacheTTL: 0s
+    enabled: true
+  x509:
+    clientCAFile: /etc/kubernetes/pki/ca.crt
+authorization:
+  mode: Webhook
+  webhook:
+    cacheAuthorizedTTL: 0s
+    cacheUnauthorizedTTL: 0s
+clusterDNS:
+- 10.96.0.10
+# 新增参数
+maxPods: 1000
+```
+
+然后，重启kubelet
+
+```
+sudo systemctl restart kubelet 
+```
 
 
