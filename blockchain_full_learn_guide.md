@@ -69,7 +69,7 @@
 ## 以太坊生态
 （1）master ethereum，[精通以太坊中文版](https://github.com/inoutcode/ethereum_book)，作者Gavin Wood
 
-  这本书可以全面了解以太坊相关的知识，对以太坊有一个整体的把握，下面是以太坊官方资料：
+  这本书可以全面了解以太坊相关的知识，对以太坊有一个整体的把握，下面是以太坊相关资料收集：
 
    [以太坊白皮书知乎](https://zhuanlan.zhihu.com/p/47917044)
 
@@ -84,6 +84,8 @@
    [以太坊JSON-RPC文档](https://github.com/ethereum/wiki/wiki/JSON-RPC)
 
    [jsonrpc协议文档](https://www.jsonrpc.org/)
+
+   [精通以太坊中文](https://www.bookstack.cn/read/ethereum_book-zh/8ea96e4332dfee67.md)
 
    注意：根据最近反馈，建议精通以太坊和精通比特币一起配合看，效果更佳。
 
