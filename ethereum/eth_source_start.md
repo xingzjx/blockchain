@@ -3,13 +3,16 @@
 - [以太坊源码解读：启动流程](#以太坊源码解读启动流程)
   - [cmd模块](#cmd模块)
     - [prepare](#prepare)
-  - [makeFullNode](#makefullnode)
+    - [makeFullNode](#makefullnode)
     - [startNode](#startnode)
   - [node模块](#node模块)
     - [创建节点](#创建节点)
     - [启动节点](#启动节点)
   - [p2p模块](#p2p模块)
-  - [eth模块](#eth模块)
+    - [setupLocalNode](#setuplocalnode)
+    - [setupListening](#setuplistening)
+    - [setupDiscovery](#setupdiscovery)
+    - [setupDialScheduler](#setupdialscheduler)
 
 分析环境：go-ethereum,　版本：1.10
 
@@ -212,7 +215,7 @@ func prepare(ctx *cli.Context) {
 ```
 该方法准备操作 **memory cache allowance** 和设置 **metrics system**。
 
-## makeFullNode
+### makeFullNode
 
 cmd/geth/config.go
 
@@ -790,8 +793,406 @@ func (h *httpServer) start() error {
 
 ## p2p模块
 
+在node模块分析过，在openEndPoints执行的时候，会调用　p2p/server.go　的 start　方法，
 
-## eth模块
+p2p/server.go
+
+```go
+func (srv *Server) Start() (err error) {
+	srv.lock.Lock()
+	defer srv.lock.Unlock()
+	if srv.running {
+		return errors.New("server already running")
+	}
+	srv.running = true
+	srv.log = srv.Config.Logger
+	if srv.log == nil {
+		srv.log = log.Root()
+	}
+	if srv.clock == nil {
+		srv.clock = mclock.System{}
+	}
+	if srv.NoDial && srv.ListenAddr == "" {
+		srv.log.Warn("P2P server will be useless, neither dialing nor listening")
+	}
+
+	// static fields
+	if srv.PrivateKey == nil {
+		return errors.New("Server.PrivateKey must be set to a non-nil key")
+	}
+	if srv.newTransport == nil {
+		srv.newTransport = newRLPX
+	}
+	if srv.listenFunc == nil {
+		srv.listenFunc = net.Listen
+	}
+	srv.quit = make(chan struct{})
+	srv.delpeer = make(chan peerDrop)
+	srv.checkpointPostHandshake = make(chan *conn)
+	srv.checkpointAddPeer = make(chan *conn)
+	srv.addtrusted = make(chan *enode.Node)
+	srv.removetrusted = make(chan *enode.Node)
+	srv.peerOp = make(chan peerOpFunc)
+	srv.peerOpDone = make(chan struct{})
+
+	if err := srv.setupLocalNode(); err != nil {
+		return err
+	}
+	if srv.ListenAddr != "" {
+		if err := srv.setupListening(); err != nil {
+			return err
+		}
+	}
+	if err := srv.setupDiscovery(); err != nil {
+		return err
+	}
+	srv.setupDialScheduler()
+
+	srv.loopWG.Add(1)
+	go srv.run()
+	return nil
+}
+```
+p2p Server 的 start 方法核心逻辑：
+
+- setupLocalNode　：启动本地节点
+- setupListening　：启动监听
+- setupDiscovery　：启动Discovery协议
+- setupDialScheduler　：启动拨号调度器，主要是p2p连接
+- run : 执行main loop ，通过 select 机制，处理节点操作逻辑
+
+### setupLocalNode
+
+p2p/server.go
+
+```go
+func (srv *Server) setupLocalNode() error {
+	// Create the devp2p handshake.
+	pubkey := crypto.FromECDSAPub(&srv.PrivateKey.PublicKey)
+	srv.ourHandshake = &protoHandshake{Version: baseProtocolVersion, Name: srv.Name, ID: pubkey[1:]}
+	for _, p := range srv.Protocols {
+		srv.ourHandshake.Caps = append(srv.ourHandshake.Caps, p.cap())
+	}
+	sort.Sort(capsByNameAndVersion(srv.ourHandshake.Caps))
+
+	// Create the local node.
+	db, err := enode.OpenDB(srv.Config.NodeDatabase)
+	if err != nil {
+		return err
+	}
+	srv.nodedb = db
+	srv.localnode = enode.NewLocalNode(db, srv.PrivateKey)
+	srv.localnode.SetFallbackIP(net.IP{127, 0, 0, 1})
+	// TODO: check conflicts
+	for _, p := range srv.Protocols {
+		for _, e := range p.Attributes {
+			srv.localnode.Set(e)
+		}
+	}
+	switch srv.NAT.(type) {
+	case nil:
+		// No NAT interface, do nothing.
+	case nat.ExtIP:
+		// ExtIP doesn't block, set the IP right away.
+		ip, _ := srv.NAT.ExternalIP()
+		srv.localnode.SetStaticIP(ip)
+	default:
+		// Ask the router about the IP. This takes a while and blocks startup,
+		// do it in the background.
+		srv.loopWG.Add(1)
+		go func() {
+			defer srv.loopWG.Done()
+			if ip, err := srv.NAT.ExternalIP(); err == nil {
+				srv.localnode.SetStaticIP(ip)
+			}
+		}()
+	}
+	return nil
+}
+```
+
+### setupListening
+
+p2p/server.go
+
+```go
+func (srv *Server) setupListening() error {
+	// Launch the listener.
+	listener, err := srv.listenFunc("tcp", srv.ListenAddr)
+	if err != nil {
+		return err
+	}
+	srv.listener = listener
+	srv.ListenAddr = listener.Addr().String()
+
+	// Update the local node record and map the TCP listening port if NAT is configured.
+	if tcp, ok := listener.Addr().(*net.TCPAddr); ok {
+		srv.localnode.Set(enr.TCP(tcp.Port))
+		if !tcp.IP.IsLoopback() && srv.NAT != nil {
+			srv.loopWG.Add(1)
+			go func() {
+				nat.Map(srv.NAT, srv.quit, "tcp", tcp.Port, tcp.Port, "ethereum p2p")
+				srv.loopWG.Done()
+			}()
+		}
+	}
+
+	srv.loopWG.Add(1)
+	go srv.listenLoop()
+	return nil
+}
+```
+
+### setupDiscovery
+
+p2p/server.go
+
+```go
+func (srv *Server) setupDiscovery() error {
+	srv.discmix = enode.NewFairMix(discmixTimeout)
+
+	// Add protocol-specific discovery sources.
+	added := make(map[string]bool)
+	for _, proto := range srv.Protocols {
+		if proto.DialCandidates != nil && !added[proto.Name] {
+			srv.discmix.AddSource(proto.DialCandidates)
+			added[proto.Name] = true
+		}
+	}
+
+	// Don't listen on UDP endpoint if DHT is disabled.
+	if srv.NoDiscovery && !srv.DiscoveryV5 {
+		return nil
+	}
+
+	addr, err := net.ResolveUDPAddr("udp", srv.ListenAddr)
+	if err != nil {
+		return err
+	}
+	conn, err := net.ListenUDP("udp", addr)
+	if err != nil {
+		return err
+	}
+	realaddr := conn.LocalAddr().(*net.UDPAddr)
+	srv.log.Debug("UDP listener up", "addr", realaddr)
+	if srv.NAT != nil {
+		if !realaddr.IP.IsLoopback() {
+			srv.loopWG.Add(1)
+			go func() {
+				nat.Map(srv.NAT, srv.quit, "udp", realaddr.Port, realaddr.Port, "ethereum discovery")
+				srv.loopWG.Done()
+			}()
+		}
+	}
+	srv.localnode.SetFallbackUDP(realaddr.Port)
+
+	// Discovery V4
+	var unhandled chan discover.ReadPacket
+	var sconn *sharedUDPConn
+	if !srv.NoDiscovery {
+		if srv.DiscoveryV5 {
+			unhandled = make(chan discover.ReadPacket, 100)
+			sconn = &sharedUDPConn{conn, unhandled}
+		}
+		cfg := discover.Config{
+			PrivateKey:  srv.PrivateKey,
+			NetRestrict: srv.NetRestrict,
+			Bootnodes:   srv.BootstrapNodes,
+			Unhandled:   unhandled,
+			Log:         srv.log,
+		}
+		ntab, err := discover.ListenV4(conn, srv.localnode, cfg)
+		if err != nil {
+			return err
+		}
+		srv.ntab = ntab
+		srv.discmix.AddSource(ntab.RandomNodes())
+	}
+
+	// Discovery V5
+	if srv.DiscoveryV5 {
+		cfg := discover.Config{
+			PrivateKey:  srv.PrivateKey,
+			NetRestrict: srv.NetRestrict,
+			Bootnodes:   srv.BootstrapNodesV5,
+			Log:         srv.log,
+		}
+		var err error
+		if sconn != nil {
+			srv.DiscV5, err = discover.ListenV5(sconn, srv.localnode, cfg)
+		} else {
+			srv.DiscV5, err = discover.ListenV5(conn, srv.localnode, cfg)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+```
+
+Discovery协议：有v5和v4,代码可以看出，支持可配置的协议实现，其代码实现库是devp2p
+
+devp2p代码仓库：https://github.com/ethereum/devp2p
+
+devp2p目前在以太坊１.0中采用，在大部分区块链项目中，比如eth2.0，filecoin，swarm等项目都使用了libp2p，devp2p可以不做重点分析。
+
+libp2p代码仓库：https://github.com/libp2p/go-libp2p
+
+### setupDialScheduler
+
+p2p/server.go
+
+```go
+func (srv *Server) setupDialScheduler() {
+	config := dialConfig{
+		self:           srv.localnode.ID(),
+		maxDialPeers:   srv.maxDialedConns(),
+		maxActiveDials: srv.MaxPendingPeers,
+		log:            srv.Logger,
+		netRestrict:    srv.NetRestrict,
+		dialer:         srv.Dialer,
+		clock:          srv.clock,
+	}
+	if srv.ntab != nil {
+		config.resolver = srv.ntab
+	}
+	if config.dialer == nil {
+		config.dialer = tcpDialer{&net.Dialer{Timeout: defaultDialTimeout}}
+	}
+	srv.dialsched = newDialScheduler(config, srv.discmix, srv.SetupConn)
+	for _, n := range srv.StaticNodes {
+		srv.dialsched.addStatic(n)
+	}
+}
+```
+
+p2p/dial.go
+
+```go
+func newDialScheduler(config dialConfig, it enode.Iterator, setupFunc dialSetupFunc) *dialScheduler {
+	d := &dialScheduler{
+		dialConfig:  config.withDefaults(),
+		setupFunc:   setupFunc,
+		dialing:     make(map[enode.ID]*dialTask),
+		static:      make(map[enode.ID]*dialTask),
+		peers:       make(map[enode.ID]connFlag),
+		doneCh:      make(chan *dialTask),
+		nodesIn:     make(chan *enode.Node),
+		addStaticCh: make(chan *enode.Node),
+		remStaticCh: make(chan *enode.Node),
+		addPeerCh:   make(chan *conn),
+		remPeerCh:   make(chan *conn),
+	}
+	d.lastStatsLog = d.clock.Now()
+	d.ctx, d.cancel = context.WithCancel(context.Background())
+	d.wg.Add(2)
+	go d.readNodes(it)
+	go d.loop(it)
+	return d
+}
+```
+
+p2p/dial.go
+
+```go
+func (d *dialScheduler) loop(it enode.Iterator) {
+	var (
+		nodesCh    chan *enode.Node
+		historyExp = make(chan struct{}, 1)
+	)
+
+loop:
+	for {
+		// Launch new dials if slots are available.
+		slots := d.freeDialSlots()
+		slots -= d.startStaticDials(slots)
+		if slots > 0 {
+			nodesCh = d.nodesIn
+		} else {
+			nodesCh = nil
+		}
+		d.rearmHistoryTimer(historyExp)
+		d.logStats()
+
+		select {
+		case node := <-nodesCh:
+			if err := d.checkDial(node); err != nil {
+				d.log.Trace("Discarding dial candidate", "id", node.ID(), "ip", node.IP(), "reason", err)
+			} else {
+				d.startDial(newDialTask(node, dynDialedConn))
+			}
+
+		case task := <-d.doneCh:
+			id := task.dest.ID()
+			delete(d.dialing, id)
+			d.updateStaticPool(id)
+			d.doneSinceLastLog++
+
+		case c := <-d.addPeerCh:
+			if c.is(dynDialedConn) || c.is(staticDialedConn) {
+				d.dialPeers++
+			}
+			id := c.node.ID()
+			d.peers[id] = c.flags
+			// Remove from static pool because the node is now connected.
+			task := d.static[id]
+			if task != nil && task.staticPoolIndex >= 0 {
+				d.removeFromStaticPool(task.staticPoolIndex)
+			}
+			// TODO: cancel dials to connected peers
+
+		case c := <-d.remPeerCh:
+			if c.is(dynDialedConn) || c.is(staticDialedConn) {
+				d.dialPeers--
+			}
+			delete(d.peers, c.node.ID())
+			d.updateStaticPool(c.node.ID())
+
+		case node := <-d.addStaticCh:
+			id := node.ID()
+			_, exists := d.static[id]
+			d.log.Trace("Adding static node", "id", id, "ip", node.IP(), "added", !exists)
+			if exists {
+				continue loop
+			}
+			task := newDialTask(node, staticDialedConn)
+			d.static[id] = task
+			if d.checkDial(node) == nil {
+				d.addToStaticPool(task)
+			}
+
+		case node := <-d.remStaticCh:
+			id := node.ID()
+			task := d.static[id]
+			d.log.Trace("Removing static node", "id", id, "ok", task != nil)
+			if task != nil {
+				delete(d.static, id)
+				if task.staticPoolIndex >= 0 {
+					d.removeFromStaticPool(task.staticPoolIndex)
+				}
+			}
+
+		case <-historyExp:
+			d.expireHistory()
+
+		case <-d.ctx.Done():
+			it.Close()
+			break loop
+		}
+	}
+
+	d.stopHistoryTimer(historyExp)
+	for range d.dialing {
+		<-d.doneCh
+	}
+	d.wg.Done()
+}
+```
+
+在 dial.go　的 loop　方法里面，会启动轮循器，并且使用select机制，处理节点连接。
+
+接下来，同步区块，打包挖矿的逻辑以后再补充。
 
 
 参考：
