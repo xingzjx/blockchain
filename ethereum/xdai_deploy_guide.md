@@ -11,10 +11,14 @@ xDai 客户端目前有两种实现：
 
 ## 下载客户端
 
-下载地址：https://github.com/openethereum/openethereum/releases
+```bash
+
+wget https://github.com/openethereum/openethereum/releases/download/v3.2.6/openethereum-linux-v3.2.6.zip
+
+```
 
 
-选择openethereum-linux-v3.2.6.zip文件下载到本地，然后上传到ubuntu服务器。
+或者选择openethereum-linux-v3.2.6.zip文件下载到本地，然后上传到ubuntu服务器。
 
 ```bash
  
