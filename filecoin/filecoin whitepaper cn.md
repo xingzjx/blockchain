@@ -830,4 +830,8 @@ knowledge. In Advances in Cryptology–CRYPTO 2013, pages 90–108. Springer, 20
 
 [20] Eli Ben Sasson, Alessandro Chiesa, Christina Garman, Matthew Green, Ian Miers, Eran Tromer, and Madars Virza. Zerocash: Decentralized anonymous payments from bitcoin. In Security and Privacy (SP）, 2014 IEEE Symposium on, pages 459–474. IEEE, 2014.
 
+参考：
+
 [filecoin白皮书英文](https://filecoin.io/filecoin.pdf)
+
+[filecoin白皮书中文](https://blog.csdn.net/SmarterEric/article/details/106521907)
