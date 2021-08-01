@@ -835,3 +835,5 @@ knowledge. In Advances in Cryptology–CRYPTO 2013, pages 90–108. Springer, 20
 [filecoin白皮书英文](https://filecoin.io/filecoin.pdf)
 
 [filecoin白皮书中文](https://blog.csdn.net/SmarterEric/article/details/106521907)
+
+[复制证明和时空证明论文-含密封的定义](https://filecoin.io/proof-of-replication.pdf)
