@@ -64,7 +64,7 @@
 
 [filecoin 源码分析：启动流程](./filecoin/filecoin_source_start_process.md)
 
-[Filecoin 白皮书中文版本](./filecoin/filecoin_whitepaper_cn.md)
+[Filecoin 白皮书中文版本](./filecoin/whitebook/filecoin_whitepaper_cn.md)
 
 [Filecoin 钱包功能总结](./filecoin/filecoin_wallet.md)
 
