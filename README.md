@@ -12,7 +12,7 @@
 
 [从云原生到区块链](https://gitee.com/xingzjx/blockchain/blob/master/cloudnative/cloud_native_to_blockchain_guide.md)
 
-[k8s部署rook ceph 集群](https://gitee.com/xingzjx/blockchain/blob/master/cloudnative/k8s%20deploy%20rook%20ceph%20cluster.md)
+[k8s部署rook ceph 集群](https://gitee.com/xingzjx/blockchain/blob/master/cloudnative/k8s_deploy_rook_ceph_cluster.md)
 
 [k8s从云端迁移到本地](https://gitee.com/xingzjx/blockchain/blob/master/cloudnative/k8s%20cluster%20migration.md)
 
@@ -35,7 +35,7 @@
 
 [以太坊源码解读：启动流程](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/eth_source_start.md)
 
-[linux　openethereum 源码编译](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/openethereum_source_compile.md)
+[linux openethereum 源码编译](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/openethereum_source_compile.md)
 
 ## swarm
 
