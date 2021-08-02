@@ -1,13 +1,4 @@
-<h1>FileCoin学习指南</h>
-
-# 导读
-
-
-参考：
-
-[filecoin白皮书中文版](https://gitee.com/xingzjx/blockchain/blob/master/filecoin%20whitepaper%20cn.md)
-
-[部署和开发官方文档](https://docs.filecoin.io/)
+<h1>linux fileCoin 部署</h>
 
 # 部署
 ## 云端部署
@@ -74,9 +65,7 @@ lotus sync status
 
 ```
 
-[file coin 单节点挖矿](https://nad128668.medium.com/comprehensive-guide-to-install-filecoin-mining-rig-8c95cb9613dc)
-
-# 挖矿和矿池
+# 关于挖矿和矿池
 
 filpool 矿池
 
@@ -84,7 +73,4 @@ filpool 矿池
 
 [关于Filecoin矿池的技术分享视频](https://www.bilibili.com/video/av840003306/)
 
-# 前端交互（build）
-
-# 源码解读
-
+[filecoin 单节点挖矿](https://nad128668.medium.com/comprehensive-guide-to-install-filecoin-mining-rig-8c95cb9613dc)
