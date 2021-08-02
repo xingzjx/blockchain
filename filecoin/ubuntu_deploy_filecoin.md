@@ -1,6 +1,5 @@
-<h1>linux fileCoin 部署</h>
+# linux fileCoin 部署
 
-# 部署
 ## 云端部署
 
 - DigitalOcean

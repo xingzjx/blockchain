@@ -21,19 +21,31 @@
 
 [以太坊以及ERC20批量转账](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/ethereum%20batch%20trasfer.md)
 
-[发币指南](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/publish%20toekn%20guide.md)
+[以太坊发币指南](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/publish_toekn_guide.md)
 
-[Token怎么显示Logo问题](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/tonken%20show%20icon.md)
+[Token怎么显示Logo问题](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/eth_tonken_show_icon.md)
 
 [Ubuntu 部署以太坊节点笔记](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/ubuntu%20deploy%20ethereum%20node.md)
 
-[ubuntu 下部署 xDai 指南](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/xdai_deploy_guide.md)
+[Ubuntu 下部署 xDai 指南](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/xdai_deploy_guide.md)
+
+[构建、部署和销售你自己的动态NFT](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/build_deploy_and_sell_your_own_dynamic_nft.md)
+
+[翻译：ERC721 官方文档](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/erc721_translate.md)
+
+[以太坊源码解读：启动流程](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/eth_source_start.md)
+
+[linux　openethereum 源码编译](https://gitee.com/xingzjx/blockchain/blob/master/ethereum/openethereum_source_compile.md)
 
 ## swarm
 
 [Swarm 学习指南](https://gitee.com/xingzjx/blockchain/blob/master/swarm/swarm%20learn%20guide.md)
 
-[bee 源码解读之 SWAP 合约](https://gitee.com/xingzjx/blockchain/blob/master/swarm/bee_source-smart_contract.md)
+[Bee 源码解读之 SWAP 合约](https://gitee.com/xingzjx/blockchain/blob/master/swarm/bee_source-smart_contract.md)
+
+[Bee 源码解读：P2P 网络](https://gitee.com/xingzjx/blockchain/blob/master/swarm/bee_source_p2p.md)
+
+[Bee 源码解读：配置文件初始化](https://gitee.com/xingzjx/blockchain/blob/master/swarm/bee_source_config_load.md)
 
 [Swarm 白皮书中文](https://gitee.com/xingzjx/blockchain/blob/master/swarm/swarm%20white%20book%20cn.md)
 
@@ -46,10 +58,19 @@
 
 ## filecoin
 
-[FileCoin学习指南](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/filecoin%20learn%20guide.md)
+[Filecoin 源码导读](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/filecoin_source_guide.md)
 
-[Filecoin 白皮书中文版本](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/filecoin%20whitepaper%20cn.md)
+[filecoin 源码解读：编译过程分析](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/filecoin_source_compile_analiys.md)
 
+[filecoin 源码分析：启动流程](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/filecoin_source_start_process.md)
+
+[Filecoin 白皮书中文版本](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/filecoin_whitepaper_cn.md)
+
+[Filecoin 钱包功能总结](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/filecoin_wallet.md)
+
+[Mac 下部署 Filecoin 源码](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/mac_compile_deploy_filecoin.md)
+
+[linux fileCoin 部署](https://gitee.com/xingzjx/blockchain/blob/master/filecoin/ubuntu_deploy_filecoin.md)
 
 ## 共识机制
 
