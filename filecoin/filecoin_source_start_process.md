@@ -13,8 +13,11 @@
 		- [创建 node](#创建-node)
 		- [节点执行的方法](#节点执行的方法)
 			- [node.Online](#nodeonline)
-		- [node.Repo](#noderepo)
+			- [node.Repo](#noderepo)
 	- [chain模块](#chain模块)
+		- [NewSyncer](#newsyncer)
+		- [Start](#start)
+		- [Sync](#sync)
 
 ## 准备工作
 
@@ -771,8 +774,315 @@ func Online() Option {
 	)
 }
 ```
+- LibP2p
 
-### node.Repo
+**node/builder.go**
+
+```go
+var LibP2P = Options(
+	// Host config
+	Override(new(dtypes.Bootstrapper), dtypes.Bootstrapper(false)),
+
+	// Host dependencies
+	Override(new(peerstore.Peerstore), pstoremem.NewPeerstore),
+	Override(PstoreAddSelfKeysKey, lp2p.PstoreAddSelfKeys),
+	Override(StartListeningKey, lp2p.StartListening(config.DefaultFullNode().Libp2p.ListenAddresses)),
+
+	// Host settings
+	Override(DefaultTransportsKey, lp2p.DefaultTransports),
+	Override(AddrsFactoryKey, lp2p.AddrsFactory(nil, nil)),
+	Override(SmuxTransportKey, lp2p.SmuxTransport(true)),
+	Override(RelayKey, lp2p.NoRelay()),
+	Override(SecurityKey, lp2p.Security(true, false)),
+
+	// Host
+	Override(new(lp2p.RawHost), lp2p.Host),
+	Override(new(host.Host), lp2p.RoutedHost),
+	Override(new(lp2p.BaseIpfsRouting), lp2p.DHTRouting(dht.ModeAuto)),
+
+	Override(DiscoveryHandlerKey, lp2p.DiscoveryHandler),
+
+	// Routing
+	Override(new(record.Validator), modules.RecordValidator),
+	Override(BaseRoutingKey, lp2p.BaseRouting),
+	Override(new(routing.Routing), lp2p.Routing),
+
+	// Services
+	Override(NatPortMapKey, lp2p.NatPortMap),
+	Override(BandwidthReporterKey, lp2p.BandwidthCounter),
+	Override(AutoNATSvcKey, lp2p.AutoNATService),
+
+	// Services (pubsub)
+	Override(new(*dtypes.ScoreKeeper), lp2p.ScoreKeeper),
+	Override(new(*pubsub.PubSub), lp2p.GossipSub),
+	Override(new(*config.Pubsub), func(bs dtypes.Bootstrapper) *config.Pubsub {
+		return &config.Pubsub{
+			Bootstrapper: bool(bs),
+		}
+	}),
+
+	// Services (connection management)
+	Override(ConnectionManagerKey, lp2p.ConnectionManager(50, 200, 20*time.Second, nil)),
+	Override(new(*conngater.BasicConnectionGater), lp2p.ConnGater),
+	Override(ConnGaterKey, lp2p.ConnGaterOption),
+)
+```
+
+- ChainNode：提供了访问 filecoin 网络的服务，比如同步区块， modules.NewSyncer
+
+**node/builder.go**
+
+```go
+var ChainNode = Options(
+	// Full node or lite node
+	// TODO: Fix offline mode
+
+	// Consensus settings
+	Override(new(dtypes.DrandSchedule), modules.BuiltinDrandConfig),
+	Override(new(stmgr.UpgradeSchedule), stmgr.DefaultUpgradeSchedule()),
+	Override(new(dtypes.NetworkName), modules.NetworkName),
+	Override(new(modules.Genesis), modules.ErrorGenesis),
+	Override(new(dtypes.AfterGenesisSet), modules.SetGenesis),
+	Override(SetGenesisKey, modules.DoSetGenesis),
+	Override(new(beacon.Schedule), modules.RandomSchedule),
+
+	// Network bootstrap
+	Override(new(dtypes.BootstrapPeers), modules.BuiltinBootstrap),
+	Override(new(dtypes.DrandBootstrap), modules.DrandBootstrap),
+
+	// Consensus: crypto dependencies
+	Override(new(ffiwrapper.Verifier), ffiwrapper.ProofVerifier),
+
+	// Consensus: VM
+	Override(new(vm.SyscallBuilder), vm.Syscalls),
+
+	// Consensus: Chain storage/access
+	Override(new(*store.ChainStore), modules.ChainStore),
+	Override(new(*stmgr.StateManager), modules.StateManager),
+	Override(new(dtypes.ChainBitswap), modules.ChainBitswap),
+	Override(new(dtypes.ChainBlockService), modules.ChainBlockService), // todo: unused
+
+	// Consensus: Chain sync
+
+	// We don't want the SyncManagerCtor to be used as an fx constructor, but rather as a value.
+	// It will be called implicitly by the Syncer constructor.
+	Override(new(chain.SyncManagerCtor), func() chain.SyncManagerCtor { return chain.NewSyncManager }),
+	Override(new(*chain.Syncer), modules.NewSyncer),
+	Override(new(exchange.Client), exchange.NewClient),
+
+	// Chain networking
+	Override(new(*hello.Service), hello.NewHelloService),
+	Override(new(exchange.Server), exchange.NewServer),
+	Override(new(*peermgr.PeerMgr), peermgr.NewPeerMgr),
+
+	// Chain mining API dependencies
+	Override(new(*slashfilter.SlashFilter), modules.NewSlashFilter),
+
+	// Service: Message Pool
+	Override(new(dtypes.DefaultMaxFeeFunc), modules.NewDefaultMaxFeeFunc),
+	Override(new(*messagepool.MessagePool), modules.MessagePool),
+	Override(new(*dtypes.MpoolLocker), new(dtypes.MpoolLocker)),
+
+	// Shared graphsync (markets, serving chain)
+	Override(new(dtypes.Graphsync), modules.Graphsync(config.DefaultFullNode().Client.SimultaneousTransfers)),
+
+	// Service: Wallet
+	Override(new(*messagesigner.MessageSigner), messagesigner.NewMessageSigner),
+	Override(new(*wallet.LocalWallet), wallet.NewWallet),
+	Override(new(wallet.Default), From(new(*wallet.LocalWallet))),
+	Override(new(api.Wallet), From(new(wallet.MultiWallet))),
+
+	// Service: Payment channels
+	Override(new(paychmgr.PaychAPI), From(new(modules.PaychAPI))),
+	Override(new(*paychmgr.Store), modules.NewPaychStore),
+	Override(new(*paychmgr.Manager), modules.NewManager),
+	Override(HandlePaymentChannelManagerKey, modules.HandlePaychManager),
+	Override(SettlePaymentChannelsKey, settler.SettlePaymentChannels),
+
+	// Markets (common)
+	Override(new(*discoveryimpl.Local), modules.NewLocalDiscovery),
+
+	// Markets (retrieval)
+	Override(new(discovery.PeerResolver), modules.RetrievalResolver),
+	Override(new(retrievalmarket.RetrievalClient), modules.RetrievalClient),
+	Override(new(dtypes.ClientDataTransfer), modules.NewClientGraphsyncDataTransfer),
+
+	// Markets (storage)
+	Override(new(*market.FundManager), market.NewFundManager),
+	Override(new(dtypes.ClientDatastore), modules.NewClientDatastore),
+	Override(new(storagemarket.StorageClient), modules.StorageClient),
+	Override(new(storagemarket.StorageClientNode), storageadapter.NewClientNodeAdapter),
+	Override(HandleMigrateClientFundsKey, modules.HandleMigrateClientFunds),
+
+	Override(new(*full.GasPriceCache), full.NewGasPriceCache),
+
+	// Lite node API
+	ApplyIf(isLiteNode,
+		Override(new(messagepool.Provider), messagepool.NewProviderLite),
+		Override(new(messagesigner.MpoolNonceAPI), From(new(modules.MpoolNonceAPI))),
+		Override(new(full.ChainModuleAPI), From(new(api.Gateway))),
+		Override(new(full.GasModuleAPI), From(new(api.Gateway))),
+		Override(new(full.MpoolModuleAPI), From(new(api.Gateway))),
+		Override(new(full.StateModuleAPI), From(new(api.Gateway))),
+		Override(new(stmgr.StateManagerAPI), rpcstmgr.NewRPCStateManager),
+	),
+
+	// Full node API / service startup
+	ApplyIf(isFullNode,
+		Override(new(messagepool.Provider), messagepool.NewProvider),
+		Override(new(messagesigner.MpoolNonceAPI), From(new(*messagepool.MessagePool))),
+		Override(new(full.ChainModuleAPI), From(new(full.ChainModule))),
+		Override(new(full.GasModuleAPI), From(new(full.GasModule))),
+		Override(new(full.MpoolModuleAPI), From(new(full.MpoolModule))),
+		Override(new(full.StateModuleAPI), From(new(full.StateModule))),
+		Override(new(stmgr.StateManagerAPI), From(new(*stmgr.StateManager))),
+
+		Override(RunHelloKey, modules.RunHello),
+		Override(RunChainExchangeKey, modules.RunChainExchange),
+		Override(RunPeerMgrKey, modules.RunPeerMgr),
+		Override(HandleIncomingMessagesKey, modules.HandleIncomingMessages),
+		Override(HandleIncomingBlocksKey, modules.HandleIncomingBlocks),
+	),
+)
+```
+
+以同步区块服务功能为例，继续分析以下逻辑：
+
+- NewSyncer：调用到chain模块，创建同步器
+- syncer.Start： 启动同步器
+
+**node/modules/chain.go**
+
+```go
+func NewSyncer(params SyncerParams) (*chain.Syncer, error) {
+	var (
+		lc     = params.Lifecycle
+		ds     = params.MetadataDS
+		sm     = params.StateManager
+		ex     = params.ChainXchg
+		smCtor = params.SyncMgrCtor
+		h      = params.Host
+		b      = params.Beacon
+		v      = params.Verifier
+	)
+	syncer, err := chain.NewSyncer(ds, sm, ex, smCtor, h.ConnManager(), h.ID(), b, v)
+	if err != nil {
+		return nil, err
+	}
+
+	lc.Append(fx.Hook{
+		OnStart: func(_ context.Context) error {
+			syncer.Start()
+			return nil
+		},
+		OnStop: func(_ context.Context) error {
+			syncer.Stop()
+			return nil
+		},
+	})
+	return syncer, nil
+}
+```
+
+- MinerNode: 提供了挖矿相关的服务实现，比如密封、证明、存储等
+
+**node/builder.go**
+
+```go
+var MinerNode = Options(
+	// API dependencies
+	Override(new(api.Common), From(new(common.CommonAPI))),
+	Override(new(sectorstorage.StorageAuth), modules.StorageAuth),
+
+	// Actor config
+	Override(new(dtypes.MinerAddress), modules.MinerAddress),
+	Override(new(dtypes.MinerID), modules.MinerID),
+	Override(new(abi.RegisteredSealProof), modules.SealProofType),
+	Override(new(dtypes.NetworkName), modules.StorageNetworkName),
+
+	// Sector storage
+	Override(new(*stores.Index), stores.NewIndex),
+	Override(new(stores.SectorIndex), From(new(*stores.Index))),
+	Override(new(stores.LocalStorage), From(new(repo.LockedRepo))),
+	Override(new(*stores.Local), modules.LocalStorage),
+	Override(new(*stores.Remote), modules.RemoteStorage),
+	Override(new(*sectorstorage.Manager), modules.SectorStorage),
+	Override(new(sectorstorage.SectorManager), From(new(*sectorstorage.Manager))),
+	Override(new(storiface.WorkerReturn), From(new(sectorstorage.SectorManager))),
+	Override(new(sectorstorage.Unsealer), From(new(*sectorstorage.Manager))),
+
+	// Sector storage: Proofs
+	Override(new(ffiwrapper.Verifier), ffiwrapper.ProofVerifier),
+	Override(new(ffiwrapper.Prover), ffiwrapper.ProofProver),
+	Override(new(storage2.Prover), From(new(sectorstorage.SectorManager))),
+
+	// Sealing
+	Override(new(sealing.SectorIDCounter), modules.SectorIDCounter),
+	Override(GetParamsKey, modules.GetParams),
+
+	// Mining / proving
+	Override(new(*slashfilter.SlashFilter), modules.NewSlashFilter),
+	Override(new(*storage.Miner), modules.StorageMiner(config.DefaultStorageMiner().Fees)),
+	Override(new(*miner.Miner), modules.SetupBlockProducer),
+	Override(new(gen.WinningPoStProver), storage.NewWinningPoStProver),
+
+	Override(new(*storage.AddressSelector), modules.AddressSelector(nil)),
+
+	// Markets
+	Override(new(dtypes.StagingMultiDstore), modules.StagingMultiDatastore),
+	Override(new(dtypes.StagingBlockstore), modules.StagingBlockstore),
+	Override(new(dtypes.StagingDAG), modules.StagingDAG),
+	Override(new(dtypes.StagingGraphsync), modules.StagingGraphsync),
+	Override(new(dtypes.ProviderPieceStore), modules.NewProviderPieceStore),
+	Override(new(*sectorblocks.SectorBlocks), sectorblocks.NewSectorBlocks),
+
+	// Markets (retrieval)
+	Override(new(sectorstorage.PieceProvider), sectorstorage.NewPieceProvider),
+	Override(new(dtypes.RetrievalPricingFunc), modules.RetrievalPricingFunc(config.DealmakingConfig{
+		RetrievalPricing: &config.RetrievalPricing{
+			Strategy: config.RetrievalPricingDefaultMode,
+			Default:  &config.RetrievalPricingDefault{},
+		},
+	})),
+	Override(new(sectorstorage.PieceProvider), sectorstorage.NewPieceProvider),
+	Override(new(retrievalmarket.RetrievalProvider), modules.RetrievalProvider),
+	Override(new(dtypes.RetrievalDealFilter), modules.RetrievalDealFilter(nil)),
+
+	Override(HandleRetrievalKey, modules.HandleRetrieval),
+
+	// Markets (storage)
+	Override(new(dtypes.ProviderDataTransfer), modules.NewProviderDAGServiceDataTransfer),
+	Override(new(*storedask.StoredAsk), modules.NewStorageAsk),
+	Override(new(dtypes.StorageDealFilter), modules.BasicDealFilter(nil)),
+	Override(new(storagemarket.StorageProvider), modules.StorageProvider),
+	Override(new(*storageadapter.DealPublisher), storageadapter.NewDealPublisher(nil, storageadapter.PublishMsgConfig{})),
+	Override(new(storagemarket.StorageProviderNode), storageadapter.NewProviderNodeAdapter(nil, nil)),
+	Override(HandleMigrateProviderFundsKey, modules.HandleMigrateProviderFunds),
+	Override(HandleDealsKey, modules.HandleDeals),
+
+	// Config (todo: get a real property system)
+	Override(new(dtypes.ConsiderOnlineStorageDealsConfigFunc), modules.NewConsiderOnlineStorageDealsConfigFunc),
+	Override(new(dtypes.SetConsiderOnlineStorageDealsConfigFunc), modules.NewSetConsideringOnlineStorageDealsFunc),
+	Override(new(dtypes.ConsiderOnlineRetrievalDealsConfigFunc), modules.NewConsiderOnlineRetrievalDealsConfigFunc),
+	Override(new(dtypes.SetConsiderOnlineRetrievalDealsConfigFunc), modules.NewSetConsiderOnlineRetrievalDealsConfigFunc),
+	Override(new(dtypes.StorageDealPieceCidBlocklistConfigFunc), modules.NewStorageDealPieceCidBlocklistConfigFunc),
+	Override(new(dtypes.SetStorageDealPieceCidBlocklistConfigFunc), modules.NewSetStorageDealPieceCidBlocklistConfigFunc),
+	Override(new(dtypes.ConsiderOfflineStorageDealsConfigFunc), modules.NewConsiderOfflineStorageDealsConfigFunc),
+	Override(new(dtypes.SetConsiderOfflineStorageDealsConfigFunc), modules.NewSetConsideringOfflineStorageDealsFunc),
+	Override(new(dtypes.ConsiderOfflineRetrievalDealsConfigFunc), modules.NewConsiderOfflineRetrievalDealsConfigFunc),
+	Override(new(dtypes.SetConsiderOfflineRetrievalDealsConfigFunc), modules.NewSetConsiderOfflineRetrievalDealsConfigFunc),
+	Override(new(dtypes.ConsiderVerifiedStorageDealsConfigFunc), modules.NewConsiderVerifiedStorageDealsConfigFunc),
+	Override(new(dtypes.SetConsiderVerifiedStorageDealsConfigFunc), modules.NewSetConsideringVerifiedStorageDealsFunc),
+	Override(new(dtypes.ConsiderUnverifiedStorageDealsConfigFunc), modules.NewConsiderUnverifiedStorageDealsConfigFunc),
+	Override(new(dtypes.SetConsiderUnverifiedStorageDealsConfigFunc), modules.NewSetConsideringUnverifiedStorageDealsFunc),
+	Override(new(dtypes.SetSealingConfigFunc), modules.NewSetSealConfigFunc),
+	Override(new(dtypes.GetSealingConfigFunc), modules.NewGetSealConfigFunc),
+	Override(new(dtypes.SetExpectedSealDurationFunc), modules.NewSetExpectedSealDurationFunc),
+	Override(new(dtypes.GetExpectedSealDurationFunc), modules.NewGetExpectedSealDurationFunc),
+)
+```
+
+#### node.Repo
 
 
 **node/builder.go**
@@ -856,3 +1166,257 @@ ConfigFullNode : 如果是全节点模式，配置全节点
 ConfigStorageMiner： 对于矿工模式，配置矿工
 
 ## chain模块
+
+chain 模块包括区块同步以及其它的区块相关实现逻辑，通过node模块调用到。
+
+### NewSyncer
+
+**chain/sync.go**
+
+```go
+func NewSyncer(ds dtypes.MetadataDS, sm *stmgr.StateManager, exchange exchange.Client, syncMgrCtor SyncManagerCtor, connmgr connmgr.ConnManager, self peer.ID, beacon beacon.Schedule, verifier ffiwrapper.Verifier) (*Syncer, error) {
+	gen, err := sm.ChainStore().GetGenesis()
+	if err != nil {
+		return nil, xerrors.Errorf("getting genesis block: %w", err)
+	}
+
+	gent, err := types.NewTipSet([]*types.BlockHeader{gen})
+	if err != nil {
+		return nil, err
+	}
+
+	s := &Syncer{
+		ds:             ds,
+		beacon:         beacon,
+		bad:            NewBadBlockCache(),
+		Genesis:        gent,
+		Exchange:       exchange,
+		store:          sm.ChainStore(),
+		sm:             sm,
+		self:           self,
+		receiptTracker: newBlockReceiptTracker(),
+		connmgr:        connmgr,
+		verifier:       verifier,
+
+		incoming: pubsub.New(50),
+	}
+
+	if build.InsecurePoStValidation {
+		log.Warn("*********************************************************************************************")
+		log.Warn(" [INSECURE-POST-VALIDATION] Insecure test validation is enabled. If you see this outside of a test, it is a severe bug! ")
+		log.Warn("*********************************************************************************************")
+	}
+
+	s.syncmgr = syncMgrCtor(s.Sync)
+	return s, nil
+}
+```
+
+### Start
+
+**chain/sync.go**
+
+```go
+func (syncer *Syncer) Start() {
+	tickerCtx, tickerCtxCancel := context.WithCancel(context.Background())
+	syncer.syncmgr.Start()
+
+	syncer.tickerCtxCancel = tickerCtxCancel
+
+	go syncer.runMetricsTricker(tickerCtx)
+}
+```
+
+start方法会调用syncmgr.Start方法：
+
+**chain/sync_manager.go**
+
+```go
+func (sm *syncManager) Start() {
+	go sm.scheduler()
+}
+```
+
+**chain/sync_manager.go**
+
+```go
+func (sm *syncManager) scheduler() {
+	ticker := time.NewTicker(time.Minute)
+	tickerC := ticker.C
+	for {
+		select {
+		case head := <-sm.workq:
+			sm.handlePeerHead(head)
+		case status := <-sm.statusq:
+			sm.handleWorkerStatus(status)
+		case <-tickerC:
+			if sm.initialSyncDone {
+				ticker.Stop()
+				tickerC = nil
+				sm.handleInitialSyncDone()
+			}
+		case <-sm.ctx.Done():
+			return
+		}
+	}
+}
+```
+
+当通道接收到**workq（peerHead类型）**的时候，执行 sync_manager 的 handlePeerHead 方法
+
+**chain/sync_manager.go**
+
+```go
+func (sm *syncManager) handlePeerHead(head peerHead) {
+	log.Debugf("new peer head: %s %s", head.p, head.ts)
+
+	// have we started syncing yet?
+	if sm.nextWorker == 0 {
+		// track the peer head until we start syncing
+		sm.heads[head.p] = head.ts
+
+		// not yet; do we have enough peers?
+		if len(sm.heads) < BootstrapPeerThreshold {
+			log.Debugw("not tracking enough peers to start sync worker", "have", len(sm.heads), "need", BootstrapPeerThreshold)
+			// not enough peers; track it and wait
+			return
+		}
+
+		// we are ready to start syncing; select the sync target and spawn a worker
+		target, err := sm.selectInitialSyncTarget()
+		if err != nil {
+			log.Errorf("failed to select initial sync target: %s", err)
+			return
+		}
+
+		log.Infof("selected initial sync target: %s", target)
+		sm.spawnWorker(target)
+		return
+	}
+
+	// we have started syncing, add peer head to the queue if applicable and maybe spawn a worker
+	// if there is work to do (possibly in a fork)
+	target, work, err := sm.addSyncTarget(head.ts)
+	if err != nil {
+		log.Warnf("failed to add sync target: %s", err)
+		return
+	}
+
+	if work {
+		log.Infof("selected sync target: %s", target)
+		sm.spawnWorker(target)
+	}
+}
+```
+
+继续看 sm 的 spawnWorker 方法，该方法表示生成worker
+
+**chian/sync_manager.go**
+
+```go
+func (sm *syncManager) spawnWorker(target *types.TipSet) {
+	id := sm.nextWorker
+	sm.nextWorker++
+	ws := &workerState{
+		id: id,
+		ts: target,
+		ss: new(SyncerState),
+	}
+	ws.ss.data.WorkerID = id
+
+	sm.mx.Lock()
+	sm.state[id] = ws
+	sm.mx.Unlock()
+
+	go sm.worker(ws)
+}
+```
+
+接下来，启动 worker ，开始同步数据
+
+**chainb/sync_manager.go**
+
+```go
+func (sm *syncManager) worker(ws *workerState) {
+	log.Infof("worker %d syncing in %s", ws.id, ws.ts)
+
+	start := build.Clock.Now()
+
+	ctx := context.WithValue(sm.ctx, syncStateKey{}, ws.ss)
+	err := sm.doSync(ctx, ws.ts)
+
+	ws.dt = build.Clock.Since(start)
+	log.Infof("worker %d done; took %s", ws.id, ws.dt)
+	select {
+	case sm.statusq <- workerStatus{id: ws.id, err: err}:
+	case <-sm.ctx.Done():
+	}
+}
+```
+
+### Sync
+
+sync.go 中的 Sync 方法在 Start 方法定义了，Sync 的核心逻辑在 collectChain 方法
+
+**chain/sync.go**
+
+```go
+func (syncer *Syncer) Sync(ctx context.Context, maybeHead *types.TipSet) error {
+	ctx, span := trace.StartSpan(ctx, "chain.Sync")
+	defer span.End()
+
+	if span.IsRecordingEvents() {
+		span.AddAttributes(
+			trace.StringAttribute("tipset", fmt.Sprint(maybeHead.Cids())),
+			trace.Int64Attribute("height", int64(maybeHead.Height())),
+		)
+	}
+
+	hts := syncer.store.GetHeaviestTipSet()
+
+	if hts.ParentWeight().GreaterThan(maybeHead.ParentWeight()) {
+		return nil
+	}
+	if syncer.Genesis.Equals(maybeHead) || hts.Equals(maybeHead) {
+		return nil
+	}
+
+	if err := syncer.collectChain(ctx, maybeHead, hts, false); err != nil {
+		span.AddAttributes(trace.StringAttribute("col_error", err.Error()))
+		span.SetStatus(trace.Status{
+			Code:    13,
+			Message: err.Error(),
+		})
+		return xerrors.Errorf("collectChain failed: %w", err)
+	}
+
+	// At this point we have accepted and synced to the new `maybeHead`
+	// (`StageSyncComplete`).
+	if err := syncer.store.PutTipSet(ctx, maybeHead); err != nil {
+		span.AddAttributes(trace.StringAttribute("put_error", err.Error()))
+		span.SetStatus(trace.Status{
+			Code:    13,
+			Message: err.Error(),
+		})
+		return xerrors.Errorf("failed to put synced tipset to chainstore: %w", err)
+	}
+
+	peers := syncer.receiptTracker.GetPeers(maybeHead)
+	if len(peers) > 0 {
+		syncer.connmgr.TagPeer(peers[0], "new-block", 40)
+
+		for _, p := range peers[1:] {
+			syncer.connmgr.TagPeer(p, "new-block", 25)
+		}
+	}
+
+	return nil
+}
+```
+
+collectChain 会执行三个阶段：
+
+- 第一阶段：StageHeaders，我们通过请求块头来继续同步进程，从我们的同伴，从他们的头部向后移动，直到我们到达一个tipset。我们有共同之处(这种共同之处一定存在，尽管它可能存在简单的生成块）。
+  如果 common tipset 是我们的头脑，我们将同步视为“快进”，我们必须删除链的一部分才能连接到对等体的头部(称为“fork”)。
+- 第二阶段：StagePersistHeaders，现在我们已经收集了丢失的头信息，在分叉的另一边，我们将它们持久化到BlockStore。
+- 第一阶段：StageMessages，获得了头并找到了一个公共的消息集，我们继续，请求完整的块，包括消息。
