@@ -9,13 +9,19 @@
 
 ## 云原生与devops
 
-
 [从云原生到区块链](./cloudnative/cloud_native_to_blockchain_guide.md)
 
 [k8s部署rook ceph 集群](./cloudnative/k8s_deploy_rook_ceph_cluster.md)
 
-[k8s从云端迁移到本地](./cloudnative/k8s%20cluster%20migration.md)
+[k8s从云端迁移到本地](./cloudnative/k8s_cluster_migration.md)
 
+[使用 kubeadm 搭建 kubernetes 本地集群](./cloudnative/k8s_local_deployment.md)
+
+[k8s集群问题总结](./cloudnative/k8s_cluster_question.md)
+
+[docker 源码学习导读](./cloudnative/docker_source_guide.md)
+
+[k8s 学习指南](./cloudnative/k8s_learn_guide.md)
 
 ## 以太坊系列
 
@@ -35,7 +41,7 @@
 
 [以太坊源码解读：启动流程](./ethereum/eth_source_start.md)
 
-[linux openethereum 源码编译](./ethereum/openethereum_source_compile.md)
+[Ubuntu openethereum 源码编译](./ethereum/openethereum_source_compile.md)
 
 ## Swarm
 
@@ -76,9 +82,9 @@
 
 [Filecoin 钱包功能总结](./filecoin/filecoin_wallet.md)
 
-[Mac 下部署 Filecoin 源码](./filecoin/mac_compile_deploy_filecoin.md)
+[Mac 编译和部署 Filecoin](./filecoin/mac_compile_deploy_filecoin.md)
 
-[linux FileCoin 部署](./filecoin/ubuntu_deploy_filecoin.md)
+[Ubuntu 部署 Filecoin 节点](./filecoin/ubuntu_deploy_filecoin.md)
 
 ## 共识机制
 
