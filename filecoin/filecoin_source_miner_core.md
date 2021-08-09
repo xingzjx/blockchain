@@ -1,14 +1,14 @@
-# filecoin 源码解读：挖矿执行流程
+# Filecoin 源码解读：Miner执行流程
 
-分析源码：lotus，filecoin的go语言实现，版本号: v1.11.0
-
-- [filecoin 源码解读：挖矿执行流程](#filecoin-源码解读挖矿执行流程)
+- [Filecoin 源码解读：Miner执行流程](#filecoin-源码解读miner执行流程)
 	- [简介](#简介)
 	- [准备工作](#准备工作)
 	- [fetch-params](#fetch-params)
 	- [init](#init)
 	- [run](#run)
 	- [actor](#actor)
+
+分析源码：lotus，filecoin的go语言实现，版本号: v1.11.0
 
 ## 简介
 
@@ -1017,4 +1017,4 @@ var actorSetAddrsCmd = &cli.Command{
 }
 ```
 
-接下来，分析 lotus-worker 的核心任务。
+接下来，分析 lotus-worker

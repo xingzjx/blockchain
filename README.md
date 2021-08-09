@@ -37,17 +37,19 @@
 
 [linux openethereum 源码编译](./ethereum/openethereum_source_compile.md)
 
-## swarm
+## Swarm
 
 [Swarm 学习指南](./swarm/swarm%20learn%20guide.md)
 
-[Bee 源码解读之 SWAP 合约](./swarm/bee_source-smart_contract.md)
+[Swarm 源码解读: SWAP 合约](./swarm/bee_source-smart_contract.md)
 
-[Bee 源码解读：P2P 网络](./swarm/bee_source_p2p.md)
+[Swarm 源码解读：P2P 网络](./swarm/bee_source_p2p.md)
 
-[Bee 源码解读：配置文件初始化](./swarm/bee_source_config_load.md)
+[Swarm 源码解读：配置文件初始化](./swarm/bee_source_config_load.md)
 
-[Swarm 白皮书中文](./swarm/swarm%20white%20book%20cn.md)
+[Swarm 源码解读：智能合约概要](./swarm/bee_source_contract_guide.md)
+
+[Swarm 白皮书中文](./swarm/swarm_white_book_cn.md)
 
 [ubuntu docker-compose 部署100个bee节点](./swarm/ubuntu%20docker-compose%20multi%20swarm.md)
 
@@ -56,13 +58,19 @@
 [解读：币圈李白 Swarm主网技术分析 20210622](./swarm/live/interpretation_libai_Swarm_Mainnet_Analis_%2020210622.md)
 
 
-## filecoin
+## Filecoin
 
-[Filecoin 源码导读](./filecoin/filecoin_source_guide.md)
+[Filecoin 源码解读：导读](./filecoin/filecoin_source_guide.md)
 
-[filecoin 源码解读：编译过程分析](./filecoin/filecoin_source_compile_analiys.md)
+[Filecoin 源码解读：编译过程分析](./filecoin/filecoin_source_compile_analiys.md)
 
-[filecoin 源码分析：启动流程](./filecoin/filecoin_source_start_process.md)
+[Filecoin 源码分析：Lotus启动流程](./filecoin/filecoin_source_lotus_process.md)
+
+[Filecoin 源码解读：Miner执行流程](./filecoin/filecoin_source_miner_core.md)
+
+[Filecoin 源码分析：Worker核心流程](./filecoin/filecoin_source_worker_process.md)
+
+[Filecoin 源码分析：AddPiece](./filecoin/filecoin_source_addpiece.md)
 
 [Filecoin 白皮书中文版本](./filecoin/whitebook/filecoin_whitepaper_cn.md)
 
@@ -70,7 +78,7 @@
 
 [Mac 下部署 Filecoin 源码](./filecoin/mac_compile_deploy_filecoin.md)
 
-[linux fileCoin 部署](./filecoin/ubuntu_deploy_filecoin.md)
+[linux FileCoin 部署](./filecoin/ubuntu_deploy_filecoin.md)
 
 ## 共识机制
 

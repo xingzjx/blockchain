@@ -103,7 +103,7 @@ func main() {
 - 检查 params ，如果没有则下载
 - 打开 repo
 - 启动 selector store
-- 创建和暴露 worker: 启动 http 服务器，监听客户端请求
+- 创建和暴露 worker: 启动 **http** 服务器 和 **json-rpc** 接口，监听客户端请求
 
 **cmd/lotus-seal-worker/main.go**
 
