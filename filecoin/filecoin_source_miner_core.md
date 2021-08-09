@@ -2,7 +2,27 @@
 
 分析源码：lotus，filecoin的go语言实现，版本号: v1.11.0
 
-准备工作
+- [filecoin 源码解读：挖矿执行流程](#filecoin-源码解读挖矿执行流程)
+	- [简介](#简介)
+	- [准备工作](#准备工作)
+	- [fetch-params](#fetch-params)
+	- [init](#init)
+	- [run](#run)
+	- [actor](#actor)
+
+## 简介
+
+lotus 编译后有三个核心的可执行文件，分别是 **lotus** **lotus-miner** **lotus-worker**
+
+- lotus ： daemon，lotus 核心进程，包括启动节点，同步区块，链上交互等功能。
+- lotus-miner： 挖矿的核心进程，会启动一个挖矿节点，其本身包括了 *worker* 的功能。
+- lotus-worker: 包括密封的整个过程，可以分担 *miner* 的相关工作，作为服务端，而 *miner* 作为其客户端。
+
+其中，lotus-miner 的执行过程大体和 [Filecoin 源码分析：启动流程](filecoin_source_start_process.md) 相识。
+
+所以，本篇重点从挖矿要执行的核心方法来分析 *miner* 进程的逻辑。
+
+## 准备工作
 
 - 钱包
 
