@@ -1,6 +1,6 @@
-# Filecoin 源码分析：启动流程
+# Filecoin 源码分析：lotus 启动流程
 
-- [Filecoin 源码分析：启动流程](#filecoin-源码分析启动流程)
+- [Filecoin 源码分析：lotus 启动流程](#filecoin-源码分析lotus-启动流程)
 	- [准备工作](#准备工作)
 		- [环境](#环境)
 		- [源码目录](#源码目录)
@@ -42,7 +42,7 @@ Local: lotus version 1.11.0-dev+mainnet+git.715176698.dirty
 
 ## cmd模块
 
-cmd目录是应用程序入口，里面包含多个子模块，比如lotus，lotus-wallet,lotus-seal-worker,lotus-storage-miner。这里只分析lotus目录。
+cmd 目录是应用程序入口，里面包含多个子模块，比如lotus，lotus-seal-worker,lotus-storage-miner。本篇重点分析 *lotus* 的实现流程。
 
 ### 入口
 
