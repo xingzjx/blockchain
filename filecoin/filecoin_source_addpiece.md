@@ -1,5 +1,12 @@
 # Filecoin 源码解读：Workder-AddPiece
 
+- [Filecoin 源码解读：Workder-AddPiece](#filecoin-源码解读workder-addpiece)
+	- [简介](#简介)
+	- [矿工节点配置](#矿工节点配置)
+	- [store 状态机](#store-状态机)
+	- [markets模块](#markets模块)
+	- [storege模块](#storege模块)
+	- [extern](#extern)
 
 分析源码：lotus，filecoin的go语言实现，版本号: v1.11.0
 
@@ -7,7 +14,7 @@
 
 AddPiece 方法，是 lotus-worker 的核心方法之一，核心方法中还有 P1,P2, C1, C2 方法。
 
-## 启动入口
+## 矿工节点配置
 
 在前面的章节讲到，node模块下的 *builder.go* ，定义了节点启动流程中的核心逻辑和服务，也包括矿工相关的逻辑
 
@@ -92,6 +99,13 @@ func Repo(r repo.Repo) Option {
 	}
 }
 ```
+
+ConfigStorageMiner ： 定义存储矿工的配置项
+
+- Markets : 定义市场的基本逻辑
+- Markets (retrieval) ： 定义检索市场的逻辑
+- Markets (storage) ： 定义存储市场逻辑，其中 StorageProvider 会最后会调到 AddPiece 方法
+- Config
 
 **node/builder_miner.go**
 
@@ -251,4 +265,344 @@ func ConfigStorageMiner(c interface{}) Option {
 }
 ```
 
-在 ConfigStorageMiner 方法中
+继续看 StorageProvider 方法，看最后一行代码
+
+storageimpl.NewProvider ： 返回 *storage provider* ， 接下来的实现在 [go-fil-markets](https://github.com/filecoin-project/go-fil-markets) 库。
+
+其中， *go-fil-markets* 是  [存储和检索市场子系统](https://spec.filecoin.io/#section-systems.filecoin_markets) 的实现。
+
+**nodes/modules/storageminer**
+
+```go
+func StorageProvider(minerAddress dtypes.MinerAddress,
+	storedAsk *storedask.StoredAsk,
+	h host.Host, ds dtypes.MetadataDS,
+	mds dtypes.StagingMultiDstore,
+	r repo.LockedRepo,
+	pieceStore dtypes.ProviderPieceStore,
+	dataTransfer dtypes.ProviderDataTransfer,
+	spn storagemarket.StorageProviderNode,
+	df dtypes.StorageDealFilter,
+) (storagemarket.StorageProvider, error) {
+	net := smnet.NewFromLibp2pHost(h)
+	store, err := piecefilestore.NewLocalFileStore(piecefilestore.OsPath(r.Path()))
+	if err != nil {
+		return nil, err
+	}
+
+	opt := storageimpl.CustomDealDecisionLogic(storageimpl.DealDeciderFunc(df))
+
+	return storageimpl.NewProvider(net, namespace.Wrap(ds, datastore.NewKey("/deals/provider")), store, mds, pieceStore, dataTransfer, spn, address.Address(minerAddress), storedAsk, opt)
+}
+```
+
+## store 状态机
+
+下面代码在 go-fil-markets 工程，在创建 *store provider* 的时候，会创建一个状态机 *newProviderStateMachine*
+
+**go-fil-markets@v1.6.2/storagemarket/impl/provider.go**
+
+```go
+func NewProvider(net network.StorageMarketNetwork,
+	ds datastore.Batching,
+	fs filestore.FileStore,
+	multiStore *multistore.MultiStore,
+	pieceStore piecestore.PieceStore,
+	dataTransfer datatransfer.Manager,
+	spn storagemarket.StorageProviderNode,
+	minerAddress address.Address,
+	storedAsk StoredAsk,
+	options ...StorageProviderOption,
+) (storagemarket.StorageProvider, error) {
+	carIO := cario.NewCarIO()
+	pio := pieceio.NewPieceIO(carIO, nil, multiStore)
+
+	h := &Provider{
+		net:          net,
+		spn:          spn,
+		fs:           fs,
+		multiStore:   multiStore,
+		pio:          pio,
+		pieceStore:   pieceStore,
+		conns:        connmanager.NewConnManager(),
+		storedAsk:    storedAsk,
+		actor:        minerAddress,
+		dataTransfer: dataTransfer,
+		pubSub:       pubsub.New(providerDispatcher),
+		readyMgr:     shared.NewReadyManager(),
+	}
+	storageMigrations, err := migrations.ProviderMigrations.Build()
+	if err != nil {
+		return nil, err
+	}
+	h.deals, h.migrateDeals, err = newProviderStateMachine(
+		ds,
+		&providerDealEnvironment{h},
+		h.dispatch,
+		storageMigrations,
+		versioning.VersionKey("1"),
+	)
+	if err != nil {
+		return nil, err
+	}
+	h.Configure(options...)
+
+	// register a data transfer event handler -- this will send events to the state machines based on DT events
+	h.unsubDataTransfer = dataTransfer.SubscribeToEvents(dtutils.ProviderDataTransferSubscriber(h.deals))
+
+	err = dataTransfer.RegisterVoucherType(&requestvalidation.StorageDataTransferVoucher{}, requestvalidation.NewUnifiedRequestValidator(&providerPushDeals{h}, nil))
+	if err != nil {
+		return nil, err
+	}
+
+	err = dataTransfer.RegisterTransportConfigurer(&requestvalidation.StorageDataTransferVoucher{}, dtutils.TransportConfigurer(&providerStoreGetter{h}))
+	if err != nil {
+		return nil, err
+	}
+
+	return h, nil
+}
+```
+
+**go-fil-markets@v1.6.2/storagemarket/impl/provider.go**
+
+```go
+func newProviderStateMachine(ds datastore.Batching, env fsm.Environment, notifier fsm.Notifier, storageMigrations versioning.VersionedMigrationList, target versioning.VersionKey) (fsm.Group, func(context.Context) error, error) {
+	return versionedfsm.NewVersionedFSM(ds, fsm.Parameters{
+		Environment:     env,
+		StateType:       storagemarket.MinerDeal{},
+		StateKeyField:   "State",
+		Events:          providerstates.ProviderEvents,
+		StateEntryFuncs: providerstates.ProviderStateEntryFuncs,
+		FinalityStates:  providerstates.ProviderFinalityStates,
+		Notifier:        notifier,
+	}, storageMigrations, target)
+}
+```
+
+**go-fil-markets@v1.6.2/storagemarket/impl/providerstates/provider_fsm.go**
+
+```go
+var ProviderStateEntryFuncs = fsm.StateEntryFuncs{
+	storagemarket.StorageDealValidating:           ValidateDealProposal,
+	storagemarket.StorageDealAcceptWait:           DecideOnProposal,
+	storagemarket.StorageDealVerifyData:           VerifyData,
+	storagemarket.StorageDealReserveProviderFunds: ReserveProviderFunds,
+	storagemarket.StorageDealProviderFunding:      WaitForFunding,
+	storagemarket.StorageDealPublish:              PublishDeal,
+	storagemarket.StorageDealPublishing:           WaitForPublish,
+	storagemarket.StorageDealStaged:               HandoffDeal,
+	storagemarket.StorageDealAwaitingPreCommit:    VerifyDealPreCommitted,
+	storagemarket.StorageDealSealing:              VerifyDealActivated,
+	storagemarket.StorageDealRejecting:            RejectDeal,
+	storagemarket.StorageDealFinalizing:           CleanupDeal,
+	storagemarket.StorageDealActive:               WaitForDealCompletion,
+	storagemarket.StorageDealFailing:              FailDeal,
+}
+```
+
+ProviderStateEntryFuncs 定义了状态机的行为函数，其中 *HandoffDeal* 函数，会处理被发布的订单。
+
+**go-fil-markets@v1.6.2/storagemarket/impl/providerstates/provider_states.go**
+
+```go
+func HandoffDeal(ctx fsm.Context, environment ProviderDealEnvironment, deal storagemarket.MinerDeal) error {
+	triggerHandoffFailed := func(err error, packingErr error) error {
+		if packingErr == nil {
+			return ctx.Trigger(storagemarket.ProviderEventDealHandoffFailed, err)
+		}
+		packingErr = xerrors.Errorf("packing error: %w", packingErr)
+		err = xerrors.Errorf("%s: %w", err, packingErr)
+		return ctx.Trigger(storagemarket.ProviderEventDealHandoffFailed, err)
+	}
+
+	var packingInfo *storagemarket.PackingResult
+	if deal.PiecePath != "" {
+		// Data for offline deals is stored on disk, so if PiecePath is set,
+		// create a Reader from the file path
+		file, err := environment.FileStore().Open(deal.PiecePath)
+		if err != nil {
+			return ctx.Trigger(storagemarket.ProviderEventFileStoreErrored,
+				xerrors.Errorf("reading piece at path %s: %w", deal.PiecePath, err))
+		}
+
+		// Hand the deal off to the process that adds it to a sector
+		packingInfo, err = handoffDeal(ctx.Context(), environment, deal, file, uint64(file.Size()), deal.Proposal.PieceSize)
+		if err != nil {
+			err = xerrors.Errorf("packing piece at path %s: %w", deal.PiecePath, err)
+			return ctx.Trigger(storagemarket.ProviderEventDealHandoffFailed, err)
+		}
+	} else {
+		// Create a reader to read the piece from the blockstore
+		pieceReader, pieceSize, err, writeErrChan := environment.GeneratePieceReader(deal.StoreID, deal.Ref.Root, shared.AllSelector())
+		if err != nil {
+			err := xerrors.Errorf("reading piece %s from store %d: %w", deal.Ref.PieceCid, deal.StoreID, err)
+			return ctx.Trigger(storagemarket.ProviderEventDealHandoffFailed, err)
+		}
+
+		// Hand the deal off to the process that adds it to a sector
+		var packingErr error
+		packingInfo, packingErr = handoffDeal(ctx.Context(), environment, deal, pieceReader, pieceSize, deal.Proposal.PieceSize)
+
+		// Close the read side of the pipe
+		err = pieceReader.Close()
+		if err != nil {
+			err = xerrors.Errorf("closing reader for piece %s from store %d: %w", deal.Ref.PieceCid, deal.StoreID, err)
+			return triggerHandoffFailed(err, packingErr)
+		}
+
+		// Wait for the write to complete
+		select {
+		case <-ctx.Context().Done():
+			return ctx.Trigger(storagemarket.ProviderEventDealHandoffFailed,
+				xerrors.Errorf("writing piece %s never finished: %w", deal.Ref.PieceCid, ctx.Context().Err()))
+		case err = <-writeErrChan:
+			if err != nil {
+				err = xerrors.Errorf("writing piece %s: %w", deal.Ref.PieceCid, err)
+				return triggerHandoffFailed(err, packingErr)
+			}
+		}
+
+		if packingErr != nil {
+			err = xerrors.Errorf("packing piece %s: %w", deal.Ref.PieceCid, packingErr)
+			return ctx.Trigger(storagemarket.ProviderEventDealHandoffFailed, err)
+		}
+	}
+
+	if err := recordPiece(environment, deal, packingInfo.SectorNumber, packingInfo.Offset, packingInfo.Size); err != nil {
+		err = xerrors.Errorf("failed to register deal data for piece %s for retrieval: %w", deal.Ref.PieceCid, err)
+		log.Error(err.Error())
+		_ = ctx.Trigger(storagemarket.ProviderEventPieceStoreErrored, err)
+	}
+
+	return ctx.Trigger(storagemarket.ProviderEventDealHandedOff)
+}
+```
+
+在 HandoffDeal 函数里面，会调用 handoffDeal，
+
+**go-fil-markets@v1.6.2/storagemarket/impl/providerstates/provider_states.go**
+
+```go
+func handoffDeal(ctx context.Context, environment ProviderDealEnvironment, deal storagemarket.MinerDeal, reader io.Reader, payloadSize uint64, pieceSize abi.PaddedPieceSize) (*storagemarket.PackingResult, error) {
+	// because we use the PadReader directly during AP we need to produce the
+	// correct amount of zeroes
+	// (alternative would be to keep precise track of sector offsets for each
+	// piece which is just too much work for a seldom used feature)
+	paddedReader, err := padreader.NewInflator(reader, payloadSize, pieceSize.Unpadded())
+	if err != nil {
+		return nil, err
+	}
+	return environment.Node().OnDealComplete(
+		ctx,
+		storagemarket.MinerDeal{
+			Client:             deal.Client,
+			ClientDealProposal: deal.ClientDealProposal,
+			ProposalCid:        deal.ProposalCid,
+			State:              deal.State,
+			Ref:                deal.Ref,
+			PublishCid:         deal.PublishCid,
+			DealID:             deal.DealID,
+			FastRetrieval:      deal.FastRetrieval,
+		},
+		pieceSize.Unpadded(),
+		paddedReader,
+	)
+}
+```
+
+其中 environment.Node()， 指定的是 storagemarket.StorageProviderNode ，而 *OnDealComplete* 的实现在 lotus 工程中。
+
+其源码位于工程目录的 markets/storageadapter/provider.go ，在 *OnDealComplete* 中可以看到，会调用 *AddPiece* 方法。
+
+## markets模块
+
+**markets/storageadapter/provider.go**
+
+```go
+func (n *ProviderNodeAdapter) OnDealComplete(ctx context.Context, deal storagemarket.MinerDeal, pieceSize abi.UnpaddedPieceSize, pieceData io.Reader) (*storagemarket.PackingResult, error) {
+	if deal.PublishCid == nil {
+		return nil, xerrors.Errorf("deal.PublishCid can't be nil")
+	}
+
+	sdInfo := api.PieceDealInfo{
+		DealID:       deal.DealID,
+		DealProposal: &deal.Proposal,
+		PublishCid:   deal.PublishCid,
+		DealSchedule: api.DealSchedule{
+			StartEpoch: deal.ClientDealProposal.Proposal.StartEpoch,
+			EndEpoch:   deal.ClientDealProposal.Proposal.EndEpoch,
+		},
+		KeepUnsealed: deal.FastRetrieval,
+	}
+
+	p, offset, err := n.secb.AddPiece(ctx, pieceSize, pieceData, sdInfo)
+	curTime := time.Now()
+	for time.Since(curTime) < addPieceRetryTimeout {
+		if !xerrors.Is(err, sealing.ErrTooManySectorsSealing) {
+			if err != nil {
+				log.Errorf("failed to addPiece for deal %d, err: %v", deal.DealID, err)
+			}
+			break
+		}
+		select {
+		case <-time.After(addPieceRetryWait):
+			p, offset, err = n.secb.AddPiece(ctx, pieceSize, pieceData, sdInfo)
+		case <-ctx.Done():
+			return nil, xerrors.New("context expired while waiting to retry AddPiece")
+		}
+	}
+
+	if err != nil {
+		return nil, xerrors.Errorf("AddPiece failed: %s", err)
+	}
+	log.Warnf("New Deal: deal %d", deal.DealID)
+
+	return &storagemarket.PackingResult{
+		SectorNumber: p,
+		Offset:       offset,
+		Size:         pieceSize.Padded(),
+	}, nil
+}
+```
+
+## storege模块
+
+**storege/selectorblocks/blocks.go**
+
+```go
+func (st *SectorBlocks) AddPiece(ctx context.Context, size abi.UnpaddedPieceSize, r io.Reader, d api.PieceDealInfo) (abi.SectorNumber, abi.PaddedPieceSize, error) {
+	so, err := st.SectorBuilder.SectorAddPieceToAny(ctx, size, r, d)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	// TODO: DealID has very low finality here
+	err = st.writeRef(d.DealID, so.Sector, so.Offset, size)
+	if err != nil {
+		return 0, 0, xerrors.Errorf("writeRef: %w", err)
+	}
+
+	return so.Sector, so.Offset, nil
+}
+```
+
+**storege/mine_sealing.go**
+
+```go
+func (m *Miner) SectorAddPieceToAny(ctx context.Context, size abi.UnpaddedPieceSize, r storage.Data, d api.PieceDealInfo) (api.SectorOffset, error) {
+	return m.sealing.SectorAddPieceToAny(ctx, size, r, d)
+}
+```
+
+接下来　*SectorAddPieceToAny* 会调到　extern 的 storage-sealing 模块。
+
+## extern 
+
+在 *extern* 目录下，有５个模块，包括　
+
+- filecoin-ffi : 包括 worker 任务的核心逻辑，实现语言是rust
+- sector-storage
+- serialization-vectors
+- storage-sealing
+- test-vectors
