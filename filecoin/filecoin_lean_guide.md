@@ -70,3 +70,5 @@ https://github.com/filecoin-project/community-china
 [StarLi_2020源码解读系列](https://blog.csdn.net/starli2020/category_9758801.html?spm=1001.2014.3001.5482)
 
 [石榴矿池李白youtube视频](https://www.youtube.com/channel/UCDPDdczcoVNNM-vWFxNT-9w/featured)
+
+[Filecoin博客(weixin_46596227)](https://blog.csdn.net/weixin_46596227/category_11170000.html)
