@@ -4,8 +4,6 @@
 
 ## 简介
 
-在前篇有讲到，miner-worker 作为服务端进程，执行密封相关的核心任务，而 lotus-miner 进程作为客户端。
-
 lotus-worker 核心任务如下：
 
 - AddPiece

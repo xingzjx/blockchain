@@ -16,7 +16,7 @@ lotus 编译后有三个核心的可执行文件，分别是 **lotus** **lotus-m
 
 - lotus ： daemon，lotus 核心进程，包括启动节点，同步区块，链上交互等功能。
 - lotus-miner： 挖矿的核心进程，会启动一个挖矿节点，其本身包括了 *worker* 的功能。
-- lotus-worker: 包括密封的整个过程，可以分担 *miner* 的相关工作，作为服务端，而 *miner* 作为其客户端。
+- lotus-worker: 包括密封的整个过程，可以分担 *miner* 的相关工作。
 
 其中，lotus-miner 的执行过程大体和 [Filecoin 源码分析：lotus 启动流程](filecoin_source_start_process.md) 相识。
 
