@@ -170,17 +170,27 @@ source ~/.bashrc
 
 ### 准备钱包
 
+回到lotus节点所在机器，创建钱包
+
 ```bash
 
 lotus wallet new bls
 
 ```
 
-给钱包发送代币
+在有代币的钱包节点，给lotus节点钱包发送代币
 
 ```bash
 
 lotus wallet send xxxxxxxx
+
+```
+
+确保矿工初始化的地址有余额，查看余额：
+
+```bash
+
+lotus wallet list
 
 ```
 
