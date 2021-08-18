@@ -109,7 +109,7 @@ lotus sync wait
 ```bash
 lotus auth api-info --perm admin
 ```
-返回结果：FULLNODE_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.wVAsdzJtfqB3ep_QLa0iHRIbM7It0h0CGKbusqbUvqA:/ip4/1.182.90.26/tcp/1234/http
+返回结果：FULLNODE_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.wVAsdzJtfqB3ep_QLa0iHRIbM7It0h0CGKbusqbUvqA:/ip4/xx.xx.xx.xx/tcp/1234/http
 
 ## 部署miner 
 
@@ -126,7 +126,7 @@ lotus auth api-info --perm admin
 编辑用户目录的.bashrc文件，添加配置：
 
 ```bashrc
-export FULLNODE_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.wVAsdzJtfqB3ep_QLa0iHRIbM7It0h0CGKbusqbUvqA:/ip4/1.182.90.26/tcp/1234/http　# 在上一步lotus节点获取
+export FULLNODE_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.wVAsdzJtfqB3ep_QLa0iHRIbM7It0h0CGKbusqbUvqA:/ip4/xx.xx.xx.xx/tcp/1234/http　# 在上一步lotus节点获取
 export LOTUS_SKIP_GENESIS_CHECK=_yes_
 export IPFS_GATEWAY=https://proof-parameters.s3.cn-south-1.jdcloud-oss.com/ipfs/
 export RUST_BACKTRACE=full
@@ -166,7 +166,7 @@ lotus wallet send xxxxxxxx
 
 ### 初始化
 
-如果是开发网络，定义：--sector-size=2KiB，如果是mainnet或者calibnet，则--sector-size=３2GiB
+如果是开发网络，定义：--sector-size=2KiB，如果是mainnet或者calibnet测试网，则--sector-size=３2GiB
 
 ```bash
 
@@ -217,6 +217,8 @@ lotus-miner run --nosync >> ~/log/miner.log 2>&1 &
 ```bash
 lotus-miner auth api-info --perm admin
 ```
+
+返回：MINER_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.ERQweeN9CPFQA8eHG9-MBK_dQtiuucuRIl-hDPnlrcA:/ip4/xx.xx.xx.xx/tcp/2345/http
 
 在worker机器，按照部署lotus的步骤，确保准备好了lotus-worker的运行环境。
 
@@ -270,7 +272,9 @@ lotus-worker run --addpiece=true --precommit1=true --unseal=true --precommit2=tr
 回到miner节点所在机器，
 
 ```bash
+
 lotus-miner sectors pledge
+
 ```
 
 
