@@ -1,5 +1,27 @@
 # Ubuntu 下部署 FileCoin 集群挖矿
 
+- [Ubuntu 下部署 FileCoin 集群挖矿](#ubuntu-下部署-filecoin-集群挖矿)
+  - [准备工作](#准备工作)
+  - [部署lotus](#部署lotus)
+    - [安装lotus](#安装lotus)
+    - [定义环境变量](#定义环境变量)
+    - [启动lotus](#启动lotus)
+    - [等待同步结果](#等待同步结果)
+    - [获取lotus节点token](#获取lotus节点token)
+  - [部署miner](#部署miner)
+    - [安装miner](#安装miner)
+    - [定义miner环境变量](#定义miner环境变量)
+    - [准备钱包](#准备钱包)
+    - [初始化](#初始化)
+    - [编辑配置文件](#编辑配置文件)
+    - [启动矿工](#启动矿工)
+    - [获取矿工token](#获取矿工token)
+  - [部署worker](#部署worker)
+    - [安装worker](#安装worker)
+    - [定义worker环境变量](#定义worker环境变量)
+    - [启动worker](#启动worker)
+    - [质押扇区](#质押扇区)
+
 ## 准备工作
 
 运行 lotus 节点需要8-core CPU and 32 GiB RAM
@@ -15,9 +37,9 @@ https://docs.filecoin.io/get-started/lotus/installation/#minimal-requirements
 
 ## 部署lotus
 
-在第一台机器
+在第一台机器:lotus节点
 
-### 安装
+### 安装lotus
 
 安装依赖
 
@@ -82,16 +104,29 @@ lotus sync wait
 
 ```
 
+### 获取lotus节点token
+
+```bash
+lotus auth api-info --perm admin
+```
+返回结果：FULLNODE_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.wVAsdzJtfqB3ep_QLa0iHRIbM7It0h0CGKbusqbUvqA:/ip4/1.182.90.26/tcp/1234/http
+
 ## 部署miner 
 
-在第二台机器
+在第二台机器：miner节点
 
-### 定义环境变量
+### 安装miner
+
+参考lotus机器，安装依赖以及建立软链接
+
+拷贝lotus-miner到　/usr/local/bin，并且添加执行权限
+
+### 定义miner环境变量
 
 编辑用户目录的.bashrc文件，添加配置：
 
 ```bashrc
-
+export FULLNODE_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.wVAsdzJtfqB3ep_QLa0iHRIbM7It0h0CGKbusqbUvqA:/ip4/1.182.90.26/tcp/1234/http　# 在上一步lotus节点获取
 export LOTUS_SKIP_GENESIS_CHECK=_yes_
 export IPFS_GATEWAY=https://proof-parameters.s3.cn-south-1.jdcloud-oss.com/ipfs/
 export RUST_BACKTRACE=full
@@ -112,10 +147,6 @@ export FIL_PROOFS_USE_MULTICORE_SDR=1
 ```bash
 source ~/.bashrc
 ```
-
-### 安装
-
-拷贝lotus-miner到　/usr/local/bin，并且添加执行权限
 
 ### 准备钱包
 
@@ -179,14 +210,7 @@ vim $LOTUS_MINER_PATH/config.toml
 lotus-miner run --nosync >> ~/log/miner.log 2>&1 &
 ```
 
-## 部署worker
-
-在另外一台机器或者lotus所在机器都可以启动worker，本例以另外一台机器为例，也就是第三台机器。
-
-### 
-
-
-### 定义环境变量
+### 获取矿工token
 
 在　miner　所在机器获取　MINER_API_INFO　变量
 
@@ -196,10 +220,23 @@ lotus-miner auth api-info --perm admin
 
 在worker机器，按照部署lotus的步骤，确保准备好了lotus-worker的运行环境。
 
+## 部署worker
+
+在另外一台机器或者lotus所在机器都可以启动worker，本例以另外一台机器为例，也就是第三台机器：woker节点。
+
+### 安装worker
+
+参考lotus机器，安装依赖以及建立软链接
+
+拷贝lotus-worker到　/usr/local/bin，并且添加执行权限
+
+
+### 定义worker环境变量
+
 配置好环境变量
 
 ```bashrc
-export MINER_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.ERQweeN9CPFQA8eHG9-MBK_dQtiuucuRIl-hDPnlrcA:/ip4/xx.xx.xx.xx/tcp/2345/http
+export MINER_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.ERQweeN9CPFQA8eHG9-MBK_dQtiuucuRIl-hDPnlrcA:/ip4/xx.xx.xx.xx/tcp/2345/http　# 在上一步lotus-miner节点获取
 export LOTUS_SKIP_GENESIS_CHECK=_yes_
 export IPFS_GATEWAY=https://proof-parameters.s3.cn-south-1.jdcloud-oss.com/ipfs/
 export RUST_BACKTRACE=full
@@ -222,10 +259,6 @@ export FIL_PROOFS_USE_MULTICORE_SDR=1
 source ~/.bashrc
 ```
 
-### 安装
-
-拷贝lotus-worker到　/usr/local/bin，并且添加执行权限
-
 ### 启动worker
 
 ```bash
@@ -234,7 +267,7 @@ lotus-worker run --addpiece=true --precommit1=true --unseal=true --precommit2=tr
 
 ### 质押扇区
 
-回到miner所在机器，
+回到miner节点所在机器，
 
 ```bash
 lotus-miner sectors pledge
