@@ -7,6 +7,7 @@
     - [定义环境变量](#定义环境变量)
     - [启动lotus](#启动lotus)
     - [等待同步结果](#等待同步结果)
+    - [编辑lotus配置](#编辑lotus配置)
     - [获取lotus节点token](#获取lotus节点token)
   - [部署miner](#部署miner)
     - [安装miner](#安装miner)
@@ -103,6 +104,25 @@ lotus daemon >> ~/log/lotus.log 2>&1 &
 lotus sync wait
 
 ```
+
+### 编辑lotus配置
+
+```bash
+
+vim $LOTUS_PATH/config.toml
+
+```
+
+编辑配置文件，保存
+
+```toml
+[API]
+  ListenAddress = "/ip4/xx.xx.xx.xx/tcp/2345/http"
+  RemoteListenAddress = "xx.xx.xx.xx:2345"
+
+```
+
+127.0.0.1改成本机ip地址，如果是局域网则内网ip,如果是公网则公网ip。
 
 ### 获取lotus节点token
 
