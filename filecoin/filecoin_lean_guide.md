@@ -7,6 +7,7 @@
     - [开发文档](#开发文档)
   - [中文社区整理](#中文社区整理)
   - [其它资料](#其它资料)
+  - [关于挖矿和矿池](#关于挖矿和矿池)
 
 
 首先申明，学习任何技术，都应该先以官方资料为主，其它资料作为辅助。还有看源码之前，先研究其设计文档，官方文档。
@@ -72,3 +73,13 @@ https://github.com/filecoin-project/community-china
 [石榴矿池李白youtube视频](https://www.youtube.com/channel/UCDPDdczcoVNNM-vWFxNT-9w/featured)
 
 [Filecoin博客(weixin_46596227)](https://blog.csdn.net/weixin_46596227/category_11170000.html)
+
+## 关于挖矿和矿池
+
+filpool 矿池
+
+[Filecoin的矿池之路](https://www.jinse.com/news/blockchain/643989.html)
+
+[关于Filecoin矿池的技术分享视频](https://www.bilibili.com/video/av840003306/)
+
+[filecoin 单节点挖矿](https://nad128668.medium.com/comprehensive-guide-to-install-filecoin-mining-rig-8c95cb9613dc)

@@ -52,24 +52,14 @@ sudo tar -xzf lotus_v1.10.0_linux-amd64.tar.gz -C /usr/local/bin/
 
 ```bash
 
-lotus daemon
+lotus daemon >> ~/log/lotus.log 2>&1 &
 
 ```
 
-### 查看同步状态
+### 查看同步
 
 ```bash 
 
-lotus sync status
+lotus sync wait
 
 ```
-
-# 关于挖矿和矿池
-
-filpool 矿池
-
-[Filecoin的矿池之路](https://www.jinse.com/news/blockchain/643989.html)
-
-[关于Filecoin矿池的技术分享视频](https://www.bilibili.com/video/av840003306/)
-
-[filecoin 单节点挖矿](https://nad128668.medium.com/comprehensive-guide-to-install-filecoin-mining-rig-8c95cb9613dc)
