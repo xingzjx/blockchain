@@ -117,8 +117,8 @@ vim $LOTUS_PATH/config.toml
 
 ```toml
 [API]
-  ListenAddress = "/ip4/xx.xx.xx.xx/tcp/2345/http"
-  RemoteListenAddress = "xx.xx.xx.xx:2345"
+  ListenAddress = "/ip4/xx.xx.xx.xx/tcp/1234/http"
+  RemoteListenAddress = "xx.xx.xx.xx:1234"
 
 ```
 
