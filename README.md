@@ -76,7 +76,11 @@
 
 [Filecoin 源码分析：Worker核心流程](./filecoin/filecoin_source_worker_process.md)
 
-[Filecoin 源码分析：AddPiece](./filecoin/filecoin_source_addpiece.md)
+[Filecoin 源码解读：密封核心方法执行流程](./filecoin/filecoin_source_seal_method_process.md)
+
+[Filecoin 源码解读：PreCommit1](./filecoin/filecoin_source_precommit1.md)
+
+[Filecoin 源码解读：PreCommit2](./filecoin/filecoin_source_precommit2.md)
 
 [Filecoin 白皮书中文版本](./filecoin/whitebook/filecoin_whitepaper_cn.md)
 
