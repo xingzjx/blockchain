@@ -10,8 +10,8 @@
 
 P2包含两个步骤：
 
-- 构建Colum Hash：在SDR图上计算哈兮值，使用的哈兮算法是Poseidon(波塞冬)
-- 构建Tree r last：和Colum Hash的构建过程一样，只不过参数不一样
+- **generating tree c**： 构建Colum Hash，在SDR图上计算哈兮值，使用的哈兮算法是Poseidon(波塞冬)
+- **generating tree r last**：构建Tree r last，和Colum Hash的构建过程一样，只不过参数不一样
 
 **filecoin-proofs/src/api/seal.rs**
 
