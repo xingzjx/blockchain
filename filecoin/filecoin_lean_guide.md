@@ -74,6 +74,8 @@ https://github.com/filecoin-project/community-china
 
 [Filecoin博客(weixin_46596227)](https://blog.csdn.net/weixin_46596227/category_11170000.html)
 
+[如何搭建大规模Filecoin集群](https://mp.weixin.qq.com/s/koJ5QjOURT7ZS-WO60m-Dw)
+
 ## 关于挖矿和矿池
 
 filpool 矿池
