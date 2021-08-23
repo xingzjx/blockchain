@@ -82,6 +82,10 @@
 
 [Filecoin 源码解读：PreCommit2](./filecoin/filecoin_source_precommit2.md)
 
+[Filecoin 源码解读：Commit1](./filecoin/filecoin_source_commit1.md)
+
+[Filecoin 源码解读：Commit2](./filecoin/filecoin_source_commit2.md)
+
 [Filecoin 白皮书中文版本](./filecoin/whitebook/filecoin_whitepaper_cn.md)
 
 [Filecoin 钱包功能总结](./filecoin/filecoin_wallet.md)

@@ -1,5 +1,9 @@
 # Filecoin 源码解读：PreCommit1
 
+源码工程：rust-fil-proofs
+
+版本号：９.０
+
 ## 简介
 
 PreCommit1是密封过程中的核心方法，是官方 *Stacked DRG* 算法的具体实现步骤部分，这个过程会用到CPU计算生成节点和哈兮值。
