@@ -37,9 +37,11 @@ wget https://github.com/ethsana/sana/blob/master/packaging/bee.yaml
 
 # ...省略
 db-open-files-limit: 2000
-debug-api-addr: 0.0.0.0:1635
+api-addr: :10001 # ，默认1633
+debug-api-addr: 0.0.0.0:10003 # 默认1635
+p2p-addr: :10002 # 默认1634
 full-node: true
-nat-addr: "xx.xx.xx.xx:1634" # 主机的公网ip地址
+nat-addr: "xx.xx.xx.xx:10002" # 主机的公网ip地址
 password: "your-password"
 password-file: /data/data0/sana/data/password
 data-dir: /data/data0/sana/data
