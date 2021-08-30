@@ -104,3 +104,5 @@ ant-dashboard
 参考：
 
 [SANA挖矿教程](https://www.yuque.com/shirendeyueliang/pv3y6w/rgihw5#OI55u)
+
+[SANA一键部署](https://github.com/espoir1989/sana-install)
