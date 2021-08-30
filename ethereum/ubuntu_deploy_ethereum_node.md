@@ -126,6 +126,8 @@ miner.setEtherbase(eth.coinbase)
 
 ## 启动主网
 
+### 命令行启动
+
 ```zsh
 
 sudo geth -rpc --datadir  "/root/eth/data"
@@ -148,13 +150,31 @@ sudo netstat -tlpn
 
 ```
 
-docker方式启动
+### docker方式启动
 
 sudo docker run -it -d --name eth_node -v "/home/xingzjx/eth/data":/root/.ethereum  -p 8545:8545 -p 8546:8546 -p 30303:30303 ethereum/client-go --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 --http.port 8545  console
 
 参考：
 
 [使用Docker Images ethereum/client-go 搭建以太坊节点](https://blog.csdn.net/weixin_30697239/article/details/96857374)
+
+### config方式启动
+
+生成配置文件
+
+```bash
+
+geth --goerli --datadir  "/data/data0/goerli/data" --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 --http.port 8545 --ws.port 8546 --port 30303  dumpconfig > goerli.toml
+
+```
+
+启动网络
+
+```
+
+sudo geth --config goerli.toml
+
+```
 
 
 ## 进入控制台
