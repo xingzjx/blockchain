@@ -50,6 +50,8 @@ swap-endpoint: http://xx.xx.xx.xx:端口 # xDai网络地址
 
 ```
 
+注意：swap-endpoint的地址建议自己部署xDai网络节点，使用第三方节点在运行一段时间后会停止，如果部署大量节点还会拒绝连接。
+
 ### 启动节点
 
 ```bash
@@ -106,3 +108,5 @@ ant-dashboard
 [SANA挖矿教程](https://www.yuque.com/shirendeyueliang/pv3y6w/rgihw5#OI55u)
 
 [SANA一键部署](https://github.com/espoir1989/sana-install)
+
+[SANA白皮书](https://docs.ethsana.org/sana_yellow_paper.pdf)

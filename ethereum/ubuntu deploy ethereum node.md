@@ -16,7 +16,7 @@
 sudo apt-get update
 sudo apt-get install software-properties-common
 sudo add-apt-repository -y ppa:ethereum/ethereum
-sudo add-apt-repository -y ppa:ethereum/ethereum-dev
+# sudo add-apt-repository -y ppa:ethereum/ethereum-dev
 sudo apt-get update
 sudo apt-get install ethereum
 ```
@@ -136,7 +136,7 @@ sudo geth -rpc --datadir  "/root/eth/data"
 
 ```zsh
 
-sudo nohup geth --datadir  "/data/data7/eth/data" --goerli --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 &
+sudo nohup geth --goerli --datadir  "/data/data0/goerli/data" --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 --http.port 8545 --ws.port 8546 --port 30303 &
 
 ```
 
@@ -150,7 +150,7 @@ sudo netstat -tlpn
 
 docker方式启动
 
-sudo docker run -it -d --name eth_node -v "/home/xingzjx/eth/data":/root/.ethereum  -p 8545:8545 -p 8546:8546 -p 30303:30303 ethereum/client-go --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 console
+sudo docker run -it -d --name eth_node -v "/home/xingzjx/eth/data":/root/.ethereum  -p 8545:8545 -p 8546:8546 -p 30303:30303 ethereum/client-go --ws  --ws.addr 0.0.0.0 --rpc --rpcaddr 0.0.0.0 --http.port 8545  console
 
 参考：
 
