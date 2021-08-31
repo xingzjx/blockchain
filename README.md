@@ -43,6 +43,8 @@
 
 [Ubuntu openethereum 源码编译](./ethereum/openethereum_source_compile.md)
 
+[multisender 批量转账合约分析](./ethereum/multisender_constract.md)
+
 ## Swarm
 
 [Swarm 学习指南](./swarm/swarm%20learn%20guide.md)
@@ -62,6 +64,12 @@
 [解读 : Swarm 技术 AMA - 如何运行 Bee 节点](./swarm/live/Interpretation_How_to_run_Bee_nodes.md)
 
 [解读：币圈李白 Swarm主网技术分析 20210622](./swarm/live/interpretation_libai_Swarm_Mainnet_Analis_%2020210622.md)
+
+[NBZZ　学习资料汇总](./swarm/swarm_learn_guide.md)
+
+[NBZZ　部署教程](./swarm/nbzz_deployment.md)
+
+[Sana 部署和运维教程](./swarm/sana_deploy_and_operator.md)
 
 
 ## Filecoin
@@ -97,3 +105,7 @@
 ## 共识机制
 
 [POSDAO 共识算法学习指南](./consensus/posdao_learn_guide.md)
+
+## 编程语言
+
+[Rust 入门学习](./pl/rust/rust_learn_guid.md)
