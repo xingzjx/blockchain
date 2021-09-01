@@ -10,3 +10,5 @@
 nbzz批量部署：https://www.yuque.com/docs/share/fd692b38-f5e9-4c68-a6e1-c299ac182d7b
 
 nbzz推特：https://twitter.com/Leet_Squad
+
+二期空投部署教程：https://docs.qq.com/doc/DRXBnS2F3UWhPdGVl
