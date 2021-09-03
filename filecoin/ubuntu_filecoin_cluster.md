@@ -245,7 +245,9 @@ lotus-miner run --nosync >> ~/log/miner.log 2>&1 &
 在　miner　所在机器获取　MINER_API_INFO　变量
 
 ```bash
-lotus-miner auth api-info --perm admin
+
+nohup lotus-miner auth api-info --perm admin
+
 ```
 
 返回：MINER_API_INFO=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.ERQweeN9CPFQA8eHG9-MBK_dQtiuucuRIl-hDPnlrcA:/ip4/xx.xx.xx.xx/tcp/2345/http
@@ -294,7 +296,9 @@ source ~/.bashrc
 ### 启动worker
 
 ```bash
-lotus-worker run --addpiece=true --precommit1=true --unseal=true --precommit2=true --commit=true  >> ~/log/worker.log 2>&1 &
+
+nohup lotus-worker run --addpiece=true --precommit1=true --unseal=true --precommit2=true --commit=true  >> ~/log/worker.log 2>&1 &
+
 ```
 
 ### 质押扇区
