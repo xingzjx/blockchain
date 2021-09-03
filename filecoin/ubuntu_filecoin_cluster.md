@@ -237,7 +237,9 @@ vim $LOTUS_MINER_PATH/config.toml
 ### 启动矿工
 
 ```bash
-lotus-miner run --nosync >> ~/log/miner.log 2>&1 &
+
+nohup lotus-miner run --nosync >> ~/log/miner.log 2>&1 &
+
 ```
 
 ### 获取矿工token
@@ -246,7 +248,7 @@ lotus-miner run --nosync >> ~/log/miner.log 2>&1 &
 
 ```bash
 
-nohup lotus-miner auth api-info --perm admin
+lotus-miner auth api-info --perm admin
 
 ```
 
@@ -297,7 +299,7 @@ source ~/.bashrc
 
 ```bash
 
-nohup lotus-worker run --addpiece=true --precommit1=true --unseal=true --precommit2=true --commit=true  >> ~/log/worker.log 2>&1 &
+lotus-worker run --addpiece=true --precommit1=true --unseal=true --precommit2=true --commit=true  >> ~/log/worker.log 2>&1 &
 
 ```
 
