@@ -299,7 +299,7 @@ source ~/.bashrc
 
 ```bash
 
-lotus-worker run --addpiece=true --precommit1=true --unseal=true --precommit2=true --commit=true  >> ~/log/worker.log 2>&1 &
+nohup lotus-worker run --addpiece=true --precommit1=true --unseal=true --precommit2=true --commit=true  >> ~/log/worker.log 2>&1 &
 
 ```
 
