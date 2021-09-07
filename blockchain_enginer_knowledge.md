@@ -131,3 +131,13 @@ Linux方面需要掌握的技能划分如下：
 ### 分布式系统
 
 掌握分布式系统相关理论，掌握常见的分布式系统，比如分布式存储，分布式计算，分布式事务，消息队列，分布式协调。
+
+参考：
+
+[分布式系统简介和学习路线](https://blog.csdn.net/forwardto9/article/details/81868716)
+
+书籍：
+
+[数据密集型应用系统设计](https://www.zhihu.com/question/268832961)
+
+[分布式系统原理与范式](https://blog.csdn.net/LIUXINKUN/article/details/51088124)
