@@ -1,8 +1,8 @@
-# Mac 下部署 Filecoin 源码
+# Mac 编译和部署 Filecoin 源码
 
 环境：Mac air M1 机器
 
-- [Mac 下部署 Filecoin 源码](#mac-下部署-filecoin-源码)
+- [Mac 编译和部署 Filecoin 源码](#mac-编译和部署-filecoin-源码)
   - [X-Code CLI tools](#x-code-cli-tools)
   - [brew 安装依赖包](#brew-安装依赖包)
   - [构建源码](#构建源码)
