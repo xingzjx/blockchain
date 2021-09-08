@@ -2,6 +2,23 @@
 
 环境：Mac air M1 机器
 
+- [Mac 下部署 Filecoin 源码](#mac-下部署-filecoin-源码)
+  - [X-Code CLI tools](#x-code-cli-tools)
+  - [brew 安装依赖包](#brew-安装依赖包)
+  - [构建源码](#构建源码)
+    - [克隆代码](#克隆代码)
+    - [更新子模块](#更新子模块)
+    - [设置环境变量](#设置环境变量)
+    - [编译 filecoin-ffi 子模块](#编译-filecoin-ffi-子模块)
+    - [编译 lotus](#编译-lotus)
+  - [安装](#安装)
+  - [启动节点](#启动节点)
+  - [问题汇总](#问题汇总)
+    - [编译的 rust 版本不一致](#编译的-rust-版本不一致)
+    - [ld: library not found for -lhwloc](#ld-library-not-found-for--lhwloc)
+    - [building for macOS-arm64 but attempting to link with file built for macOS-x86_64](#building-for-macos-arm64-but-attempting-to-link-with-file-built-for-macos-x86_64)
+  - [git 下载慢](#git-下载慢)
+
 
 ## X-Code CLI tools
 
@@ -101,6 +118,31 @@ make lotus
 sudo make install
 
  ```
+
+## 启动节点
+
+配置环境变量，编辑home目录下.bashrc配置文件
+
+```.bashrc
+
+export LOTUS_PATH=~/.lotus
+export LOTUS_MINER_PATH=~/.lotusminer
+export LOTUS_SKIP_GENESIS_CHECK=_yes_
+export IPFS_GATEWAY=https://proof-parameters.s3.cn-south-1.jdcloud-oss.com/ipfs/
+export LOTUS_WORKER_PATH=~/.lotusworker
+export RUST_BACKTRACE=full
+export RUST_LOG=Trace
+export FIL_PROOFS_USE_MULTICORE_SDR=1
+
+```
+
+然后启动
+
+```bash
+
+lotus daemon 
+
+```
 
 ## 问题汇总
 
