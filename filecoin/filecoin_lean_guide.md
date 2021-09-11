@@ -8,6 +8,7 @@
   - [中文社区整理](#中文社区整理)
   - [其它资料](#其它资料)
   - [关于挖矿和矿池](#关于挖矿和矿池)
+  - [源码解读](#源码解读)
 
 
 首先申明，学习任何技术，都应该先以官方资料为主，其它资料作为辅助。还有看源码之前，先研究其设计文档，官方文档。
@@ -87,3 +88,9 @@ filpool 矿池
 [关于Filecoin矿池的技术分享视频](https://www.bilibili.com/video/av840003306/)
 
 [filecoin 单节点挖矿](https://nad128668.medium.com/comprehensive-guide-to-install-filecoin-mining-rig-8c95cb9613dc)
+
+## 源码解读
+
+[lotus-4 代码详解之miner调度及work处理](https://blog.csdn.net/qingu/article/details/106693387)
+
+[Filecoin任务调度算法详解](https://zhuanlan.zhihu.com/p/158701820)
