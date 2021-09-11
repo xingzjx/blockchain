@@ -76,6 +76,8 @@ https://github.com/filecoin-project/community-china
 
 [如何搭建大规模Filecoin集群](https://mp.weixin.qq.com/s/koJ5QjOURT7ZS-WO60m-Dw)
 
+[集群最大化利用资源增长算力方案](https://www.yuque.com/docs/share/8eae8a0b-e161-4a57-bc4c-11d7b2f13369)
+
 ## 关于挖矿和矿池
 
 filpool 矿池
