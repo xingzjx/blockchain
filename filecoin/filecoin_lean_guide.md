@@ -79,6 +79,8 @@ https://github.com/filecoin-project/community-china
 
 [集群最大化利用资源增长算力方案](https://www.yuque.com/docs/share/8eae8a0b-e161-4a57-bc4c-11d7b2f13369)
 
+[mixboot lotus 经验分享](https://blog.csdn.net/u010953692/category_9573142.html?spm=1001.2014.3001.5482)
+
 ## 关于挖矿和矿池
 
 filpool 矿池

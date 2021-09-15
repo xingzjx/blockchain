@@ -41,3 +41,21 @@ lsof -i:1234
 ```
 
 然后，找到进程id，使用 kill 命令停止进程。
+
+## cant't find -lhwloc
+
+确认已经安装hwloc依赖：
+
+```bash
+
+sudo apt install hwloc libhwloc-dev  -y && sudo apt upgrade -y
+
+```
+
+然后，建立软链接
+
+```bash
+
+ln -s /usr/lib/x86_64-linux-gnu/libhwloc.so.15 /usr/lib/x86_64-linux-gnu/libhwloc.so.5
+
+```
