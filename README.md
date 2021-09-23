@@ -71,8 +71,12 @@
 
 [Sana 部署和运维教程](./swarm/sana_deploy_and_operator.md)
 
+[Sana 源码解读：挖矿原理](./swarm/sana_source_mine.md)
+
 
 ## Filecoin
+
+[Filecoin 学习指南和资料整理](./filecoin/filecoin_lean_guide.md)
 
 [Filecoin 源码解读：导读](./filecoin/filecoin_source_guide.md)
 
@@ -93,6 +97,8 @@
 [Filecoin 源码解读：Commit1](./filecoin/filecoin_source_commit1.md)
 
 [Filecoin 源码解读：Commit2](./filecoin/filecoin_source_commit2.md)
+
+[Filecoin 源码解读：调度器](./filecoin/filecoin_source_schedue.md)
 
 [Filecoin 白皮书中文版本](./filecoin/whitebook/filecoin_whitepaper_cn.md)
 
