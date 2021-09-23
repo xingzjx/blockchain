@@ -47,9 +47,9 @@
 
 ## Swarm
 
-[Swarm 学习指南](./swarm/swarm%20learn%20guide.md)
+[Swarm 学习指南](./swarm/swarm_learn_guide.md)
 
-[Swarm 源码解读: SWAP 合约](./swarm/bee_source-smart_contract.md)
+[Swarm 源码解读: SWAP 合约](./swarm/bee_source_swap_contract.md)
 
 [Swarm 源码解读：P2P 网络](./swarm/bee_source_p2p.md)
 
@@ -57,7 +57,7 @@
 
 [Swarm 源码解读：智能合约概要](./swarm/bee_source_contract_guide.md)
 
-[Swarm 白皮书中文](./swarm/swarm_white_book_cn.md)
+[Swarm 白皮书中文](./swarm/whitepager/swarm_whitebook_cn.md)
 
 [ubuntu docker-compose 部署100个bee节点](./swarm/ubuntu%20docker-compose%20multi%20swarm.md)
 
@@ -100,7 +100,7 @@
 
 [Mac 编译和部署 Filecoin](./filecoin/mac_compile_deploy_filecoin.md)
 
-[Ubuntu 部署 Filecoin 节点](./filecoin/ubuntu_deploy_filecoin.md)
+[Ubuntu 部署 Filecoin 节点](./filecoin/ubuntu_deploy_lotus_node.md)
 
 ## 共识机制
 
