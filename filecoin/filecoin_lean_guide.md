@@ -91,6 +91,8 @@ filpool 矿池
 
 [filecoin 单节点挖矿](https://nad128668.medium.com/comprehensive-guide-to-install-filecoin-mining-rig-8c95cb9613dc)
 
+[币圈李白 如何做好Filecoin联合挖矿 20210921](https://youtu.be/jcJnwQcj1XQ)
+
 ## 源码解读
 
 [lotus-4 代码详解之miner调度及work处理](https://blog.csdn.net/qingu/article/details/106693387)
