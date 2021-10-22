@@ -69,7 +69,11 @@ https://github.com/filecoin-project/community-china
 
 [Filecoin运维系列(小一辈无产阶级码农)](https://www.r9it.com/)
 
+[原语云lotus部署文档](https://docs.yycloud.pro/)
+
 [StarLi_2020源码解读系列](https://blog.csdn.net/starli2020/category_9758801.html?spm=1001.2014.3001.5482)
+
+[Filecoin — What’s Window PoST?-StarLi](https://starli.medium.com/filecoin-whats-window-post-7361bfbad755)
 
 [石榴矿池李白youtube视频](https://www.youtube.com/channel/UCDPDdczcoVNNM-vWFxNT-9w/featured)
 
