@@ -1,5 +1,6 @@
 # Filecoin 源码解读：Wd-Post调用流程
 
+
 源码分析环境： v1.12.0-rc2
 
 Filecoin网络里，时空证明（POST），分为两种类型，一个是 window post(简称wdpost)，一个是 winning post(简称wnpost)。
