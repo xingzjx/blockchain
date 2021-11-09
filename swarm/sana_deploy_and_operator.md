@@ -103,6 +103,14 @@ ant-dashboard
 
 在界面配置自己节点的公网IP和端口号。
 
+## docker 
+
+```bash
+
+sudo docker run -d --cpus=0.5 --memory=512M --restart=always -p 1933:1633 -p 1934:1634 -p 1935:1635 -v ~/sana/bee.yaml:/home/sana/ant.yaml -v /data/data0/sana/data4:/home/sana/.sana  --name sana4 yourdocker/ant:v0.1.3 start --verbosity 5 --full-node --config /home/sana/ant.yaml --debug-api-enable
+
+```
+
 参考：
 
 [SANA挖矿教程](https://www.yuque.com/shirendeyueliang/pv3y6w/rgihw5#OI55u)
