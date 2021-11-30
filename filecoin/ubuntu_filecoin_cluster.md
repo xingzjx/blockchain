@@ -53,8 +53,7 @@ sudo apt install mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config cu
 然后建立软连接
 
 ```bash
-
-ln -s /usr/lib/x86_64-linux-gnu/libhwloc.so.15 /usr/lib/x86_64-linux-gnu/libhwloc.so.5
+sudo ln -s /usr/lib/x86_64-linux-gnu/libhwloc.so.5.7.6 /usr/lib/x86_64-linux-gnu/libhwloc.so.15
 
 ```
 
