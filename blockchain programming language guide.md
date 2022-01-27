@@ -49,7 +49,9 @@
 
    [Rust官方文档](https://www.rust-lang.org/zh-CN/tools/install)
 
-   [Rust 程序设计语言](https://kaisery.github.io/trpl-zh-cn/title-page.html)
+   [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
+
+   [rust 程序设计语言中文](https://kaisery.github.io/trpl-zh-cn/title-page.html)
 
 # solidity语言
 

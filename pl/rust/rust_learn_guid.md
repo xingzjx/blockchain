@@ -78,3 +78,5 @@ registry = "https://mirrors.ustc.edu.cn/crates.io-index"
 参考链接：http://mirrors.ustc.edu.cn/help/crates.io-index.html
 
 [The Rust Programming Language](https://doc.rust-lang.org/book/title-page.html)
+
+[rust 程序设计语言中文](https://kaisery.github.io/trpl-zh-cn/title-page.html)
