@@ -35,6 +35,8 @@
 
   [Go语言圣经 《The Go Programming Language》 中文版本](https://docs.hacknode.org/gopl-zh/index.html)
 
+  [Go语言圣经（中文版）](http://books.studygolang.com/gopl-zh/)
+
   [Go 语言设计与实现](https://draveness.me/golang/)
 
   [Go进阶训练营](https://u.geekbang.org/subject/go?utm_source=time_web&utm_medium=menu&utm_term=timewebmenu&utm_identify=geektime&utm_content=menu&utm_campaign=timewebmenu&gk_cus_user_wechat=university)
