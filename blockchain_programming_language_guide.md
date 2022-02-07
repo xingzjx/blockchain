@@ -25,7 +25,14 @@
 
   &emsp;&emsp;前端交互模块，主要了解h5前端，Android，IOS等。主要涉及语言javascript，java，swift。这部分可以了解，不需要重点研究。
 
-# go语言
+
+# 语言列表
+
+区块链开发中，建议学习和深入rust,golang,solidiy以及javascript几种语言。
+
+其中，底层开发或者公链以及联盟链开发建议偏向rust和golang,如果是智能合约，偏向rust和solidiy以及javascript。
+
+## go语言
 
   &emsp;&emsp;Go（又称 Golang）是 Google 开发的一种静态强类型、编译型语言。Go 语言语法与 C 相近，但功能上有：内存安全，GC（垃圾回收），并发计算等。
 
@@ -45,7 +52,7 @@
 
   [go runtime 简析](https://zhuanlan.zhihu.com/p/111370792)
 
-# rust语言
+## rust语言
 
    &emsp;&emsp;Rust是类似于c语言的开发语言，和Go语言也比较接近，目前在Android系统层开发也引入了Rust语言的支持。在区块链项目中大量用到了Rust语言。比如filecoin以及波卡生态。
 
@@ -55,9 +62,17 @@
 
    [rust 程序设计语言中文](https://kaisery.github.io/trpl-zh-cn/title-page.html)
 
-# solidity语言
+## solidity语言
 
-# java语言
+[solidity 中文文档](https://solidity-cn.readthedocs.io/zh/develop/)
+
+## javascript和nodejs
+
+[ES6 入门教程](https://es6.ruanyifeng.com/)
+
+[JavaScript 教程](https://wangdoc.com/javascript/)
+
+## java语言
    
   java开发语言在区块链开发生态相对少些，但是也有很多其实现。
 
@@ -67,11 +82,11 @@
 
   [Effective Java 2nd Edition](https://github.com/HugoMatilla/Effective-JAVA-Summary)
 
-# python语言
+## python语言
 
   [Python3 CookBook中文版](https://www.kancloud.cn/kancloud/python3-cookbook/47412)
 
-# c++
+## c++
 
 大部分矿池都是C++实现的，也有不少底层链公链用C++编写。
 
