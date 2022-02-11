@@ -14,16 +14,16 @@
 
 # Chia挖矿入门教程
 
-&emsp;&emsp;chia挖矿教程目前比较多，不重复再写。
+chia挖矿教程目前比较多，不重复再写。
 
-&emsp;&emsp;注意事项：
+注意事项：
 
 - Hpool提供的p盘工具plotting.dat（目前只支持Windows下p盘），和chia官方钱包中的p盘功能是一致的。只不过，使用hpool提供的p盘工具p盘，就可以不用下载官方钱包了。
 - Chia官方钱包的区块同步，是同步china主网的数据，同步的数据并不大，而p盘过程中是需要大量磁盘的。
 - Chia进行p盘的时候，有不同的农田大小规格，比如101.4G，但是实际是需要更大的存储空间的，101.4G是最终生成plot文件的大小。
 - 矿池和solo挖矿是可以相互切换的，使用矿池挖矿，只不过把时空证明交给矿池来处理，下面会从源码角度解读这个过程。
 
-&emsp;&emsp;参考如下教程：
+参考如下教程：
 
 [Chia挖矿教程(Hpool官方)](https://www.hpool.com/help/tutorial/Chia%E6%8C%96%E7%9F%BF%E6%95%99%E7%A8%8B)
 
@@ -41,12 +41,12 @@
   
 # Chia关键部分源码分析
 
-&emsp;&emsp;Chia钱包客户端通过RPC接口和主网通信，接口文档如下：
+Chia钱包客户端通过RPC接口和主网通信，接口文档如下：
 
 [Chia RPC接口文档](https://github.com/Chia-Network/chia-blockchain/wiki/RPC-Interfaces)
   
 ## 同步区块
-&emsp;&emsp;同步区块就是把当前节点和其它全节点的数据保持一致性的过程。当创建或者导入钱包，或者在钱包里面手动连接其它节点的时候，前端会调用RPC接口open_connection。
+同步区块就是把当前节点和其它全节点的数据保持一致性的过程。当创建或者导入钱包，或者在钱包里面手动连接其它节点的时候，前端会调用RPC接口open_connection。
 
 rpc_server.py
 ```python
@@ -64,7 +64,7 @@ rpc_server.py
         return {}
 ```
 
-&emsp;&emsp;打开连接后，也就是新节点加入的时候，会触发如下方法
+打开连接后，也就是新节点加入的时候，会触发如下方法
 full_node_api.py
 ```python
     @execute_task
@@ -283,7 +283,7 @@ full_node.py
                 return None
             await self._finish_sync()
 ```
-&emsp;&emsp;在_sync方法中，可以从注解中分析：
+在_sync方法中，可以从注解中分析：
 
 执行区块链到峰值的完全同步。
 
@@ -299,7 +299,7 @@ full_node.py
 
 - 断开提供无效块或没有块的对等体
 
-&emsp;&emsp;最后，同步的区块数据，会以sqlite文件存储在本地的磁盘中。其中，配置文件在initial-config.yaml中定义。目录默认在当前用户的.chia文件，需要显示隐藏文件才能看到(deepin系统)。
+最后，同步的区块数据，会以sqlite文件存储在本地的磁盘中。其中，配置文件在initial-config.yaml中定义。目录默认在当前用户的.chia文件，需要显示隐藏文件才能看到(deepin系统)。
 
 [80. 同步区块：多节点如何统一历史数据](https://zhuanlan.zhihu.com/p/101518970)
 
