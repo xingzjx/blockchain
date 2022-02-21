@@ -224,8 +224,88 @@ require 异常处理，合约必须激活，token数量必须等于1或者2，to
 
 ```
 
+## NFT 抢购脚本
 
+第一步： 预授权脚本
 
+```js
+
+const preApprove = async (configKey) => {
+    const fromAddress = configKey.address
+    const keyContent =  configKey.key
+    const name = configKey.name
+    console.log("name: " + name + ' start pre approve')
+    // get the nonce
+    const nonceCnt = await web3.eth.getTransactionCount(fromAddress);
+    // console.log(`num transactions so far: ${nonceCnt}`);
+    const abiArray = JSON.parse(fs.readFileSync("./abi/weth.json"));
+    const contractObj = new web3.eth.Contract(abiArray, erc20Constract, {from: fromAddress});
+    // begin token numbers
+    const privKey = new Buffer.from(keyContent, 'hex');
+    let proveValue = web3.utils.toWei('100000000000000000', 'ether')
+    let pData = contractObj.methods.approve(fancyBirdsConstract, proveValue).encodeABI()
+    const rawTransaction = {
+        "from": fromAddress,
+        "nonce": web3.utils.toHex(nonceCnt),
+        "gasLimit": web3.utils.toHex(configKey.gasLimit),
+        "gasPrice": web3.utils.toHex(configKey.gasPrice), // 1e9 = 1GWEI
+        "to": erc20Constract,
+        "value": 0x0,
+        "data": pData,
+        "chainId": chainId 
+    };
+
+    let tx = new Tx(rawTransaction);
+    tx.sign(privKey);
+    let serializedTx = tx.serialize();
+    let resultApprove = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'));
+    console.log("name: " + name + " Approved " + resultApprove);
+
+}
+
+```
+
+第二步：购买 NFT
+
+```js
+
+const buy = async (configKey) => {
+    const fromAddress = configKey.address
+    const keyContent = configKey.key
+    const name = configKey.name
+    console.log("name: " + name + ' start buy ')
+    // get the nonce
+    const nonceCnt = await web3.eth.getTransactionCount(fromAddress);
+    // console.log(`num transactions so far: ${nonceCnt}`);
+    const abiArray = JSON.parse(fs.readFileSync("./abi/fancy_birds.json"));
+    const contractObj = new web3.eth.Contract(abiArray, fancyBirdsConstract, { from: fromAddress });
+    // begin token numbers
+    const privKey = new Buffer.from(keyContent, 'hex');
+    let pData = contractObj.methods.mintBirds(2).encodeABI()
+    const rawTransaction = {
+        "from": fromAddress,
+        "nonce": web3.utils.toHex(nonceCnt),
+        "gasLimit": web3.utils.toHex(configKey.gasLimit),
+        "gasPrice": web3.utils.toHex(configKey.gasPrice), // 1 GWEI 10e9
+        "to": fancyBirdsConstract,
+        "value": 0x0,
+        "data": pData,
+        "chainId": chainId
+    };
+
+    let tx = new Tx(rawTransaction);
+    tx.sign(privKey);
+    let serializedTx = tx.serialize();
+    let result = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'));
+    console.log("name: " + name + " result: " + result);
+
+}
+
+```
+
+注意事项：预授权必须在抢购之前调用。其中，gasLimit 和 gasPrice 是抢购的关键参数，在后面的文章会详细分析。
+
+手续费 = gasUsed * gasPrice
 
 
 
