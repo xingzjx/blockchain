@@ -195,9 +195,9 @@ name: FancyBirds
 
 symbol: FB
 
-_fancyNames: 合约地址，0x19704d78f0647853e9b47334b8621d7579b6588e, 改合约实现了 IFancyNames 接口。官方并未源。
+_fancyNames: 合约地址， 0x19704d78f0647853e9b47334b8621d7579b6588e , 改合约实现了 IFancyNames 接口。官方并未源。
 
-_paymentsToken：是 MaticWETH 合约，0x7ceb23fd6bc0add59e62ac25578270cff1b9f619，改合约的发行方是 https://weth.io/，改合约需要遵循ERC20协议。
+_paymentsToken：是 MaticWETH 合约， 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619 ，改合约的发行方是 https://weth.io/， 改合约需要遵循ERC20协议。
 
 ### mintBirds 方法
 
@@ -220,6 +220,45 @@ require 异常处理，合约必须激活，token数量必须等于1或者2，to
             _safeMint(msg.sender, mintIndex);
             fancyNames.setBasicNameOnMint(mintIndex);
         }
+}
+
+```
+
+### FancyNames 接口实现
+
+该合约官方并未开源，这里补充下合约源码：
+
+
+FancyNames.sol
+
+```js
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
+
+import "./interfaces/IFancyNames.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+
+/**
+
+该合约官方并未开源，这里自己实现
+
+ */
+contract FancyNames is  IFancyNames {
+
+    function setBasicNameOnMint(uint256 tokenId) external {
+        string memory id = Strings.toString(tokenId);
+        // 字符串拼接
+        string memory tokenName = string(bytes.concat(bytes("FancyBirds#"), "-", bytes(id)));
+        bytes memory payload = abi.encodeWithSignature("setBaseURI(string)", tokenName);
+        address addr = msg.sender;
+        (bool success,) = addr.call(payload);
+        require(success == true, "setBaseURI call failure");
+    }
+
+    function changeNameUpdater(uint256 tokenId, string memory newName) external {
+
+    }
 }
 
 ```
