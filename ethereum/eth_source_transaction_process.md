@@ -152,3 +152,5 @@ type TxPool struct {
 [以太坊源代码 - 挖矿打包流程以及速度](https://blog.csdn.net/Metal1/article/details/80501519)
 
 [死磕以太坊源码分析之挖矿流程](https://blog.csdn.net/pulong0748/article/details/113864246)
+
+[死磕以太坊源码分析之txpool](https://www.jianshu.com/p/1b765dba7298)
