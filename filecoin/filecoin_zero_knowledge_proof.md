@@ -4,6 +4,9 @@
 
 - [Filecoin 之零知识证明](#filecoin-之零知识证明)
     - [零知识证明简介](#零知识证明简介)
+        - [zkSNARK](#zksnark)
+        - [zkSTARKs](#zkstarks)
+        - [Bulletproofs](#bulletproofs)
     - [Filecoin中的零知识证明](#filecoin中的零知识证明)
         - [密封阶段](#密封阶段)
         - [时空证明](#时空证明)
@@ -13,6 +16,17 @@
 <!-- /TOC -->
 
 ## 零知识证明简介
+
+### zkSNARK
+
+常见算法，Groth16, Marlin，Sonic ，Plonk。
+
+### zkSTARKs
+
+### Bulletproofs
+
+
+参考：https://github.com/matter-labs/awesome-zero-knowledge-proofs
 
 ## Filecoin中的零知识证明
 
