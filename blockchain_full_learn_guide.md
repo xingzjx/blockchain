@@ -234,6 +234,8 @@
 
 [简述目前相对成熟的区块链共识算法](https://learnblockchain.cn/article/334)
 
+[ETH-以太坊的GHOST协议](https://www.cnblogs.com/klgzyq/p/15544062.html)
+
 ## 扩容
 
   扩容指的的是提高区块链的TPS。扩容技术可以划分为两种方式，链上扩容和和链下扩容。
