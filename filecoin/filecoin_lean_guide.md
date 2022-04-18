@@ -102,3 +102,5 @@ filpool 矿池
 [lotus-4 代码详解之miner调度及work处理](https://blog.csdn.net/qingu/article/details/106693387)
 
 [Filecoin任务调度算法详解](https://zhuanlan.zhihu.com/p/158701820)
+
+[Filecoin源码分析(2)-- Filecoin的共识和出块原理解析](https://juejin.cn/post/6864831562882646024)
