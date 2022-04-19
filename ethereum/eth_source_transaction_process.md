@@ -153,4 +153,8 @@ type TxPool struct {
 
 [死磕以太坊源码分析之挖矿流程](https://blog.csdn.net/pulong0748/article/details/113864246)
 
+[关于区块链:死磕以太坊源码分析之挖矿流程分析](https://lequ7.com/guan-yu-qu-kuai-lian-si-ke-yi-tai-fang-yuan-ma-fen-xi-zhi-wa-kuang-liu-cheng-fen-xi.html)
+
 [死磕以太坊源码分析之txpool](https://www.jianshu.com/p/1b765dba7298)
+
+[以太坊源码之--Evm源码剖析](https://blog.csdn.net/fh667788123/article/details/104961415)
