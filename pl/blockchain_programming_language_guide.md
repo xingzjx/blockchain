@@ -54,6 +54,8 @@
 
   [Effective Go](https://www.kancloud.cn/kancloud/effective/72199)
 
+  [Go 垃圾回收（三）——三色标记法是什么鬼？](https://zhuanlan.zhihu.com/p/105495961/)
+
 ## rust语言
 
    Rust是类似于c语言的开发语言，和Go语言也比较接近，目前在Android系统层开发也引入了Rust语言的支持。在区块链项目中大量用到了Rust语言。比如filecoin以及波卡生态。
