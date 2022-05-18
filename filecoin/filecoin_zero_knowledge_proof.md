@@ -926,3 +926,11 @@ where
 }
 
 ```
+
+参考：
+
+[Awesome zero knowledge proofs (zkp) 对比](https://github.com/matter-labs/awesome-zero-knowledge-proofs)
+
+[硬核 | 技术解析热门零知识证明方案 Groth16](https://www.ylfx.com/Show/index/cid/37/id/283117.html)
+
+
