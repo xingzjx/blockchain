@@ -66,6 +66,8 @@
 
    [rust 程序设计语言中文](https://kaisery.github.io/trpl-zh-cn/title-page.html)
 
+   [Rust 秘典（死灵书）](https://nomicon.purewhite.io/)
+
 ## solidity语言
 
 [solidity 中文文档](https://solidity-cn.readthedocs.io/zh/develop/)
