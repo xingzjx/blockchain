@@ -68,6 +68,8 @@
 
    [Rust 秘典（死灵书）](https://nomicon.purewhite.io/)
 
+   [Rust Reference 中文](https://minstrel1977.gitee.io/rust-reference/)
+
 ## solidity语言
 
 [solidity 中文文档](https://solidity-cn.readthedocs.io/zh/develop/)

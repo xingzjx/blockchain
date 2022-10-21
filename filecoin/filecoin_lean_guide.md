@@ -43,6 +43,8 @@ Filecoin白皮书：https://gitee.com/xingzjx/blockchain/blob/master/filecoin/wh
 
 Lotus开发文档：https://docs.filecoin.io/
 
+已迁移到：https://lotus.filecoin.io/lotus/get-started/what-is-lotus/
+
 目前实现最完善的是Lotus，所以开发文档看Lotus的文档。
 
 该文档包括七个章节，分别是:
